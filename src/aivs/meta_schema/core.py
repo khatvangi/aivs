@@ -12,6 +12,7 @@ Adding terms to the open vocabulary does not.
 
 from __future__ import annotations
 
+import hashlib
 import uuid
 from datetime import datetime
 from enum import Enum
@@ -20,7 +21,11 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field, model_validator
 
 
-META_SCHEMA_VERSION = "0.1.0"
+META_SCHEMA_VERSION = "0.2.0"
+
+
+def _sha256(s: str) -> str:
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 
 # ---------------------------------------------------------------------------
@@ -109,9 +114,22 @@ class Actor(BaseModel):
 class Event(BaseModel):
     """A normalized event from any adapter. The atomic unit.
 
-    `action` is open-vocabulary; the meta-schema does not constrain its values.
-    Adapters emit whatever action terms make sense in their source domain;
-    novel terms surface as schema deltas downstream.
+    `action` is open-vocabulary; the meta-schema does not constrain its
+    values. Adapters emit whatever action terms make sense in their
+    source domain; novel terms surface as schema deltas downstream.
+
+    Privacy posture (v0.2):
+        ``content`` is optional. When set, ``content_hash`` is
+        auto-computed (sha256 over the UTF-8 encoded string) by the
+        model validator. Adapters that run in redact mode supply
+        ``content_hash`` directly and leave ``content`` unset, so the
+        audit can demonstrate that an event existed and verify its
+        content without publishing it. ``AuditArtifact.to_published()``
+        strips ``content`` from events that are not covered by a
+        Decision with ``publish_level="verbatim"``.
+
+        Both fields may be ``None`` for purely structural events that
+        carry no payload (e.g., a hook firing with no stdout).
     """
 
     event_id: str = Field(default_factory=_new_id)
@@ -120,8 +138,19 @@ class Event(BaseModel):
     action: str                  # open vocab: write|edit|run|prompt|generate|...
     target: str                  # what was acted upon
     content: Optional[str] = None
+    content_hash: Optional[str] = None
     source_ref: SourceRef
     tier: CaptureTier
+
+    @model_validator(mode="after")
+    def _auto_hash(self) -> "Event":
+        """Auto-fill ``content_hash`` from ``content`` when content is set
+        and hash is not. Never overwrites an existing hash (so redact-mode
+        events keep the hash the adapter supplied, and re-parsed audits
+        round-trip cleanly)."""
+        if self.content is not None and self.content_hash is None:
+            self.content_hash = _sha256(self.content)
+        return self
 
 
 class Evidence(BaseModel):
@@ -136,10 +165,22 @@ class Evidence(BaseModel):
 class Decision(BaseModel):
     """A point where a methodological choice was made.
 
-    `decision_type` draws from the open vocabulary. If the audit cannot
-    classify the decision under any existing vocabulary term, set
-    `decision_type = "unclassified"` and `schema_gap = "novel_pattern"`;
-    a corresponding SchemaDelta should accompany the audit.
+    ``decision_type`` draws from the open vocabulary. If the audit
+    cannot classify the decision under any existing vocabulary term,
+    set ``decision_type = "unclassified"`` and
+    ``schema_gap = "novel_pattern"``; a corresponding SchemaDelta should
+    accompany the audit.
+
+    ``publish_level`` (v0.2) controls what
+    ``AuditArtifact.to_published()`` does with this Decision's evidence:
+        - ``"summary"`` (default): events backing this Decision have
+          ``content`` stripped at publish time; only ``content_hash``
+          and structural fields survive. The author's own description
+          on the Decision and Evidence objects is preserved — that is
+          curated disclosure, not adapter capture.
+        - ``"verbatim"``: events backing this Decision keep their
+          ``content``. Use when verbatim content is itself the
+          deliverable (e.g., Smith 2026 podcast prompts/outputs).
     """
 
     decision_id: str = Field(default_factory=_new_id)
@@ -151,6 +192,7 @@ class Decision(BaseModel):
     schema_gap: Optional[Literal["novel_pattern"]] = None
     verification_status: VerificationStatus = VerificationStatus.UNVERIFIED
     verification_notes: Optional[str] = None
+    publish_level: Literal["summary", "verbatim"] = "summary"
 
     @model_validator(mode="after")
     def _gap_iff_unclassified(self) -> "Decision":
@@ -238,6 +280,53 @@ class AuditArtifact(BaseModel):
     schema_deltas: list[SchemaDelta] = Field(default_factory=list)
 
     notes: Optional[str] = None
+
+    # ---- publishing posture (v0.2) ----
+
+    def to_published(self) -> "AuditArtifact":
+        """Return a copy with non-verbatim Event content stripped.
+
+        Algorithm:
+            1. Walk every Decision whose ``publish_level == "verbatim"``;
+               collect ``decision.evidence_ids`` and follow them to
+               ``evidence.event_ids``. The union of those event_ids is
+               the verbatim set.
+            2. Copy ``self``. For every Event whose ``event_id`` is NOT
+               in the verbatim set, set ``content = None``.
+               ``content_hash`` is preserved so the published artifact
+               still demonstrates the event existed and can verify any
+               later disclosure.
+            3. Author-written fields (Decision.description,
+               Evidence.description, Claim.text, AuditArtifact.notes)
+               are NEVER touched. Those are curated disclosure, not
+               adapter capture.
+
+        For audits where no Decision is marked verbatim (the default,
+        minimum-capture case), every Event's content is stripped. If
+        the source adapter already ran with ``redact=True``, the
+        Events arrived with ``content=None`` and this method is a
+        near-no-op (content was never set to begin with).
+        """
+        evidence_by_id = {e.evidence_id: e for e in self.evidence}
+
+        verbatim_event_ids: set[str] = set()
+        for d in self.decisions:
+            if d.publish_level != "verbatim":
+                continue
+            for eid in d.evidence_ids:
+                ev = evidence_by_id.get(eid)
+                if ev is None:
+                    continue
+                verbatim_event_ids.update(ev.event_ids)
+
+        new_events: list[Event] = []
+        for ev in self.events:
+            if ev.event_id in verbatim_event_ids:
+                new_events.append(ev)
+            else:
+                new_events.append(ev.model_copy(update={"content": None}))
+
+        return self.model_copy(update={"events": new_events})
 
     # ---- integrity ----
 

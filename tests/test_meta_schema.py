@@ -258,6 +258,183 @@ class TestInvariants:
         assert audit.meta_schema_version == META_SCHEMA_VERSION
 
 
+# --- v0.2 privacy posture ----------------------------------------------------
+
+
+class TestPrivacyPosture:
+    """Tests for v0.2 changes: content/content_hash duality, Decision
+    publish_level, and AuditArtifact.to_published()."""
+
+    def test_event_content_hash_autocomputed(self) -> None:
+        import hashlib
+        e = _event(action="prompt")
+        expected = hashlib.sha256(b"some content").hexdigest()
+        assert e.content == "some content"
+        assert e.content_hash == expected
+
+    def test_event_redacted_form(self) -> None:
+        """An Event with content=None and a pre-set content_hash is a
+        valid redact-mode event."""
+        e = Event(
+            timestamp=_now(),
+            actor=Actor(actor_type=ActorType.HUMAN),
+            action="prompt",
+            target="src/foo.py",
+            content=None,
+            content_hash="abc123",
+            source_ref=SourceRef(
+                adapter_name="test",
+                adapter_version="0.0.0",
+                raw_location="x:1",
+                extracted_at=_now(),
+            ),
+            tier=CaptureTier.TIER_2,
+        )
+        assert e.content is None
+        assert e.content_hash == "abc123"
+
+    def test_event_empty_form_allowed(self) -> None:
+        """Pure structural Events with neither content nor hash are
+        permitted (per directive: 'invariant not enforced for events
+        where neither makes sense')."""
+        e = Event(
+            timestamp=_now(),
+            actor=Actor(actor_type=ActorType.HUMAN),
+            action="hook",
+            target="hook:Stop",
+            source_ref=SourceRef(
+                adapter_name="test",
+                adapter_version="0.0.0",
+                raw_location="x:1",
+                extracted_at=_now(),
+            ),
+            tier=CaptureTier.TIER_2,
+        )
+        assert e.content is None
+        assert e.content_hash is None
+
+    def test_decision_publish_level_default_is_summary(self) -> None:
+        d = Decision(
+            timestamp=_now(),
+            decision_type="some_real_type",
+            description="x",
+            actor=Actor(actor_type=ActorType.HUMAN),
+            evidence_ids=[],
+        )
+        assert d.publish_level == "summary"
+
+    def test_audit_to_published_strips_summary_keeps_verbatim(self) -> None:
+        """to_published() should strip content from summary-decision
+        events and preserve content on verbatim-decision events."""
+        audit = _minimal_audit()
+
+        # Two events with content.
+        e_summary = _event(action="prompt")
+        e_summary_content = e_summary.content  # snapshot before to_published
+        e_verbatim = _event(action="respond", actor_type=ActorType.AI_GENERATIVE)
+        e_verbatim_content = e_verbatim.content
+
+        ev_summary = Evidence(
+            event_ids=[e_summary.event_id],
+            description="summary-bucket evidence",
+        )
+        ev_verbatim = Evidence(
+            event_ids=[e_verbatim.event_id],
+            description="verbatim-bucket evidence",
+        )
+
+        d_summary = Decision(
+            timestamp=_now(),
+            decision_type="some_real_type",
+            description="summary decision",
+            actor=Actor(actor_type=ActorType.HUMAN),
+            evidence_ids=[ev_summary.evidence_id],
+        )
+        d_verbatim = Decision(
+            timestamp=_now(),
+            decision_type="another_real_type",
+            description="verbatim decision",
+            actor=Actor(actor_type=ActorType.HUMAN),
+            evidence_ids=[ev_verbatim.evidence_id],
+            publish_level="verbatim",
+        )
+
+        audit.events = [e_summary, e_verbatim]
+        audit.evidence = [ev_summary, ev_verbatim]
+        audit.decisions = [d_summary, d_verbatim]
+
+        published = audit.to_published()
+
+        pub_summary = next(e for e in published.events if e.event_id == e_summary.event_id)
+        pub_verbatim = next(e for e in published.events if e.event_id == e_verbatim.event_id)
+
+        assert pub_summary.content is None
+        assert pub_summary.content_hash is not None  # hash preserved
+        assert pub_verbatim.content == e_verbatim_content
+        assert pub_verbatim.content_hash is not None
+
+        # Original audit should be untouched.
+        orig_summary = next(e for e in audit.events if e.event_id == e_summary.event_id)
+        assert orig_summary.content == e_summary_content
+
+    def test_audit_to_published_preserves_author_fields(self) -> None:
+        """to_published() must never touch author-written fields:
+        Decision.description, Evidence.description, Claim.text, notes."""
+        audit = _minimal_audit()
+        audit.notes = "audit-level note"
+
+        ev = _event()
+        evid = Evidence(event_ids=[ev.event_id], description="ev description")
+        dec = Decision(
+            timestamp=_now(),
+            decision_type="some_type",
+            description="decision description",
+            actor=Actor(actor_type=ActorType.HUMAN),
+            evidence_ids=[evid.evidence_id],
+        )
+        claim = Claim(
+            text="claim text",
+            location="§1",
+            upstream_decision_ids=[dec.decision_id],
+        )
+        audit.events = [ev]
+        audit.evidence = [evid]
+        audit.decisions = [dec]
+        audit.claims = [claim]
+
+        published = audit.to_published()
+
+        assert published.notes == "audit-level note"
+        assert published.evidence[0].description == "ev description"
+        assert published.decisions[0].description == "decision description"
+        assert published.claims[0].text == "claim text"
+
+    def test_audit_to_published_no_verbatim_strips_everything(self) -> None:
+        """When no Decision is verbatim, every Event's content is
+        stripped (matches triplet-proof real-data behaviour)."""
+        audit = _minimal_audit()
+        e1 = _event(action="prompt")
+        e2 = _event(action="run")
+        ev = Evidence(event_ids=[e1.event_id, e2.event_id], description="bucket")
+        d = Decision(
+            timestamp=_now(),
+            decision_type="some_type",
+            description="d",
+            actor=Actor(actor_type=ActorType.HUMAN),
+            evidence_ids=[ev.evidence_id],
+        )
+        audit.events = [e1, e2]
+        audit.evidence = [ev]
+        audit.decisions = [d]
+
+        published = audit.to_published()
+        assert all(e.content is None for e in published.events)
+        assert all(e.content_hash is not None for e in published.events)
+
+    def test_meta_schema_version_is_0_2_0(self) -> None:
+        assert META_SCHEMA_VERSION == "0.2.0"
+
+
 # --- adapter interface -------------------------------------------------------
 
 

@@ -974,14 +974,29 @@ def main() -> None:
             print(" -", e)
         raise SystemExit(1)
 
-    out_path = Path(
+    out_dir = Path(
         os.environ.get(
             "AIVS_OUT_DIR",
             str(Path(__file__).resolve().parent / "out"),
         )
-    ) / "kiran_triplet_proof_audit.json"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(audit.model_dump_json(indent=2))
+    )
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    internal_path = out_dir / "kiran_triplet_proof_audit.json"
+    published_path = out_dir / "kiran_triplet_proof_audit_published.json"
+
+    internal_json = audit.model_dump_json(indent=2)
+    internal_path.write_text(internal_json)
+
+    # Triplet-proof: every Decision is publish_level="summary" (default).
+    # to_published() therefore strips Event.content from every Event in
+    # the artifact. Adapter events arrived with content=None already
+    # (claude_code adapter ran with redact=True, the new default), so
+    # the only events that actually lose content here are the 3 bulk-
+    # session Events whose author-written metadata is no longer published.
+    published = audit.to_published()
+    published_json = published.model_dump_json(indent=2)
+    published_path.write_text(published_json)
 
     counts = {
         "events": len(audit.events),
@@ -990,6 +1005,7 @@ def main() -> None:
         "claims": len(audit.claims),
         "schema_deltas": len(audit.schema_deltas),
     }
+    verbatim_count = sum(1 for d in audit.decisions if d.publish_level == "verbatim")
     print("=== AIVS retrospective audit ===")
     print(f"  target              : {audit.audit_target}")
     print(f"  audit_id            : {audit.audit_id}")
@@ -998,7 +1014,9 @@ def main() -> None:
     print(f"  capture_tier        : {audit.capture_tier_achieved.value}")
     print(f"  integrity           : OK")
     print(f"  counts              : {json.dumps(counts)}")
-    print(f"  output              : {out_path}")
+    print(f"  verbatim decisions  : {verbatim_count} / {len(audit.decisions)}")
+    print(f"  internal artifact   : {internal_path} ({len(internal_json):,} bytes)")
+    print(f"  published artifact  : {published_path} ({len(published_json):,} bytes)")
     print()
     print("Schema-delta proposals (candidate v0.2 vocabulary terms):")
     for sd in audit.schema_deltas:

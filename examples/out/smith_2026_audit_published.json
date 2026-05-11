@@ -23,7 +23,7 @@
       },
       "action": "select_input",
       "target": "source_document:Smith_2023_JCE_priority_rules_paper",
-      "content": "'Google NotebookLM was provided with my open-access Journal of Chemical Education paper as source material.'",
+      "content": null,
       "content_hash": "93ec622975ab9a96bf047dbcebeb3132d33879d2fd20bd4225616a81f64b1912",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -43,7 +43,7 @@
       },
       "action": "prompt",
       "target": "notebooklm_session:initial",
-      "content": "explore the importance of organic reaction mechanisms, explaining how priority and selectivity rules can enable students to predict organic reaction mechanisms",
+      "content": null,
       "content_hash": "6828f553d012dceb8067568d944c9b0cc8ac716591bb30203df2283f57c305ce",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -198,7 +198,7 @@
       },
       "action": "edit",
       "target": "source_document:Smith_2023_JCE_priority_rules_paper",
-      "content": "Lidocaine example removed from source document; replaced with new text on salbutamol synthesis. Section on classic reaction types (nucleophilic substitution/addition; electrophilic substitution/addition) also removed.",
+      "content": null,
       "content_hash": "333b77c69bff0dcbc466464ffba131d75e5dd6d42f3ed2fe226165116daf6810",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -240,7 +240,7 @@
       },
       "action": "execute",
       "target": "podcast_audio:final.transcript",
-      "content": "Final podcast uploaded to Panopto for auto-captioning; minor manual editing applied. Smith notes Panopto generated more accurate transcripts than NotebookLM's own transcription.",
+      "content": null,
       "content_hash": "37bd9b47a842716b13c44040c61a21541266ac553a2a3f3a6abc24f128b98a58",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -260,7 +260,7 @@
       },
       "action": "create",
       "target": "visual:salbutamol_synthesis.pptx",
-      "content": "PowerPoint image created to provide essential visual support for the salbutamol synthesis discussed in the podcast; attached to the audio file.",
+      "content": null,
       "content_hash": "0ea2112dd9b4b090b42988a009aa3b1eec9ed36817313e8918ab017f935525c0",
       "source_ref": {
         "adapter_name": "manual_log_adapter",

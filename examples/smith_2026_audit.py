@@ -492,6 +492,9 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
     )
 
     # D3: prompt design (initial + V1 + V3).
+    # publish_level=verbatim: Smith voluntarily disclosed the prompts in the
+    # SI; the prompts themselves are the deliverable he wanted reviewers and
+    # readers to inspect, not adapter-extracted ambient chatter.
     decisions.append(
         Decision(
             timestamp=T_V1,
@@ -507,6 +510,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
             actor=SMITH,
             evidence_ids=[find("SI Podcast Version 1"), find("SI Podcast Version 3")],
             verification_status=VerificationStatus.NOT_APPLICABLE,
+            publish_level="verbatim",
         )
     )
 
@@ -535,6 +539,8 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
     )
 
     # D5: iterative generation (decision to run 3 versions).
+    # publish_level=verbatim: the three AI outputs were the deliverable Smith
+    # explicitly compared in the SI.
     decisions.append(
         Decision(
             timestamp=T_V2,
@@ -555,6 +561,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 find("SI Podcast Version 3"),
             ],
             verification_status=VerificationStatus.NOT_APPLICABLE,
+            publish_level="verbatim",
         )
     )
 
@@ -621,6 +628,9 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
     )
 
     # D9: content curation from multiple AI outputs.
+    # publish_level=verbatim: the curation outcome is the final podcast and
+    # the SI highlights show which segments were retained; preserving the
+    # underlying Event content is what makes that traceable downstream.
     decisions.append(
         Decision(
             timestamp=T_CURATION,
@@ -640,6 +650,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "showing which segments were retained, but the rationale for each "
                 "selection is not recorded — only aggregate rationale."
             ),
+            publish_level="verbatim",
         )
     )
 
@@ -905,14 +916,27 @@ def main() -> None:
             print(" -", e)
         raise SystemExit(1)
 
-    out_path = Path(
+    out_dir = Path(
         os.environ.get(
             "AIVS_OUT_DIR",
             str(Path(__file__).resolve().parent / "out"),
         )
-    ) / "smith_2026_audit.json"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(audit.model_dump_json(indent=2))
+    )
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    internal_path = out_dir / "smith_2026_audit.json"
+    published_path = out_dir / "smith_2026_audit_published.json"
+
+    internal_json = audit.model_dump_json(indent=2)
+    internal_path.write_text(internal_json)
+
+    # to_published() strips Event.content for all events NOT in a
+    # verbatim-marked Decision's evidence chain. Smith marks D3, D5, D9
+    # as verbatim; their evidence keeps verbatim content. Everything
+    # else carries content_hash only.
+    published = audit.to_published()
+    published_json = published.model_dump_json(indent=2)
+    published_path.write_text(published_json)
 
     # Console summary.
     counts = {
@@ -922,6 +946,7 @@ def main() -> None:
         "claims": len(audit.claims),
         "schema_deltas": len(audit.schema_deltas),
     }
+    verbatim_count = sum(1 for d in audit.decisions if d.publish_level == "verbatim")
     print("=== AIVS retrospective audit ===")
     print(f"  target              : {audit.audit_target}")
     print(f"  audit_id            : {audit.audit_id}")
@@ -930,7 +955,9 @@ def main() -> None:
     print(f"  capture_tier        : {audit.capture_tier_achieved.value}")
     print(f"  integrity           : OK")
     print(f"  counts              : {json.dumps(counts)}")
-    print(f"  output              : {out_path}")
+    print(f"  verbatim decisions  : {verbatim_count} / {len(audit.decisions)}")
+    print(f"  internal artifact   : {internal_path} ({len(internal_json):,} bytes)")
+    print(f"  published artifact  : {published_path} ({len(published_json):,} bytes)")
     print()
     print("Schema-delta proposals (candidate v0.2 vocabulary terms):")
     for sd in audit.schema_deltas:

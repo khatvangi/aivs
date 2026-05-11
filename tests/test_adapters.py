@@ -206,6 +206,53 @@ def test_codex_extract_is_empty_stub(tmp_path):
     assert list(adapter.extract(tmp_path)) == []  # stub yields nothing
 
 
+# --- v0.2 privacy posture (redact mode) --------------------------------
+
+
+def test_claude_code_redact_default_true(tmp_path):
+    """With no redact arg, emitted Events carry only content_hash."""
+    project, claude_home = _write_cc_fixture(tmp_path)
+    adapter = ClaudeCodeAdapter(claude_home=claude_home)  # redact default
+    events = list(adapter.extract(project))
+    payload_events = [e for e in events if e.content_hash is not None]
+    assert payload_events  # at least one event has a hash
+    for e in payload_events:
+        assert e.content is None
+        assert isinstance(e.content_hash, str)
+        assert len(e.content_hash) == 64  # sha256 hex
+
+
+def test_claude_code_redact_false(tmp_path):
+    """With redact=False, both content and content_hash are populated."""
+    import hashlib
+    project, claude_home = _write_cc_fixture(tmp_path)
+    adapter = ClaudeCodeAdapter(claude_home=claude_home, redact=False)
+    events = list(adapter.extract(project))
+    prompt = next(e for e in events if e.action == "prompt")
+    assert prompt.content == "Run the regression test."
+    assert prompt.content_hash == hashlib.sha256(
+        "Run the regression test.".encode("utf-8")
+    ).hexdigest()
+
+
+def test_aider_redact_default_true(tmp_path):
+    project = _write_aider_fixture(tmp_path)
+    adapter = AiderAdapter()  # redact default
+    events = list(adapter.extract(project))
+    for e in events:
+        assert e.content is None
+        assert e.content_hash is not None
+        assert len(e.content_hash) == 64
+
+
+def test_aider_redact_false(tmp_path):
+    project = _write_aider_fixture(tmp_path)
+    adapter = AiderAdapter(redact=False)
+    events = list(adapter.extract(project))
+    prompts = [e for e in events if e.action == "prompt"]
+    assert any("off-by-one" in e.content for e in prompts)
+
+
 # --- Discovery integration ---------------------------------------------
 
 

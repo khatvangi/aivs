@@ -38,12 +38,37 @@ offices that want to consume it.
 Tagline: **"Smith voluntarily wrote what is essentially an AIVS audit
 in prose. AIVS formalizes that discipline into a schema."**
 
+## Constitutional principle (overrides defaults where they conflict)
+
+**Minimum capture for purpose.** The audit's published resolution
+matches the audit's stated purpose. For tool use and reproducibility,
+that means: which tools were used, at which consequential decisions,
+what artifacts (code, data, configs, environment) regenerate the work.
+
+Verbatim content — prompts, AI outputs, tool results, thinking blocks,
+intermediate exploration — is PRIVATE BY DEFAULT. Authors opt-in per
+Decision to publish verbatim content where they want maximum
+transparency. Smith 2026 is the exemplar of opt-in (chat history WAS
+the deliverable). Otherwise, the published audit references content
+by hash and summary statistic, not by quotation.
+
+Fine-grained adapter output is diagnostic, retained locally if at
+all, surfaced only if a specific claim is actively disputed.
+
+AIVS does NOT recapitulate the disclosure-maximalist impulse of
+CONSORT-AI / SPIRIT-AI / ICMJE. Those standards implicitly treat AI
+use as more suspicious than human collaboration; AIVS rejects the
+asymmetry. Tool use accounting and reproducibility are reasonable
+asks; demanding every prompt is not.
+
 ## Strategic decisions — LOCKED. Do NOT re-litigate.
 
-1. **Verification, not disclosure.** The disclosure space (CONSORT-AI,
-   SPIRIT-AI, ICMJE, COPE) is saturated. Verification — inspecting actual
-   research artifacts (git, chat logs, notebooks, env exports) rather
-   than self-reported attestation — is empty. AIVS plays here.
+1. **Reproducibility verification, not workflow surveillance.** AIVS
+   verifies that the manuscript's claims map to identifiable workflow
+   decisions, that those decisions have evidence, and that the
+   artifacts (code, data, env) regenerate the work. AIVS does NOT
+   demand documentation of every prompt, every thought, or every
+   exploratory step.
 2. **Decision point is the unit of audit.** Workflow tasks anchor below,
    manuscript claims anchor above.
 3. **Author-side retrospective.** ASRS-style independence. No coupling

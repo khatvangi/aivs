@@ -1,0 +1,524 @@
+{
+  "$defs": {
+    "Actor": {
+      "description": "Who or what performed an action.",
+      "properties": {
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identifier"
+        },
+        "model_metadata": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Metadata"
+        }
+      },
+      "required": [
+        "actor_type"
+      ],
+      "title": "Actor",
+      "type": "object"
+    },
+    "ActorType": {
+      "description": "Source-agnostic taxonomy of who or what performed an action.",
+      "enum": [
+        "human",
+        "ai_advisory",
+        "ai_generative",
+        "ai_autonomous",
+        "system",
+        "unknown"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "AdapterUsage": {
+      "description": "Record of which adapter (and version) contributed to this audit.",
+      "properties": {
+        "adapter_name": {
+          "title": "Adapter Name",
+          "type": "string"
+        },
+        "adapter_version": {
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "capture_tier": {
+          "$ref": "#/$defs/CaptureTier"
+        }
+      },
+      "required": [
+        "adapter_name",
+        "adapter_version",
+        "capture_tier"
+      ],
+      "title": "AdapterUsage",
+      "type": "object"
+    },
+    "CaptureTier": {
+      "description": "Evidence fidelity gradient. Audits report the tier they achieved.",
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "title": "CaptureTier",
+      "type": "integer"
+    },
+    "Claim": {
+      "description": "A manuscript-level claim, traced to upstream decisions.",
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "upstream_decision_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Upstream Decision Ids",
+          "type": "array"
+        },
+        "evidence_confidence": {
+          "$ref": "#/$defs/EvidenceConfidence",
+          "default": "medium"
+        }
+      },
+      "required": [
+        "text",
+        "location",
+        "upstream_decision_ids"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Decision": {
+      "description": "A point where a methodological choice was made.\n\n``decision_type`` draws from the open vocabulary. If the audit\ncannot classify the decision under any existing vocabulary term,\nset ``decision_type = \"unclassified\"`` and\n``schema_gap = \"novel_pattern\"``; a corresponding SchemaDelta should\naccompany the audit.\n\n``publish_level`` (v0.2) controls what\n``AuditArtifact.to_published()`` does with this Decision's evidence:\n    - ``\"summary\"`` (default): events backing this Decision have\n      ``content`` stripped at publish time; only ``content_hash``\n      and structural fields survive. The author's own description\n      on the Decision and Evidence objects is preserved \u2014 that is\n      curated disclosure, not adapter capture.\n    - ``\"verbatim\"``: events backing this Decision keep their\n      ``content``. Use when verbatim content is itself the\n      deliverable (e.g., Smith 2026 podcast prompts/outputs).",
+      "properties": {
+        "decision_id": {
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "decision_type": {
+          "title": "Decision Type",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "actor": {
+          "$ref": "#/$defs/Actor"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "schema_gap": {
+          "anyOf": [
+            {
+              "const": "novel_pattern",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schema Gap"
+        },
+        "verification_status": {
+          "$ref": "#/$defs/VerificationStatus",
+          "default": "unverified"
+        },
+        "verification_notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verification Notes"
+        },
+        "publish_level": {
+          "default": "summary",
+          "enum": [
+            "summary",
+            "verbatim"
+          ],
+          "title": "Publish Level",
+          "type": "string"
+        }
+      },
+      "required": [
+        "timestamp",
+        "decision_type",
+        "description",
+        "actor",
+        "evidence_ids"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "Event": {
+      "description": "A normalized event from any adapter. The atomic unit.\n\n`action` is open-vocabulary; the meta-schema does not constrain its\nvalues. Adapters emit whatever action terms make sense in their\nsource domain; novel terms surface as schema deltas downstream.\n\nPrivacy posture (v0.2):\n    ``content`` is optional. When set, ``content_hash`` is\n    auto-computed (sha256 over the UTF-8 encoded string) by the\n    model validator. Adapters that run in redact mode supply\n    ``content_hash`` directly and leave ``content`` unset, so the\n    audit can demonstrate that an event existed and verify its\n    content without publishing it. ``AuditArtifact.to_published()``\n    strips ``content`` from events that are not covered by a\n    Decision with ``publish_level=\"verbatim\"``.\n\n    Both fields may be ``None`` for purely structural events that\n    carry no payload (e.g., a hook firing with no stdout).",
+      "properties": {
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "actor": {
+          "$ref": "#/$defs/Actor"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content"
+        },
+        "content_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Hash"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "tier": {
+          "$ref": "#/$defs/CaptureTier"
+        }
+      },
+      "required": [
+        "timestamp",
+        "actor",
+        "action",
+        "target",
+        "source_ref",
+        "tier"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "Evidence": {
+      "description": "Composite of one or more events supporting a decision.",
+      "properties": {
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Event Ids",
+          "type": "array"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/EvidenceConfidence",
+          "default": "medium"
+        }
+      },
+      "required": [
+        "event_ids",
+        "description"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceConfidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ],
+      "title": "EvidenceConfidence",
+      "type": "string"
+    },
+    "SchemaDelta": {
+      "description": "A proposed extension to the open vocabulary, emitted by an audit.\n\nDeltas are second-class citizens until adjudicated. The governance\nprotocol for accepting, merging, or rejecting deltas is out of scope\nfor this release.",
+      "properties": {
+        "delta_id": {
+          "title": "Delta Id",
+          "type": "string"
+        },
+        "proposed_term": {
+          "title": "Proposed Term",
+          "type": "string"
+        },
+        "proposed_kind": {
+          "$ref": "#/$defs/SchemaDeltaKind"
+        },
+        "justification": {
+          "title": "Justification",
+          "type": "string"
+        },
+        "source_audit_id": {
+          "title": "Source Audit Id",
+          "type": "string"
+        },
+        "raw_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Raw Evidence Ids",
+          "type": "array"
+        },
+        "proposed_at": {
+          "format": "date-time",
+          "title": "Proposed At",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/SchemaDeltaStatus",
+          "default": "proposed"
+        },
+        "merged_into": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Merged Into"
+        }
+      },
+      "required": [
+        "proposed_term",
+        "proposed_kind",
+        "justification",
+        "source_audit_id",
+        "raw_evidence_ids",
+        "proposed_at"
+      ],
+      "title": "SchemaDelta",
+      "type": "object"
+    },
+    "SchemaDeltaKind": {
+      "enum": [
+        "decision_type",
+        "actor_subtype",
+        "evidence_relation",
+        "action_type"
+      ],
+      "title": "SchemaDeltaKind",
+      "type": "string"
+    },
+    "SchemaDeltaStatus": {
+      "enum": [
+        "proposed",
+        "accepted",
+        "merged_into",
+        "rejected",
+        "deprecated"
+      ],
+      "title": "SchemaDeltaStatus",
+      "type": "string"
+    },
+    "SourceRef": {
+      "description": "Provenance for a piece of evidence: which adapter saw it, where, when.",
+      "properties": {
+        "adapter_name": {
+          "title": "Adapter Name",
+          "type": "string"
+        },
+        "adapter_version": {
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "raw_location": {
+          "title": "Raw Location",
+          "type": "string"
+        },
+        "extracted_at": {
+          "format": "date-time",
+          "title": "Extracted At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter_name",
+        "adapter_version",
+        "raw_location",
+        "extracted_at"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    },
+    "VerificationStatus": {
+      "description": "Whether a decision's downstream effect was independently verified.",
+      "enum": [
+        "verified_independently",
+        "verified_partially",
+        "unverified",
+        "not_applicable",
+        "no_evidence"
+      ],
+      "title": "VerificationStatus",
+      "type": "string"
+    }
+  },
+  "description": "Top-level audit output for a single paper or project.\n\nIntegrity (referential closure of IDs within the artifact) is checked by\n`validate_integrity()`. Pydantic's per-field validation does not catch\ncross-entity reference errors; call `validate_integrity()` explicitly.",
+  "properties": {
+    "audit_id": {
+      "title": "Audit Id",
+      "type": "string"
+    },
+    "audit_target": {
+      "title": "Audit Target",
+      "type": "string"
+    },
+    "meta_schema_version": {
+      "default": "0.2.0",
+      "title": "Meta Schema Version",
+      "type": "string"
+    },
+    "vocabulary_version": {
+      "title": "Vocabulary Version",
+      "type": "string"
+    },
+    "capture_tier_achieved": {
+      "$ref": "#/$defs/CaptureTier"
+    },
+    "audit_timestamp": {
+      "format": "date-time",
+      "title": "Audit Timestamp",
+      "type": "string"
+    },
+    "adapters_used": {
+      "items": {
+        "$ref": "#/$defs/AdapterUsage"
+      },
+      "title": "Adapters Used",
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/Event"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/Decision"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "schema_deltas": {
+      "items": {
+        "$ref": "#/$defs/SchemaDelta"
+      },
+      "title": "Schema Deltas",
+      "type": "array"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "audit_target",
+    "vocabulary_version",
+    "capture_tier_achieved",
+    "audit_timestamp",
+    "adapters_used"
+  ],
+  "title": "AuditArtifact",
+  "type": "object"
+}

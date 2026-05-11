@@ -23,7 +23,7 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Any, Iterator, Optional
 
 from aivs.meta_schema import (
     Actor,
@@ -33,6 +33,7 @@ from aivs.meta_schema import (
     SourceRef,
 )
 from aivs.adapters.base import EvidenceAdapter, register_adapter
+from aivs.adapters.claude_code import _hash_content
 
 
 _SESSION_HEADER = re.compile(
@@ -46,8 +47,20 @@ class AiderAdapter(EvidenceAdapter):
     """Adapter for Aider .aider.chat.history.md logs."""
 
     name = "aider"
-    version = "0.1.0"
+    version = "0.2.0"
     capture_tier = CaptureTier.TIER_1  # markdown is lower fidelity
+
+    def __init__(self, redact: bool = True) -> None:
+        # Privacy posture (v0.2): redact mode is the default. See
+        # ClaudeCodeAdapter for the rationale; same contract here.
+        self.redact = redact
+
+    def _make_event(self, content: Optional[str], **kwargs: Any) -> Event:
+        if content is None:
+            return Event(**kwargs)
+        if self.redact:
+            return Event(content=None, content_hash=_hash_content(content), **kwargs)
+        return Event(content=content, **kwargs)
 
     def _log_path(self, project_path: Path) -> Path:
         return project_path / ".aider.chat.history.md"
@@ -79,12 +92,12 @@ class AiderAdapter(EvidenceAdapter):
             if until is not None and current_ts > until:
                 return
             # User prompt event.
-            yield Event(
+            yield self._make_event(
+                current_prompt,
                 timestamp=current_ts,
                 actor=Actor(actor_type=ActorType.HUMAN, identifier="user"),
                 action="prompt",
                 target="aider_session",
-                content=current_prompt,
                 source_ref=SourceRef(
                     adapter_name=self.name,
                     adapter_version=self.version,
@@ -96,7 +109,8 @@ class AiderAdapter(EvidenceAdapter):
             # Assistant response event.
             response_text = "\n".join(response_buf).strip()
             if response_text:
-                yield Event(
+                yield self._make_event(
+                    response_text,
                     timestamp=current_ts,
                     actor=Actor(
                         actor_type=ActorType.AI_GENERATIVE,
@@ -104,7 +118,6 @@ class AiderAdapter(EvidenceAdapter):
                     ),
                     action="respond",
                     target="aider_session",
-                    content=response_text,
                     source_ref=SourceRef(
                         adapter_name=self.name,
                         adapter_version=self.version,

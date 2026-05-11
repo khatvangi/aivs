@@ -160,3 +160,72 @@ G-P @ 6.23). Push to origin/main, re-run
 `kiran_triplet_proof_audit.py` — the three pending UNVERIFIED
 decisions should flip to VERIFIED_INDEPENDENTLY; that commit becomes
 the new submission-ready baseline; submit JME.
+
+---
+
+**Q:** The framework defaulted to surveillance-grade capture, which is
+wrong. Implement the constitutional fix: minimum-capture-for-purpose
+default. Verbatim content private by default; authors opt-in per
+Decision. Bump v0.2.0. Tasks 1–7 as specified.
+
+**A:** v0.2.0 shipped. Single-commit landing.
+
+Meta-schema (`src/aivs/meta_schema/core.py`):
+- `META_SCHEMA_VERSION` → `0.2.0`.
+- `Event.content` is now `Optional[str]`; new `Event.content_hash:
+  Optional[str]`. `@model_validator(mode="after")` auto-fills the
+  sha256 of content when content is set and hash is not. Never
+  overwrites a pre-set hash, so redact-mode events round-trip cleanly
+  and structural-empty events (neither field set) are valid.
+- `Decision.publish_level: Literal["summary", "verbatim"] = "summary"`.
+- `AuditArtifact.to_published()`: returns a copy where every Event
+  NOT in a verbatim-Decision's evidence chain has `content` stripped;
+  content_hash preserved; author-written description/text/notes
+  fields untouched.
+
+Adapters: `ClaudeCodeAdapter` v0.2.0 and `AiderAdapter` v0.2.0 now
+take `redact: bool = True`. Default behaviour is hash-only emission.
+A `_make_event()` helper centralises the redact branch. Module-level
+`_hash_content()` in `claude_code.py`, reused by `aider`.
+
+Audit examples:
+- Smith 2026: D3, D5, D9 marked `publish_level="verbatim"`. Verbatim
+  chain = 7 events out of 12 (verified by walking
+  `decision.evidence_ids → evidence.event_ids`).
+- triplet-proof: 0/14 verbatim. Adapter rerun with default redact=True;
+  529 adapter events arrived with content=None; the 3 author-written
+  bulk-session Event contents are stripped at publish time.
+- Both `main()` functions now write `<name>_audit.json` (internal) and
+  `<name>_audit_published.json` (via `.to_published()`).
+
+Verification (live numbers):
+- Smith: internal 39,421 bytes; published 38,627 bytes; delta 794.
+  7/12 events have content in published (= verbatim chain exactly).
+- triplet-proof: internal 559,417 bytes; published 558,759 bytes;
+  delta 658. **0/532 events have content in published.**
+
+Docs:
+- `CLAUDE.md`: new "Constitutional principle" section above
+  "Strategic decisions"; strategic decision 1 reframed as
+  "Reproducibility verification, not workflow surveillance."
+- `README.md`: "Privacy posture (v0.2)" section added.
+- `CHANGELOG.md` created with v0.2.0 and v0.1.0 entries.
+- `NEXT.md` (c.8): records that v0.2.0 went to privacy; (c.7)
+  evidence_fingerprint + per-delta_evidence_ids are now v0.3
+  candidates, still correctly framed, only the prioritisation
+  changed.
+- `schema/audit_artifact-0.2.0.json` regenerated from the new
+  pydantic model. v0.1.0 schema file kept for historical reference.
+
+Tests: 36 pass (was 24). 7 new in `TestPrivacyPosture` (hash
+autocomputation, redacted form, structural-empty form, default
+publish_level, verbatim vs summary `to_published`, author-field
+preservation, no-verbatim-strips-everything, version constant);
+4 new in test_adapters (redact True/False × claude_code/aider).
+
+Adapter version bump (0.1.0 → 0.2.0) on both implementations
+reflects the changed default behaviour — adapters of the same name
+but different version can be told apart in `AdapterUsage` entries
+when re-running an old audit.
+
+Single commit, v0.2.0.

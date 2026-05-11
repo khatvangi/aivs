@@ -140,6 +140,20 @@ Do (1) and (2) together in a single v0.2 pass after the triplet-proof
 manuscript ships. Closing the manuscript first is higher leverage than
 schema polish.
 
+## (c.8) Status note: v0.2.0 went to the privacy posture
+
+The 2026-05-11 v0.2.0 bump did NOT land (c.7). It landed the
+**constitutional fix** instead: minimum-capture-for-purpose default,
+`Event.content` optional with `content_hash` companion, `Decision.publish_level`
+with default `"summary"`, `AuditArtifact.to_published()`, and adapter
+`redact=True` default. See `CHANGELOG.md` for the full list and the
+`HISTORY.md` Q/A for the rationale.
+
+Consequence for (c.7): the per-Decision `evidence_fingerprint` refinement
+and the per-delta `raw_evidence_ids` cleanup are **secondary** to the
+privacy fix and remain pending for a later schema bump (v0.3 candidates).
+Both items are still correctly framed; only the prioritisation changed.
+
 ## (d) AuditArtifact serialization to RO-Crate / PROV-O
 
 The internal Python representation is stable. Layer an exporter that writes

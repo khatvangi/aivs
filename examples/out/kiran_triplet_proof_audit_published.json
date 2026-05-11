@@ -28,7 +28,7 @@
       },
       "action": "session_bulk_reference",
       "target": "claude_code_session:101e5996-1d44-46d2-a9aa-ef58c8bc1cbf",
-      "content": "Bulk reference to Claude Code session 101e5996-1d44-46d2-a9aa-ef58c8bc1cbf: 7,916,073 bytes of JSONL. Fine-grained events extracted by the claude_code_adapter sit alongside this bulk reference in the artifact's events list.",
+      "content": null,
       "content_hash": "a0022526a4ef6555ec504e495119be3508953cec141bd4adfd71f1dbdc375cd0",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -48,7 +48,7 @@
       },
       "action": "session_bulk_reference",
       "target": "claude_code_session:2e5b0b3e-c809-45eb-8908-a40b22af0a97",
-      "content": "Bulk reference to Claude Code session 2e5b0b3e-c809-45eb-8908-a40b22af0a97: 47,112 bytes of JSONL. Fine-grained events extracted by the claude_code_adapter sit alongside this bulk reference in the artifact's events list.",
+      "content": null,
       "content_hash": "063bea83854cd35bdb18e793caaacc8f9aad9fd121bfabc6343c9dce193571d2",
       "source_ref": {
         "adapter_name": "manual_log_adapter",
@@ -68,7 +68,7 @@
       },
       "action": "session_bulk_reference",
       "target": "claude_code_session:e36c3254-ad1a-4463-a52e-d40c484bb5e5",
-      "content": "Bulk reference to Claude Code session e36c3254-ad1a-4463-a52e-d40c484bb5e5: 116,218 bytes of JSONL. Fine-grained events extracted by the claude_code_adapter sit alongside this bulk reference in the artifact's events list.",
+      "content": null,
       "content_hash": "feba162146b87db288e2fa1c1a3cb41022e7d73a4e0c907c292a428781e277f3",
       "source_ref": {
         "adapter_name": "manual_log_adapter",

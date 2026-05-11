@@ -24,6 +24,37 @@ audit artifact and proposed extensions to its open vocabulary.
   patterns the vocabulary can't classify are marked `schema_gap: novel_pattern`.
   AIVS does not interpolate or force-fit.
 
+## Privacy posture (v0.2)
+
+**Minimum capture for purpose.** AIVS's published audit resolution matches
+the audit's stated purpose. For tool use and reproducibility, that means:
+which tools were used, at which consequential decisions, what artifacts
+(code, data, configs, environment) regenerate the work. Verbatim content —
+prompts, AI outputs, tool results, thinking blocks, intermediate
+exploration — is **private by default**.
+
+Adapters (e.g., `claude_code`, `aider`) run in `redact=True` mode by
+default: emitted events carry an SHA-256 `content_hash` but no `content`.
+The hash demonstrates the event existed and, if a specific claim is ever
+actively disputed, the author can produce the original content and have it
+verified against the hash recorded in the audit. The minimum-capture
+default never publishes the original.
+
+Authors opt into verbatim publishing **per Decision** by setting
+`publish_level="verbatim"` on Decisions where verbatim content is itself
+the deliverable. The `Smith 2026` audit example marks D3/D5/D9 verbatim
+because the chat history was Smith's voluntary disclosure (the prompts
+and AI outputs *are* the contribution). The `triplet-proof` audit example
+marks no decisions verbatim — author-curated `HISTORY.md` and
+`rebuild_notes.md` provide the human-readable record; the audit itself
+publishes only hashes for adapter-extracted events.
+
+AIVS deliberately does not recapitulate the disclosure-maximalist impulse
+of CONSORT-AI / SPIRIT-AI / ICMJE. Those standards implicitly treat AI use
+as more suspicious than human collaboration; AIVS rejects the asymmetry.
+Tool use accounting and reproducibility are reasonable asks; demanding
+every prompt is not.
+
 ## Positioning
 
 AIVS occupies the layer between trust-based disclosure (current journal /

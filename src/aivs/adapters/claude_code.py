@@ -39,6 +39,7 @@ Project-path discovery:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from datetime import datetime, timezone
@@ -55,6 +56,13 @@ from aivs.meta_schema import (
 from aivs.adapters.base import EvidenceAdapter, register_adapter
 
 Verbosity = Literal["summary", "default", "verbose"]
+
+
+def _hash_content(s: str) -> str:
+    """sha256 of the UTF-8 encoded string, hex-digest. Module-level helper
+    so redact-mode adapters can pre-compute hashes before constructing
+    Events with ``content=None``."""
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 
 # Event types we know about and intentionally drop before type-dispatch.
@@ -79,13 +87,14 @@ class ClaudeCodeAdapter(EvidenceAdapter):
     """Adapter for Claude Code session JSONL logs."""
 
     name = "claude_code"
-    version = "0.1.0"
+    version = "0.2.0"
     capture_tier = CaptureTier.TIER_3
 
     def __init__(
         self,
         verbosity: Verbosity = "default",
         claude_home: Optional[Path] = None,
+        redact: bool = True,
     ) -> None:
         self.verbosity = verbosity
         self.claude_home = (
@@ -93,6 +102,29 @@ class ClaudeCodeAdapter(EvidenceAdapter):
             if claude_home is not None
             else Path(os.environ.get("CLAUDE_HOME", Path.home() / ".claude"))
         )
+        # Privacy posture (v0.2): redact mode is the default. Emitted
+        # Events carry only ``content_hash``; ``content`` is None.
+        # An audit script that needs verbatim content for a specific
+        # Decision (publish_level="verbatim") must construct the
+        # adapter with redact=False and either accept that the full
+        # content lives in the artifact, or call to_published() to
+        # strip it from non-verbatim decisions at publish time.
+        self.redact = redact
+
+    # -- Event construction helper -------------------------------------
+
+    def _make_event(self, content: Optional[str], **kwargs: Any) -> Event:
+        """Build an Event respecting ``self.redact``.
+
+        - content=None             → Event with no payload (and no hash)
+        - redact, content=str      → Event(content=None, content_hash=sha256(content))
+        - not redact, content=str  → Event(content=str); hash auto-computed by validator
+        """
+        if content is None:
+            return Event(**kwargs)
+        if self.redact:
+            return Event(content=None, content_hash=_hash_content(content), **kwargs)
+        return Event(content=content, **kwargs)
 
     # -- Discovery -----------------------------------------------------
 
@@ -196,12 +228,12 @@ class ClaudeCodeAdapter(EvidenceAdapter):
 
         # Unknown event type — only surface at verbose for forensic value.
         if self.verbosity == "verbose":
-            yield Event(
+            yield self._make_event(
+                json.dumps(obj)[:500],
                 timestamp=ts,
                 actor=Actor(actor_type=ActorType.UNKNOWN, identifier="unknown"),
                 action="unknown_event",
                 target=f"event_type:{kind}",
-                content=json.dumps(obj)[:500],
                 source_ref=src,
                 tier=self.capture_tier,
             )
@@ -219,12 +251,12 @@ class ClaudeCodeAdapter(EvidenceAdapter):
         content = message.get("content")
 
         if isinstance(content, str):
-            yield Event(
+            yield self._make_event(
+                content,
                 timestamp=ts,
                 actor=Actor(actor_type=ActorType.HUMAN, identifier="user"),
                 action="prompt",
                 target=f"session:{session_id}",
-                content=content,
                 source_ref=src,
                 tier=self.capture_tier,
             )
@@ -235,7 +267,8 @@ class ClaudeCodeAdapter(EvidenceAdapter):
                 if not isinstance(block, dict):
                     continue
                 if block.get("type") == "tool_result":
-                    yield Event(
+                    yield self._make_event(
+                        self._stringify(block.get("content")),
                         timestamp=ts,
                         actor=Actor(
                             actor_type=ActorType.SYSTEM,
@@ -243,7 +276,6 @@ class ClaudeCodeAdapter(EvidenceAdapter):
                         ),
                         action="tool_result",
                         target=f"tool_use:{block.get('tool_use_id', 'unknown')}",
-                        content=self._stringify(block.get("content")),
                         source_ref=src,
                         tier=self.capture_tier,
                     )
@@ -292,24 +324,24 @@ class ClaudeCodeAdapter(EvidenceAdapter):
             if btype == "text":
                 if self.verbosity != "summary" or True:
                     # Text is high-signal; always emit.
-                    yield Event(
+                    yield self._make_event(
+                        block.get("text", ""),
                         timestamp=ts,
                         actor=ai_actor,
                         action="respond",
                         target=f"session:{session_id}",
-                        content=block.get("text", ""),
                         source_ref=src,
                         tier=self.capture_tier,
                     )
 
             elif btype == "thinking":
                 if self.verbosity == "verbose":
-                    yield Event(
+                    yield self._make_event(
+                        block.get("thinking", ""),
                         timestamp=ts,
                         actor=ai_actor,
                         action="think",
                         target=f"session:{session_id}",
-                        content=block.get("thinking", ""),
                         source_ref=src,
                         tier=self.capture_tier,
                     )
@@ -318,15 +350,15 @@ class ClaudeCodeAdapter(EvidenceAdapter):
                 tool_name = block.get("name", "unknown")
                 tool_input = block.get("input", {})
                 tool_id = block.get("id", "")
-                yield Event(
+                yield self._make_event(
+                    json.dumps(
+                        {"tool_use_id": tool_id, "input": tool_input},
+                        default=str,
+                    ),
                     timestamp=ts,
                     actor=ai_autonomous,
                     action="tool_use",
                     target=f"tool:{tool_name}",
-                    content=json.dumps(
-                        {"tool_use_id": tool_id, "input": tool_input},
-                        default=str,
-                    ),
                     source_ref=src,
                     tier=self.capture_tier,
                 )
@@ -343,7 +375,8 @@ class ClaudeCodeAdapter(EvidenceAdapter):
 
         if att_type.startswith("hook_"):
             hook_name = att.get("hookName", "unknown")
-            yield Event(
+            yield self._make_event(
+                self._stringify(att.get("stdout") or att.get("content")),
                 timestamp=ts,
                 actor=Actor(
                     actor_type=ActorType.SYSTEM,
@@ -351,7 +384,6 @@ class ClaudeCodeAdapter(EvidenceAdapter):
                 ),
                 action="hook",
                 target=f"hook:{hook_name}",
-                content=self._stringify(att.get("stdout") or att.get("content")),
                 source_ref=src,
                 tier=self.capture_tier,
             )
