@@ -82,6 +82,64 @@ Defer until at least one more audit (probably the VeRNET enzyme-design
 paper) confirms whether these patterns recur. Don't expand the adapter
 schema for a single corpus.
 
+## (c.7) v0.2 precision refinements surfaced by triplet-proof audit refresh
+
+Two precision items deferred from the 2026-05-11 audit refresh. They sit
+at different abstraction layers — bundle them in the same v0.2 pass for
+convenience, but they touch different parts of the codebase.
+
+### 1. `Decision.evidence_fingerprint` (meta-schema change)
+
+Per-Decision windowed Evidence at ±12h around a Decision's timestamp is
+coarser than the Decision granularity: Decisions sharing a timestamp
+share an identical event set. In the triplet-proof refresh, D2 and D3
+both resolve to 208 events, and the five Decisions at T_2026_04_21_EARLY
+all share 63 events. The windows *contain* the supporting evidence —
+not a correctness problem — but they're a superset of the actual
+support.
+
+Proposed addition to `Decision`:
+
+```python
+evidence_fingerprint: Optional[list[str]] = None
+```
+
+When set, the Audit Assembler (or a utility helper) further narrows the
+windowed event stream to events whose `target` or `content` contains
+any of the fingerprint patterns. Examples from the triplet-proof audit:
+
+- D6 (Methods `<0.5 units` discrepancy):
+  `evidence_fingerprint=["rebuild_notes.md", "manuscript_JME.md", "Methods"]`
+- D7 (Fig 1c `‖Δf‖ = 8.7` discrepancy):
+  `evidence_fingerprint=["rebuild_notes.md", "fig1", "Δf"]`
+- D12 (Figure 3 layout overlay vs stacked):
+  `evidence_fingerprint=["fig3.py", "overlay", "stacked"]`
+- D13 (Hamming graph spring-layout parameters):
+  `evidence_fingerprint=["fig1_optimization_factorial", "spring_layout", "seed=7"]`
+
+Bumps `META_SCHEMA_VERSION` (per the closed-meta-schema rule). Add as
+optional so existing audits keep validating; existing JSON artifacts
+just leave the field null.
+
+### 2. `SchemaDelta.raw_evidence_ids` populated per-delta (example fix)
+
+Currently both `smith_2026_audit.py` and `kiran_triplet_proof_audit.py`
+populate every SchemaDelta's `raw_evidence_ids` with the full evidence
+list — lazy, semantically wrong. The field's intended semantics is
+"evidence supporting *this specific* delta," and the meta-schema field
+definition is correct as designed.
+
+This is an example-script fix, not a schema change. Per audit, build a
+`delta_evidence_map: dict[str, list[str]]` keyed by `proposed_term` and
+pass per-delta IDs into the `SchemaDelta(...)` construction. Five-line
+change per audit.
+
+### Sequencing
+
+Do (1) and (2) together in a single v0.2 pass after the triplet-proof
+manuscript ships. Closing the manuscript first is higher leverage than
+schema polish.
+
 ## (d) AuditArtifact serialization to RO-Crate / PROV-O
 
 The internal Python representation is stable. Layer an exporter that writes

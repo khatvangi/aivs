@@ -123,3 +123,40 @@ v0.2 refinement.
 Three submission TODOs on triplet-proof (intro rewrite, Methods <0.5
 prose, Fig 1c ‖Δf‖ prose) are still open — those are manuscript work,
 to be handled in a separate session, not in this audit pass.
+
+---
+
+**Q:** Confirm the two flagged v0.1 limitations are correctly framed,
+record them in `NEXT.md` as section (c.7) — not (c.6), so they don't
+get conflated with the unclassified-event-types work — and stop. Next
+session is the three manuscript TODOs.
+
+**A:** Recorded both in `NEXT.md` (c.7). Two sub-items:
+
+1. `Decision.evidence_fingerprint: Optional[list[str]]` — meta-schema
+   addition. Optional field, so existing audits keep validating; bumps
+   `META_SCHEMA_VERSION`. Audit Assembler narrows the windowed event
+   stream by `target`/`content` containment over the fingerprint
+   patterns. Four worked examples (D6, D7, D12, D13) included in the
+   NEXT.md entry, drawn from strings already present in the existing
+   Decision descriptions — so the v0.2 implementation is half-done in
+   practice; just lift strings from prose into the structured field.
+2. `SchemaDelta.raw_evidence_ids` populated per-delta — example-script
+   fix, not a schema change. Current behavior (every delta references
+   the full evidence list) is semantically wrong; intended semantics
+   ("evidence supporting *this specific* delta") is already correct
+   in the meta-schema. Per audit, build a `delta_evidence_map:
+   dict[str, list[str]]` and pass per-delta IDs.
+
+These two sit at different abstraction layers despite the surface
+similarity. Bundle them into a single v0.2 pass after the triplet-proof
+manuscript ships.
+
+Next session: close the three manuscript TODOs (intro rewrite using
+`literature_comparison.md` framing; Methods `<0.5` prose using
+`rebuild_notes.md` draft wording; Fig 1c `‖Δf‖` prose — author's call
+between Ala-neighborhood values 0 / 3.5-4.9 and a real radical pair
+G-P @ 6.23). Push to origin/main, re-run
+`kiran_triplet_proof_audit.py` — the three pending UNVERIFIED
+decisions should flip to VERIFIED_INDEPENDENTLY; that commit becomes
+the new submission-ready baseline; submit JME.
