@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from aivs.meta_schema import (
@@ -53,9 +53,27 @@ from aivs.meta_schema import (
     SourceRef,
     VerificationStatus,
 )
+from aivs.adapters.claude_code import ClaudeCodeAdapter
 
 
 AUDIT_TS = datetime(2026, 5, 11, 0, 0, 0, tzinfo=timezone.utc)
+
+
+# The audit's baseline contract: state of triplet-proof at the submission-
+# ready milestone, git origin/main @ 41c451b (2026-04-22). Adapter events
+# are filtered to this cutoff so the artifact maps cleanly to that snapshot.
+# A current-state audit (HEAD-anchored) would be a separate artifact.
+AUDIT_BASELINE_TS = datetime(2026, 4, 22, 23, 59, 59, tzinfo=timezone.utc)
+
+# Where the project lives on disk; the adapter uses this to locate the
+# Claude Code session JSONLs via ~/.claude/projects/<path-hash>/.
+TRIPLET_PROOF_PATH = Path("/storage/kiran-stuff/triplet-proof")
+
+# Half-width of the per-decision evidence window around each Decision's
+# documented timestamp. Empirically this covers a HISTORY.md session
+# (early/mid/late/wrap sessions on the same calendar day fit within a
+# 24-hour two-sided window).
+DECISION_WINDOW = timedelta(hours=12)
 
 
 # HISTORY.md timestamps (UTC, time-of-day approximate).
@@ -104,16 +122,24 @@ CLAUDE_PROJECTS_PATH = ".claude/projects/-storage-kiran-stuff-triplet-proof"
 
 # ---------------------------------------------------------------------------
 # Events
+#
+# Two sources now contribute events to this audit:
+#   (1) build_bulk_session_events() — three coarse session-scope Events,
+#       one per JSONL. Kept (rather than dropped in favor of fine-grained
+#       adapter events) because D14 (Q/A development log methodology)
+#       reasons over WHOLE SESSIONS, not over individual prompts/tool
+#       uses within them.
+#   (2) extract_adapter_events() — ~600 fine-grained Events emitted by
+#       the claude_code_adapter, filtered to AUDIT_BASELINE_TS so the
+#       artifact maps cleanly to the submission-ready milestone at
+#       commit 41c451b (2026-04-22). Anything past that date belongs in
+#       a separate HEAD-anchored audit, not this one.
 # ---------------------------------------------------------------------------
 
 
-def build_events() -> list[Event]:
+def build_bulk_session_events() -> list[Event]:
+    """Three coarse Events, one per Claude Code session JSONL."""
     events: list[Event] = []
-
-    # Bulk reference: 3 Claude Code session logs. Without adapter we treat
-    # each session as a single bulk Event (action=session_bulk_reference)
-    # carrying the byte count and UUID as content. The full adapter would
-    # explode each into thousands of fine-grained events.
     for sid, size_bytes in [
         (SESSION_1, 7_916_073),
         (SESSION_2, 47_112),
@@ -127,386 +153,158 @@ def build_events() -> list[Event]:
                 target=f"claude_code_session:{sid}",
                 content=(
                     f"Bulk reference to Claude Code session {sid}: "
-                    f"{size_bytes:,} bytes of JSONL. Full event extraction "
-                    f"deferred to claude_code_adapter (not yet implemented)."
+                    f"{size_bytes:,} bytes of JSONL. Fine-grained events "
+                    f"extracted by the claude_code_adapter sit alongside "
+                    f"this bulk reference in the artifact's events list."
                 ),
                 source_ref=_src(f"{CLAUDE_PROJECTS_PATH}/{sid}.jsonl"),
                 tier=CaptureTier.TIER_2,
             )
         )
-
-    # 2026-04-14: Initial figure generation for MBE Letter target.
-    events.append(
-        Event(
-            timestamp=T_2026_04_14,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:figure_generation_mbe",
-            content=(
-                "Generate all manuscript figures for MBE Letter submission — "
-                "extract .npy data from .npz archive, fix and run existing "
-                "figure scripts, create joint D-E scatter, create PCA amino "
-                "acid space panel, and assemble final manuscript-numbered "
-                "figure files."
-            ),
-            source_ref=_src("HISTORY.md:122-136"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_14,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="figures/fig*.py + fig*.pdf|png",
-            content=(
-                "Extracted 3 .npy from null_distributions.npz; created "
-                "fig_joint_scatter.py, fig1b_pca_space.py, "
-                "fig2_sgc_optimization.py, fig3_factorial_synonymy.py, "
-                "fig4_wobble_mechanism.py. Tests 8/8 still pass."
-            ),
-            source_ref=_src("HISTORY.md:126-136"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
-    # 2026-04-21 (early): Full figure rebuild after Paudyal's review.
-    events.append(
-        Event(
-            timestamp=T_2026_04_21_EARLY,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:figure_rebuild_jme",
-            content=(
-                "Full rebuild of all four manuscript figures + Table S1 per "
-                "Paudyal's review. Keep existing color palette. Three random "
-                "seeds for Table S1. Verify z-scores match manuscript. "
-                "Flag any discrepancies."
-            ),
-            source_ref=_src("HISTORY.md:102-104"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_21_EARLY,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="figures/fig{1,2,3,4}.{pdf,png,_caption.txt} + supplementary/table_S1.{csv,tex}",
-            content=(
-                "Full rebuild delivered. Verified all manuscript z-scores "
-                "match publication_controls.json. Flagged two discrepancies: "
-                "(1) Fig 1c prose 'radical = 8.7' impossible (max PC distance "
-                "= 6.23); (2) Methods '<0.5 units' false once random "
-                "strategy sampled with 3 seeds (D range = 0.56, E range = 0.92)."
-            ),
-            source_ref=_src("HISTORY.md:106-120 + rebuild_notes.md"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
-    # 2026-04-21: Literature comparison / prior-art verification.
-    events.append(
-        Event(
-            timestamp=T_2026_04_21,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:literature_comparison",
-            content=(
-                "Verify whether our Dirichlet energy and noise distortion "
-                "metrics have prior art in the genetic code literature. "
-                "Compare to Tlusty 2007, Tlusty 2010, and Radvanyi & Kun 2021. "
-                "Don't make citation decisions — just report."
-            ),
-            source_ref=_src("HISTORY.md:77-79"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_21,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="literature_comparison.md",
-            content=(
-                "Wrote literature_comparison.md. Headline findings: "
-                "Dirichlet energy E = f^T L f is standard graph Laplacian "
-                "quadratic form (Tlusty 2007 Eq. B1; ours is unweighted "
-                "specialization). Noise distortion D matches Tlusty 'error-load' "
-                "(2007 Eq. 1, 2010 Eq. 1) and Radvanyi & Kun 2021 'distortion' "
-                "(Eq. 1). Neither metric is novel. NEW in our work: "
-                "degeneracy-preserving empirical null + 2x2 factorial + PCA-"
-                "reduced 8D property space."
-            ),
-            source_ref=_src("HISTORY.md:81-98 + literature_comparison.md"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
-    # 2026-04-21 (late): Supplementary cleanup.
-    events.append(
-        Event(
-            timestamp=T_2026_04_21_LATE,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:supp_cleanup",
-            content=(
-                "Pre-submission supplementary cleanup: reconcile Table S1 "
-                "between the stale supplementary_tables_JME.md and the 3-seed "
-                "CSV/TeX; write Fig S1 caption; produce one submission-ready "
-                "supplementary_materials_JME.md."
-            ),
-            source_ref=_src("HISTORY.md:47-49"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_21_LATE,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="supplementary_materials_JME.md + supplementary_tables_JME.md + figS1_caption.txt",
-            content=(
-                "Updated 3 files. Resolved stale Table S1 z-scores "
-                "(diff ~0.08 z-units, traced to prior Monte Carlo run); "
-                "stale D/E ranges (old 0.51/0.61 → new 0.56/0.92); "
-                "verified CV values in Fig S1 match publication_controls.json."
-            ),
-            source_ref=_src("HISTORY.md:51-73"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
-    # 2026-04-22: Preemptive defense metrics.
-    events.append(
-        Event(
-            timestamp=T_2026_04_22,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:preempt_metrics",
-            content=(
-                "Pre-compute the two defensive metrics: f^T L^2 f (Tlusty-style "
-                "squared Laplacian) and Boltzmann-weighted D (thermo_noise.py). "
-                "Verify qualitative agreement with the manuscript's f^T L f and "
-                "uniform-D."
-            ),
-            source_ref=_src("HISTORY.md:28-30"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_22,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="results/preempt_metrics.json + rebuild_notes.md",
-            content=(
-                "Ran run_preempt_metrics.py at 100K shuffles x 3 conditions. "
-                "Result 1: f^T L^2 f tracks f^T L f tightly (null r = 0.987; "
-                "z-scores differ ≤1.1 units across conditions). "
-                "Result 2: Boltzmann-weighted D NOT qualitatively identical "
-                "to uniform D — it gives z=-24.9 for SGC (vs -16.6 uniform). "
-                "Reporting uniform is genuinely conservative; a mechanism-"
-                "minded reviewer would compute a stronger result."
-            ),
-            source_ref=_src("HISTORY.md:32-43"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
-    # 2026-04-22 (wrap): Repository consolidation + n=4 documentation.
-    events.append(
-        Event(
-            timestamp=T_2026_04_22_WRAP,
-            actor=KIRAN,
-            action="prompt",
-            target="claude_code_session:final_consolidation",
-            content=(
-                "Clean the repo, delete superseded figure scripts, commit, push, "
-                "and document why n=4 is not in the 2x2 factorial."
-            ),
-            source_ref=_src("HISTORY.md:3-4"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-    events.append(
-        Event(
-            timestamp=T_2026_04_22_WRAP,
-            actor=CLAUDE_CODE,
-            action="execute",
-            target="git:origin/main + repo cleanup",
-            content=(
-                "Two commits pushed to origin/main: "
-                "(3941a48) 'Consolidate figures to canonical fig1-fig4, add "
-                "defense materials' — replaced 9 exploratory figure scripts + "
-                "18 images with canonical fig1.py-fig4.py + figS1; added "
-                "run_sensitivity_extra_seeds.py, run_preempt_metrics.py, "
-                "build_table_s1.py, supplementary_materials_JME.md, "
-                "literature_comparison.md, rebuild_notes.md. "
-                "(41c451b) 'Document why n=4 is excluded from the main "
-                "factorial' — n=4 baseline AA(b1b2b3b4) := AA_SGC(b1b2b3) "
-                "makes position 4 100% synonymous by construction; z-score "
-                "is a construction artefact, not biology. Final state: "
-                "figures/ contains exactly 5 figure sets at 20 files; "
-                "top-level has clean pipeline of entry-point scripts; "
-                "8/8 tests pass."
-            ),
-            source_ref=_src("HISTORY.md:6-24 + git:41c451b"),
-            tier=CaptureTier.TIER_3,
-        )
-    )
-
     return events
 
 
+def extract_adapter_events() -> list[Event]:
+    """Adapter-extracted events from the triplet-proof session JSONLs.
+
+    Filtered to ``until=AUDIT_BASELINE_TS`` so the audit reflects only
+    the submission-ready snapshot, not anything written after.
+    """
+    adapter = ClaudeCodeAdapter(verbosity="default")
+    return list(
+        adapter.extract(TRIPLET_PROOF_PATH, until=AUDIT_BASELINE_TS)
+    )
+
+
+# --- legacy stub kept for backward import compatibility ----------------------
+
+
+def build_events() -> list[Event]:
+    """Backwards-compatible entry point: returns bulk + adapter events.
+
+    New code should call ``build_bulk_session_events()`` and
+    ``extract_adapter_events()`` directly.
+    """
+    return build_bulk_session_events() + extract_adapter_events()
+
+
 # ---------------------------------------------------------------------------
-# Evidence
+# Evidence — one per Decision, each scoped to a time window over the adapter
+# event stream. D14 (Q/A development log methodology) is the exception:
+# meta-methodological pattern over WHOLE sessions, so it gets a bulk Evidence.
+#
+# Each Evidence description starts with a "D<n>:" prefix so the decision
+# builder can resolve them via a simple prefix lookup without coupling to
+# Evidence ordering.
 # ---------------------------------------------------------------------------
 
 
-def build_evidence(events: list[Event]) -> list[Evidence]:
-    ev_by_target = {}
-    for e in events:
-        ev_by_target.setdefault(e.target, []).append(e.event_id)
+def _window_event_ids(
+    adapter_events: list[Event],
+    center: datetime,
+    half: timedelta = DECISION_WINDOW,
+) -> list[str]:
+    """Adapter event_ids whose timestamps fall in [center-half, center+half],
+    capped at AUDIT_BASELINE_TS so post-baseline activity never leaks in."""
+    lo = center - half
+    hi = min(center + half, AUDIT_BASELINE_TS)
+    return [e.event_id for e in adapter_events if lo <= e.timestamp <= hi]
 
-    sessions = [
-        ev_by_target[f"claude_code_session:{sid}"][0]
-        for sid in (SESSION_1, SESSION_2, SESSION_3)
-    ]
 
-    evidence = [
-        # E1: Bulk session evidence
-        Evidence(
-            event_ids=sessions,
+def build_evidence(
+    adapter_events: list[Event],
+    bulk_session_events: list[Event],
+) -> list[Evidence]:
+    """Build 14 Evidence objects: 13 windowed (D1–D13) + 1 bulk (D14)."""
+
+    def windowed(d_key: str, center: datetime, label: str) -> Evidence:
+        event_ids = _window_event_ids(adapter_events, center)
+        return Evidence(
+            event_ids=event_ids,
             description=(
-                "Three Claude Code session JSONL logs covering the project. "
-                "Total ~8 MB raw. Origin session per memory file: "
-                f"{SESSION_1} (7.9 MB). Fine-grained event extraction deferred "
-                "to claude_code_adapter."
+                f"{d_key}: {label} — {len(event_ids)} Claude Code adapter "
+                f"events within ±{int(DECISION_WINDOW.total_seconds() // 3600)}h "
+                f"of {center:%Y-%m-%d %H:%M UTC}, capped at the audit "
+                f"baseline {AUDIT_BASELINE_TS:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
+        )
+
+    evidence: list[Evidence] = [
+        windowed(
+            "D1",
+            T_2026_04_14,
+            "MBE-Letter figure-generation session (initial work)",
         ),
-        # E2: Initial figure generation
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:figure_generation_mbe"][0],
-                ev_by_target["figures/fig*.py + fig*.pdf|png"][0],
-            ],
-            description=(
-                "Initial figure-generation session targeting MBE Letter. "
-                "HISTORY.md entry dated 2026-04-14."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D2",
+            T_2026_04_21,
+            "Prior-art verification session (D/E metrics vs Tlusty, Radvanyi-Kun)",
         ),
-        # E3: Figure rebuild for JME
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:figure_rebuild_jme"][0],
-                ev_by_target[
-                    "figures/fig{1,2,3,4}.{pdf,png,_caption.txt} + supplementary/table_S1.{csv,tex}"
-                ][0],
-            ],
-            description=(
-                "Full figure rebuild after Paudyal's review; outputs include "
-                "fig1-4 in pdf/png + Table S1 in csv/tex. Discrepancies with "
-                "manuscript text flagged: '||Δf|| = 8.7 radical' (impossible — "
-                "max PC distance = 6.23) and Methods '<0.5 units' (false at 3 "
-                "random seeds). rebuild_notes.md documents the decisions."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D3",
+            T_2026_04_21,
+            "Introduction repositioning consequent on D2",
         ),
-        # E4: Literature comparison
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:literature_comparison"][0],
-                ev_by_target["literature_comparison.md"][0],
-            ],
-            description=(
-                "Prior-art verification: D and E metrics traced to Tlusty "
-                "2007/2010 and Radvanyi & Kun 2021. Both are not novel as "
-                "metrics; novelty lies in degeneracy-preserving empirical null "
-                "+ 2x2 factorial design. literature_comparison.md (9.8 KB) "
-                "contains verbatim equation comparisons."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D4",
+            T_2026_04_22_WRAP,
+            "Final-consolidation session: n=4 factorial cell exclusion",
         ),
-        # E5: Supplementary cleanup
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:supp_cleanup"][0],
-                ev_by_target[
-                    "supplementary_materials_JME.md + supplementary_tables_JME.md + figS1_caption.txt"
-                ][0],
-            ],
-            description=(
-                "Stale Table S1 reconciliation. Old z-scores closest "
-                "(-14.87, -13.41), new (-14.79, -13.34); old ranges D=0.51/E=0.61, "
-                "new D=0.56/E=0.92 (3-seed)."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D5",
+            T_2026_04_21_EARLY,
+            "Figure rebuild + supplementary cleanup (sensitivity 3-seed)",
         ),
-        # E6: Preemptive defense metrics
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:preempt_metrics"][0],
-                ev_by_target["results/preempt_metrics.json + rebuild_notes.md"][0],
-            ],
-            description=(
-                "Two reviewer-defensive computations added: f^T L^2 f tracks "
-                "f^T L f at null r=0.987. Boltzmann-weighted D strengthens "
-                "SGC z to -24.9 (vs -16.6 uniform). Uniform reported in "
-                "manuscript = conservative choice."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D6",
+            T_2026_04_21_EARLY,
+            "Manuscript discrepancy disposition: Methods '<0.5 units'",
         ),
-        # E7: Final consolidation + n=4 documentation
-        Evidence(
-            event_ids=[
-                ev_by_target["claude_code_session:final_consolidation"][0],
-                ev_by_target["git:origin/main + repo cleanup"][0],
-            ],
-            description=(
-                "Two git commits to origin/main: 3941a48 (figure consolidation "
-                "+ defense materials) and 41c451b (n=4 exclusion rationale). "
-                "Final state: 5 figure sets / 20 files; 8/8 tests pass."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D7",
+            T_2026_04_21_EARLY,
+            "Manuscript discrepancy disposition: Fig 1c '‖Δf‖ = 8.7'",
         ),
-        # E8: Memory file (Kiran's own audit substrate)
-        Evidence(
-            event_ids=sessions,
-            description=(
-                ".claude/projects/-storage-kiran-stuff-triplet-proof/memory/"
-                "paper1_codon_length.md (7.6 KB) — Kiran's structured project "
-                "status document. Serves as a hand-curated audit substrate; "
-                "AIVS is essentially formalizing what already exists here."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D8",
+            T_2026_04_21_LATE,
+            "Stale Table S1 reconciliation session",
         ),
-        # E9: Manuscript
-        Evidence(
-            event_ids=sessions,
-            description=(
-                "manuscript_JME.md (17 KB). Contains the Abstract, Methods, "
-                "Results, Discussion that ground the audit's Claim entities."
-            ),
-            confidence=EvidenceConfidence.HIGH,
+        windowed(
+            "D9",
+            T_2026_04_22,
+            "Defensive metric precomputation (f^T L^2 f + Boltzmann D)",
         ),
-        # E10: rebuild_notes.md (design rationale)
+        windowed(
+            "D10",
+            T_2026_04_22_WRAP,
+            "Figure consolidation + repo cleanup commits 3941a48, 41c451b",
+        ),
+        windowed(
+            "D11",
+            T_2026_04_14,
+            "Figure 1 (a)/(c) hand-drawn vs (b) programmatic split decision",
+        ),
+        windowed(
+            "D12",
+            T_2026_04_21_EARLY,
+            "Figure 3 layout: single-axis overlay vs stacked mini-hists",
+        ),
+        windowed(
+            "D13",
+            T_2026_04_21_EARLY,
+            "Figure 1(a) Hamming graph spring-layout parameters",
+        ),
+        # D14: bulk evidence — meta-methodological, spans whole sessions.
         Evidence(
-            event_ids=[
-                ev_by_target[
-                    "figures/fig{1,2,3,4}.{pdf,png,_caption.txt} + supplementary/table_S1.{csv,tex}"
-                ][0],
-                ev_by_target["results/preempt_metrics.json + rebuild_notes.md"][0],
-            ],
+            event_ids=[e.event_id for e in bulk_session_events],
             description=(
-                "rebuild_notes.md (12 KB) — detailed design rationale for the "
-                "figure rebuild and preemptive-defense computations. "
-                "Documents Figure 1 panel (a) Hamming graph layout choice "
-                "(spring layout seed=7, k=0.35, 300 iter), Figure 3 overlay-"
-                "vs-stacked choice, and the dropped (a)/(b)/(c) three-panel "
-                "structure."
+                "D14 (bulk): three Claude Code session JSONL logs (8.1 MB "
+                "combined) taken as a whole. The Q/A development-log "
+                "methodology is a pattern *over* sessions, not a windowed "
+                "event stream within one. Each bulk session Event references "
+                "the JSONL file at the raw_location of its source_ref."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
@@ -544,7 +342,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "documented in available evidence."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Initial figure-generation session")],
+            evidence_ids=[E("D1:")],
             verification_status=VerificationStatus.NO_EVIDENCE,
             verification_notes="Change visible in filenames but rationale not captured.",
         )
@@ -564,7 +362,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "novelty repositioned to factorial design + empirical null."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Prior-art verification:")],
+            evidence_ids=[E("D2:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Verified by verbatim equation comparison in "
@@ -588,7 +386,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "(Still listed as TODO in paper1_codon_length.md.)"
             ),
             actor=KIRAN,
-            evidence_ids=[E("Prior-art verification:")],
+            evidence_ids=[E("D3:")],
             verification_status=VerificationStatus.UNVERIFIED,
             verification_notes="Introduction rewrite remains on TODO list at audit time.",
         )
@@ -610,7 +408,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "exploratory use, with rationale added to docstrings."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Two git commits to origin/main")],
+            evidence_ids=[E("D4:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Reasoning is internal-consistency check: by construction the "
@@ -635,10 +433,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "report honest 3-seed numbers."
             ),
             actor=KIRAN,
-            evidence_ids=[
-                E("Full figure rebuild after Paudyal"),
-                E("Stale Table S1 reconciliation"),
-            ],
+            evidence_ids=[E("D5:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes="Verified by direct recomputation at 3 seeds.",
         )
@@ -660,7 +455,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "paper1_codon_length.md."
             ),
             actor=KIRAN,
-            evidence_ids=[E("rebuild_notes.md (12 KB) — detailed design")],
+            evidence_ids=[E("D6:")],
             verification_status=VerificationStatus.UNVERIFIED,
             verification_notes=(
                 "Discrepancy IDENTIFIED but Methods prose not yet rewritten. "
@@ -685,7 +480,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "Choice deferred to author at submission time."
             ),
             actor=KIRAN,
-            evidence_ids=[E("rebuild_notes.md (12 KB) — detailed design")],
+            evidence_ids=[E("D7:")],
             verification_status=VerificationStatus.UNVERIFIED,
             verification_notes=(
                 "Discrepancy IDENTIFIED but Fig 1c prose not yet rewritten. "
@@ -710,7 +505,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "replace stale values throughout supplementary."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Stale Table S1 reconciliation")],
+            evidence_ids=[E("D8:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Reconciled against publication_controls.json (definitive numbers)."
@@ -734,7 +529,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "narrative changed to 'our choice is conservative.'"
             ),
             actor=KIRAN,
-            evidence_ids=[E("Two reviewer-defensive computations")],
+            evidence_ids=[E("D9:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "100K-shuffle precomputation against publication_controls null; "
@@ -759,7 +554,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "confusion; exploratory variants are archived in git history."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Two git commits to origin/main")],
+            evidence_ids=[E("D10:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
         )
     )
@@ -778,7 +573,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "non-algorithmic. Listed as still-TODO in paper1_codon_length.md."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Initial figure-generation session")],
+            evidence_ids=[E("D11:")],
             verification_status=VerificationStatus.UNVERIFIED,
             verification_notes="Hand-drawing remains a TODO at audit time.",
         )
@@ -800,7 +595,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "(b)/(c) three-panel structure from the original prompt."
             ),
             actor=KIRAN,
-            evidence_ids=[E("rebuild_notes.md (12 KB) — detailed design")],
+            evidence_ids=[E("D12:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Documented in rebuild_notes.md. Verification mode: design "
@@ -827,7 +622,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "collide."
             ),
             actor=KIRAN,
-            evidence_ids=[E("rebuild_notes.md (12 KB) — detailed design")],
+            evidence_ids=[E("D13:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
         )
     )
@@ -848,7 +643,7 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "is formalizing into a machine-readable schema."
             ),
             actor=KIRAN,
-            evidence_ids=[E("Three Claude Code session JSONL logs")],
+            evidence_ids=[E("D14")],
             verification_status=VerificationStatus.NOT_APPLICABLE,
             verification_notes=(
                 "Methodological choice; not subject to fact-verification. "
@@ -1107,8 +902,15 @@ def build_schema_deltas(
 
 
 def build_audit() -> AuditArtifact:
-    events = build_events()
-    evidence = build_evidence(events)
+    # Event stream is built once at the top: three bulk-session Events plus
+    # the adapter-extracted fine-grained stream, filtered to the audit's
+    # baseline. Per-Decision Evidence is then windowed against the adapter
+    # stream.
+    bulk_events = build_bulk_session_events()
+    adapter_events = extract_adapter_events()
+    all_events = bulk_events + adapter_events
+
+    evidence = build_evidence(adapter_events, bulk_events)
     decisions = build_decisions(evidence)
     claims = build_claims(decisions)
 
@@ -1123,24 +925,36 @@ def build_audit() -> AuditArtifact:
         audit_timestamp=AUDIT_TS,
         adapters_used=[
             AdapterUsage(
+                adapter_name="claude_code",
+                adapter_version="0.1.0",
+                capture_tier=CaptureTier.TIER_3,
+            ),
+            AdapterUsage(
                 adapter_name="manual_log_adapter",
                 adapter_version="0.0.0-pre-implementation",
-                capture_tier=CaptureTier.TIER_3,
-            )
+                capture_tier=CaptureTier.TIER_2,
+            ),
         ],
-        events=events,
+        events=all_events,
         evidence=evidence,
         decisions=decisions,
         claims=claims,
         notes=(
             "Second AIVS audit (after Smith 2026 JCE). First on a "
-            "computational research project of substantial scope. Source: "
-            "HISTORY.md (Kiran's Q/A development log), manuscript_JME.md, "
-            "rebuild_notes.md, paper1_codon_length.md, and bulk references "
-            "to three Claude Code session JSONL logs (8.1 MB total). "
-            "Fine-grained event extraction from the JSONL logs is deferred "
-            "to claude_code_adapter (not yet implemented). "
-            "\n\n"
+            "computational research project of substantial scope. "
+            "Refreshed 2026-05-11 to use adapter-derived fine-grained "
+            "Events: each Decision's Evidence is now windowed (±12h) "
+            "against the claude_code_adapter event stream from "
+            "/storage/kiran-stuff/triplet-proof. The three coarse "
+            "session-bulk Events are retained for D14 (Q/A development "
+            "log methodology), which reasons over whole sessions, not "
+            "individual prompts. Adapter events are filtered to "
+            f"{AUDIT_BASELINE_TS:%Y-%m-%d %H:%M UTC} so the artifact "
+            "maps cleanly to the submission-ready baseline at git "
+            "origin/main @ 41c451b. Post-baseline activity (the "
+            "2026-04-23 SVG-panel render commit and any subsequent "
+            "uncommitted work) is intentionally excluded; a "
+            "HEAD-anchored audit would be a separate artifact.\n\n"
             "Significant: Kiran's HISTORY.md format functions as a hand-"
             "curated AIVS-style audit substrate. AIVS is essentially "
             "formalizing a discipline Kiran already practices."

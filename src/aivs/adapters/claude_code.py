@@ -41,7 +41,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterator, Literal, Optional
 
@@ -55,6 +55,23 @@ from aivs.meta_schema import (
 from aivs.adapters.base import EvidenceAdapter, register_adapter
 
 Verbosity = Literal["summary", "default", "verbose"]
+
+
+# Event types we know about and intentionally drop before type-dispatch.
+# These are session bookkeeping with no decision content. Two of them
+# (permission-mode, file-history-snapshot) are candidates for explicit
+# modeling in v0.2 — in particular permission-mode toggles (plan →
+# default → bypass) are arguably meta-decisions about *how* to run
+# Claude Code on a given task. See NEXT.md.
+_SKIP_EVENT_TYPES = frozenset(
+    {
+        "queue-operation",
+        "last-prompt",
+        "permission-mode",
+        "file-history-snapshot",
+        "system",
+    }
+)
 
 
 @register_adapter
@@ -159,9 +176,7 @@ class ClaudeCodeAdapter(EvidenceAdapter):
         cc_version = obj.get("version")
         src = self._src(jsonl_path, line_no)
 
-        if kind == "queue-operation":
-            return
-        if kind == "last-prompt":
+        if kind in _SKIP_EVENT_TYPES:
             return
 
         if kind == "user":
@@ -351,7 +366,7 @@ class ClaudeCodeAdapter(EvidenceAdapter):
             adapter_name=self.name,
             adapter_version=self.version,
             raw_location=f"{jsonl_path}:{line_no}",
-            extracted_at=datetime.utcnow(),
+            extracted_at=datetime.now(timezone.utc),
         )
 
     @staticmethod

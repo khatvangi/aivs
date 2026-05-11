@@ -55,3 +55,71 @@ Notes worth flagging:
 
 Stopped at Step 5 of the kickoff. Pending Kiran's call on how to refresh
 `examples/kiran_triplet_proof_audit.py` with adapter-derived events.
+
+---
+
+**Q:** Refresh the triplet-proof audit to use adapter-derived events with
+per-Decision windowing (±12h) at baseline ≤ 2026-04-22, full re-link
+each Decision's evidence_ids, plus the two side items
+(`datetime.utcnow()` → `datetime.now(timezone.utc)`, explicit skip-list
+for `permission-mode` / `file-history-snapshot` / `system`).
+
+**A:** Done.
+
+Side items:
+- `claude_code.py` and `aider.py`: `datetime.utcnow()` →
+  `datetime.now(timezone.utc)` (3 sites). Deprecation warnings gone.
+- `claude_code.py`: added module-level
+  `_SKIP_EVENT_TYPES = frozenset({"queue-operation", "last-prompt",
+  "permission-mode", "file-history-snapshot", "system"})`; the early
+  type-dispatch now does `if kind in _SKIP_EVENT_TYPES: return`. Verbose
+  run dropped from 791 → 746 events (the 45 stray `unknown_event` are
+  gone; default verbosity remains 620 — unchanged).
+- `NEXT.md` (c.6) added: v0.2 candidates for proper modeling of the
+  three skipped types, with `permission-mode` flagged as
+  decision-relevant (plan/default/acceptEdits/bypassPermissions toggles
+  are meta-decisions about *how* to run Claude Code).
+- 24/24 tests pass (15 meta + 9 adapter), no warnings.
+
+Audit refresh (`examples/kiran_triplet_proof_audit.py`):
+- New constants: `AUDIT_BASELINE_TS` (Apr 22 23:59:59 UTC),
+  `TRIPLET_PROOF_PATH`, `DECISION_WINDOW` (±12h).
+- `build_events()` split into `build_bulk_session_events()` (3 coarse)
+  and `extract_adapter_events()` (filtered to baseline). The 12 manual
+  artifact-prompt Events are dropped — the adapter supplies their
+  replacements at fine granularity.
+- `build_evidence(adapter_events, bulk_events)` replaces the prior
+  10-Evidence structure with **14 per-Decision Evidence objects**
+  (13 windowed + 1 bulk for D14). Each windowed Evidence is scoped to
+  ±12h around its Decision's documented timestamp, capped at the
+  baseline.
+- Each Decision's `evidence_ids` re-linked to its own Evidence
+  (`E("D1:")` … `E("D14")`). D5 collapsed from a 2-Evidence list to a
+  single windowed Evidence covering the whole rebuild + supp-cleanup
+  session.
+- `build_audit()` rewired; `adapters_used` now lists both `claude_code`
+  v0.1.0 and the manual_log fallback.
+
+Refreshed counts: 532 events (3 bulk + 529 adapter ≤ baseline),
+14 evidence, 14 decisions, 7 claims, 11 schema deltas. Integrity OK.
+
+Per-Decision window populations (sanity check):
+
+| Decision(s)               | Timestamp           | Events in window |
+|---------------------------|---------------------|-----------------:|
+| D1, D11                   | 2026-04-14 12:00    | 171              |
+| D5, D6, D7, D12, D13      | 2026-04-21 09:00    | 63               |
+| D2, D3                    | 2026-04-21 14:00    | 208              |
+| D8                        | 2026-04-21 19:00    | 235              |
+| D9                        | 2026-04-22 12:00    | 150              |
+| D4, D10                   | 2026-04-22 17:00    | 123              |
+| D14 (bulk)                | —                   | 3                |
+
+Decisions sharing a timestamp share an identical event set. Accepted
+trade-off for v0.1; per-Decision unique timestamp inference (anchor
+each Decision to its specific event signature in the JSONL) is a
+v0.2 refinement.
+
+Three submission TODOs on triplet-proof (intro rewrite, Methods <0.5
+prose, Fig 1c ‖Δf‖ prose) are still open — those are manuscript work,
+to be handled in a separate session, not in this audit pass.

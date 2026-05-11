@@ -21,7 +21,7 @@ expresses them as diff blocks inline.
 from __future__ import annotations
 
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator, Optional
 
@@ -89,7 +89,7 @@ class AiderAdapter(EvidenceAdapter):
                     adapter_name=self.name,
                     adapter_version=self.version,
                     raw_location=f"{path}:{line_no_of_prompt}",
-                    extracted_at=datetime.utcnow(),
+                    extracted_at=datetime.now(timezone.utc),
                 ),
                 tier=self.capture_tier,
             )
@@ -109,7 +109,7 @@ class AiderAdapter(EvidenceAdapter):
                         adapter_name=self.name,
                         adapter_version=self.version,
                         raw_location=f"{path}:{line_no_of_prompt}+",
-                        extracted_at=datetime.utcnow(),
+                        extracted_at=datetime.now(timezone.utc),
                     ),
                     tier=self.capture_tier,
                 )

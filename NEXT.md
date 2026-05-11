@@ -57,6 +57,31 @@ breaking; introduce as optional fields then deprecate fallbacks):
 Do these after the first retrospective audit run, not before — the audit will
 reveal which refinements actually matter in practice.
 
+## (c.6) v0.2 adapter refinements surfaced by triplet-proof real-data run
+
+The `claude_code_adapter` smoke-run against `/storage/kiran-stuff/triplet-proof`
+on 2026-05-11 surfaced three event types currently in
+`_SKIP_EVENT_TYPES` that are candidates for explicit modeling:
+
+- `permission-mode` (74 lines in the 3-session triplet-proof corpus).
+  Records the user toggling between `default`, `plan`, `acceptEdits`, and
+  `bypassPermissions`. Arguably a **meta-decision**: choice of *how* to
+  run Claude Code on a given task. Belongs as a typed `Event` with
+  `action="permission_toggle"` and `actor=human`. May also warrant a
+  first-class `Decision` candidate `decision_type=execution_mode_choice`
+  when it surfaces repeatedly in an audit.
+- `file-history-snapshot` (54 lines). Claude Code's internal pre/post
+  edit snapshots used for revert. Probably stays skipped, but worth a
+  comment explaining that the data is recoverable from the snapshot
+  field if a redaction-resistant audit ever needs it.
+- `system` (45 lines). System messages (session start banners, error
+  prompts). Most are noise; a small subset (compaction events) might be
+  worth surfacing as `Event(action="context_compacted", actor=system)`.
+
+Defer until at least one more audit (probably the VeRNET enzyme-design
+paper) confirms whether these patterns recur. Don't expand the adapter
+schema for a single corpus.
+
 ## (d) AuditArtifact serialization to RO-Crate / PROV-O
 
 The internal Python representation is stable. Layer an exporter that writes
