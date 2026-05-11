@@ -1,0 +1,852 @@
+{
+  "audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+  "audit_target": "doi:10.1021/acs.jchemed.5c01652",
+  "meta_schema_version": "0.1.0",
+  "vocabulary_version": "0.1.0",
+  "capture_tier_achieved": 3,
+  "audit_timestamp": "2026-05-11T00:00:00Z",
+  "adapters_used": [
+    {
+      "adapter_name": "manual_log_adapter",
+      "adapter_version": "0.0.0-pre-implementation",
+      "capture_tier": 3
+    }
+  ],
+  "events": [
+    {
+      "event_id": "ea2dd759-1013-4636-aa5d-fdcd9cc01902",
+      "timestamp": "2025-09-01T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "select_input",
+      "target": "source_document:Smith_2023_JCE_priority_rules_paper",
+      "content": "'Google NotebookLM was provided with my open-access Journal of Chemical Education paper as source material.'",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:first_paragraph",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "c73bab4e-6dba-4d2e-8160-091a9fc102df",
+      "timestamp": "2025-09-01T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "prompt",
+      "target": "notebooklm_session:initial",
+      "content": "explore the importance of organic reaction mechanisms, explaining how priority and selectivity rules can enable students to predict organic reaction mechanisms",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:initial_prompt",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "66718a54-1fe1-4a62-90e2-1344f753e2da",
+      "timestamp": "2025-09-15T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "prompt",
+      "target": "notebooklm_session:V1",
+      "content": "Explain why having rules to predict organic reaction mechanisms is important and useful then describe all of the rules for predicting organic reaction mechanisms and discuss how to apply them.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_1:USER_PROMPT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "98898675-81db-40be-8ae8-5086394ecbb3",
+      "timestamp": "2025-09-15T12:00:00Z",
+      "actor": {
+        "actor_type": "ai_generative",
+        "identifier": "Google NotebookLM",
+        "model_metadata": {
+          "provider": "Google",
+          "product": "NotebookLM",
+          "feature": "Audio Overview / Deep Dive",
+          "note": "Specific underlying model and version not disclosed in publication."
+        }
+      },
+      "action": "generate",
+      "target": "podcast_audio:V1",
+      "content": "Title: 'Cracking the Code: The 5 Algorithmic Rules to Predict Organic Chemistry Mechanisms (No Memorization Required)'. Full transcript in SI.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_1:AI_OUTPUT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "ad7214c7-c3da-4343-bb65-205f906b10a0",
+      "timestamp": "2025-09-25T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "prompt",
+      "target": "notebooklm_session:V2",
+      "content": "(No prompt given. NotebookLM auto-generated from source.)",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_2:USER_PROMPT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "1777e583-7986-48b4-a936-e4b718ca51b2",
+      "timestamp": "2025-09-25T12:00:00Z",
+      "actor": {
+        "actor_type": "ai_generative",
+        "identifier": "Google NotebookLM",
+        "model_metadata": {
+          "provider": "Google",
+          "product": "NotebookLM",
+          "feature": "Audio Overview / Deep Dive",
+          "note": "Specific underlying model and version not disclosed in publication."
+        }
+      },
+      "action": "generate",
+      "target": "podcast_audio:V2",
+      "content": "Title: 'From Cookbook to Logic: Mastering Organic Chemistry Mechanisms with 5 Priority Rules'. Full transcript in SI.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_2:AI_OUTPUT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "296317c3-53e0-4d2e-817e-027b1d7e59d8",
+      "timestamp": "2025-09-25T14:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "prompt",
+      "target": "notebooklm_session:V3",
+      "content": "Explain to a student why we need to develop priority and selectivity rules to understand organic mechanisms, and then explain the basics of the priority and selectivity rules and how they work in practice to predict organic reactions.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_3:USER_PROMPT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "481ffd38-7636-473e-88c1-03c35e4e720e",
+      "timestamp": "2025-09-25T14:00:00Z",
+      "actor": {
+        "actor_type": "ai_generative",
+        "identifier": "Google NotebookLM",
+        "model_metadata": {
+          "provider": "Google",
+          "product": "NotebookLM",
+          "feature": "Audio Overview / Deep Dive",
+          "note": "Specific underlying model and version not disclosed in publication."
+        }
+      },
+      "action": "generate",
+      "target": "podcast_audio:V3",
+      "content": "Title: 'From Rote Memorization to Operating System: The Priority Rules That Unravel Organic Chemistry Mechanisms'. Full transcript in SI.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "SI:PODCAST_VERSION_3:AI_OUTPUT",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "e9f77aa7-7b0a-4fd9-a66d-bd0387613780",
+      "timestamp": "2025-09-20T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "edit",
+      "target": "source_document:Smith_2023_JCE_priority_rules_paper",
+      "content": "Lidocaine example removed from source document; replaced with new text on salbutamol synthesis. Section on classic reaction types (nucleophilic substitution/addition; electrophilic substitution/addition) also removed.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:lidocaine_to_salbutamol",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "76972043-b92b-4166-bb8d-0f74ac8e4dc1",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "curate",
+      "target": "podcast_audio:final",
+      "content": "Audio from the three podcasts combined using Audacity, selecting the best analogies and liveliest discussions, removing errors or confusing descriptions.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:audacity_combination",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "0fca6c43-d1d1-47a1-8482-f4ee25ab3e26",
+      "timestamp": "2025-10-10T12:00:00Z",
+      "actor": {
+        "actor_type": "system",
+        "identifier": "Panopto (University of York deployment)",
+        "model_metadata": {
+          "feature": "auto-captioning / transcription"
+        }
+      },
+      "action": "execute",
+      "target": "podcast_audio:final.transcript",
+      "content": "Final podcast uploaded to Panopto for auto-captioning; minor manual editing applied. Smith notes Panopto generated more accurate transcripts than NotebookLM's own transcription.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:panopto",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    },
+    {
+      "event_id": "4be17f6c-eb70-4d99-9013-ab71edeb1578",
+      "timestamp": "2025-10-12T12:00:00Z",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "action": "create",
+      "target": "visual:salbutamol_synthesis.pptx",
+      "content": "PowerPoint image created to provide essential visual support for the salbutamol synthesis discussed in the podcast; attached to the audio file.",
+      "source_ref": {
+        "adapter_name": "manual_log_adapter",
+        "adapter_version": "0.0.0-pre-implementation",
+        "raw_location": "paper.body:Podcast_Generation:powerpoint",
+        "extracted_at": "2026-05-11T00:00:00Z"
+      },
+      "tier": 3
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+      "event_ids": [
+        "e9f77aa7-7b0a-4fd9-a66d-bd0387613780"
+      ],
+      "description": "Smith chose his own 2023 JCE paper on priority and selectivity rules as the source material for NotebookLM. Rationale stated in body text: open access, copyright-free, owned by the author.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "cb115810-751e-4021-b583-b08381468958",
+      "event_ids": [
+        "c73bab4e-6dba-4d2e-8160-091a9fc102df"
+      ],
+      "description": "Initial prompt provided to NotebookLM (body text quotation). Differs from SI V1 prompt; relationship between this initial podcast and SI V1 is ambiguous in the publication.",
+      "confidence": "medium"
+    },
+    {
+      "evidence_id": "36d6d1c1-568c-413a-ba5a-60cb652af188",
+      "event_ids": [
+        "66718a54-1fe1-4a62-90e2-1344f753e2da",
+        "98898675-81db-40be-8ae8-5086394ecbb3"
+      ],
+      "description": "SI Podcast Version 1: user prompt + full AI-generated transcript.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "88c59540-120d-4244-8302-7a00a14874b1",
+      "event_ids": [
+        "ad7214c7-c3da-4343-bb65-205f906b10a0",
+        "1777e583-7986-48b4-a936-e4b718ca51b2"
+      ],
+      "description": "SI Podcast Version 2: no user prompt (NotebookLM auto-generated from the revised source) + full AI-generated transcript.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "c53e4744-6ada-444e-b433-3a0a19393b5b",
+      "event_ids": [
+        "296317c3-53e0-4d2e-817e-027b1d7e59d8",
+        "481ffd38-7636-473e-88c1-03c35e4e720e"
+      ],
+      "description": "SI Podcast Version 3: user prompt + full AI-generated transcript.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "4b82a812-3621-4186-9e95-4a0334d3c92e",
+      "event_ids": [
+        "e9f77aa7-7b0a-4fd9-a66d-bd0387613780"
+      ],
+      "description": "Source document was revised between V1 and V2: lidocaine example removed in favor of salbutamol; classic-reaction-types section removed. Documented in body text.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+      "event_ids": [
+        "76972043-b92b-4166-bb8d-0f74ac8e4dc1"
+      ],
+      "description": "Final curation in Audacity: best analogies, liveliest discussions, errors removed. Body text documents the rationale (3-version selection) without listing per-segment selections.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+      "event_ids": [
+        "0fca6c43-d1d1-47a1-8482-f4ee25ab3e26"
+      ],
+      "description": "Transcription performed via Panopto rather than NotebookLM, with reason given (greater accuracy).",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+      "event_ids": [
+        "4be17f6c-eb70-4d99-9013-ab71edeb1578"
+      ],
+      "description": "Human-authored PowerPoint visual attached; no AI involvement in the visual itself.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+      "event_ids": [
+        "98898675-81db-40be-8ae8-5086394ecbb3"
+      ],
+      "description": "Epoxide error: 'when describing the salbutamol mechanism, the AI wrongly suggested an epoxide was present. This was edited out of the final podcast.' Body text §Limitations / Generation.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "36068df3-f723-44e6-97bb-4961ac4a9269",
+      "event_ids": [
+        "98898675-81db-40be-8ae8-5086394ecbb3"
+      ],
+      "description": "Chlorine vs chloride error: 'a chloride ion is the leaving group, but the AI referred to chlorine leaving. ... left in the final podcast; closed captioning was used to clear-up misunderstanding.'",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "d35f6aac-140c-4d11-963a-cedd63703353",
+      "event_ids": [
+        "98898675-81db-40be-8ae8-5086394ecbb3"
+      ],
+      "description": "HOMO/LUMO error: 'the AI said: the lowest unoccupied molecular orbital — the HOMO.' Kept in; captioned with corrected information.",
+      "confidence": "high"
+    },
+    {
+      "evidence_id": "cf604e21-475d-4239-907e-1bc93c8ea9cd",
+      "event_ids": [
+        "76972043-b92b-4166-bb8d-0f74ac8e4dc1"
+      ],
+      "description": "Workload measurement: 'about 3 h of academic work' total; audio editing ~2 h; caption editing ~20-30 min; source adaptation ~60 min.",
+      "confidence": "medium"
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "1c4d4a89-b31b-40d7-86ae-c273e299dddf",
+      "timestamp": "2025-09-01T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Tool selection: chose Google NotebookLM over ChatGPT, Microsoft Copilot, Google Gemini and other chatbots. Rationale per paper: 'The use of defined sources reduces the risk of hallucinatory outputs, increasing reliability.'",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "not_applicable",
+      "verification_notes": "Selection decision; no AI output to verify. Verification N/A."
+    },
+    {
+      "decision_id": "7f8882cf-cb75-466f-bf65-1707638f3deb",
+      "timestamp": "2025-09-01T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Source material selection: Smith's own 2023 JCE paper used as input to NotebookLM. Rationale: open access, copyright-free, owned by the author.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "not_applicable",
+      "verification_notes": "Author selecting own prior work as input."
+    },
+    {
+      "decision_id": "f31fdd40-5fa2-49cb-b37c-ba260ad4abaf",
+      "timestamp": "2025-09-15T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Prompt engineering: initial prompt focused on 'importance of organic reaction mechanisms' and 'priority and selectivity rules'; V1 reformulated to 'Explain why having rules is important... describe all of the rules... discuss how to apply them.'; V3 explicitly reframed for a student audience.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "not_applicable",
+      "verification_notes": null
+    },
+    {
+      "decision_id": "3d4be2fd-334b-43a3-84ee-40063af82671",
+      "timestamp": "2025-09-20T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Source revision: lidocaine example removed from source document in favor of salbutamol synthesis after V1 review revealed that lidocaine required Level 2 selectivity rules before they had been introduced, causing pedagogic confusion in the AI output. This decision changed the inputs to V2 and V3.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "4b82a812-3621-4186-9e95-4a0334d3c92e"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_independently",
+      "verification_notes": "Verified by Smith's domain knowledge: original source positioning of lidocaine was acknowledged as suboptimal in own writing. Verification mode: author's domain expertise as organic chemist."
+    },
+    {
+      "decision_id": "306b2cf4-081b-4f3a-8772-b78b7d192856",
+      "timestamp": "2025-09-25T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Iterative generation: decision to produce three podcast versions from the revised source rather than accepting a single output. Justification: 'beyond using different podcast versions to correct errors, in each case the AI discussed different examples. Some of these were pedagogically clearer, and some were better explained. Having a choice of audio streams was beneficial.'",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "not_applicable",
+      "verification_notes": null
+    },
+    {
+      "decision_id": "89671f5d-bafa-4dbb-8b09-7cbc443ab6d2",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Error disposition (epoxide): AI suggested an epoxide intermediate in the salbutamol mechanism. No epoxide present in the reaction shown (Figure 2). Decision: EDIT OUT of final podcast. Smith hypothesizes the AI either pulled the intermediate from training data on the standard salbutamol synthesis, or confused an unrelated mention in the source document.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_independently",
+      "verification_notes": "Verified by Smith's domain knowledge as organic chemist; reviewer/editor of own field. No independent third-party check."
+    },
+    {
+      "decision_id": "7294b068-b049-4d38-b547-5e34bb81ca61",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Error disposition (chlorine/chloride): AI referred to 'chlorine' as the leaving group when the correct species is the chloride ion. Decision: KEEP with closed captioning to correct the terminology. Rationale: error is a known AI pattern (citing one literature study showing Copilot makes the same mistake).",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "36068df3-f723-44e6-97bb-4961ac4a9269"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_independently",
+      "verification_notes": "Same verification mode as epoxide error."
+    },
+    {
+      "decision_id": "70c5ee0a-9d3b-4c41-805c-e947867b4fda",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Error disposition (HOMO/LUMO): AI said 'the lowest unoccupied molecular orbital — the HOMO'. HOMO is highest occupied; LUMO is lowest unoccupied. Decision: KEEP with captioned correction. Rationale: surrounding orbital description was excellent in that take; not editable without re-running.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "d35f6aac-140c-4d11-963a-cedd63703353"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_independently",
+      "verification_notes": "Same verification mode as other technical errors."
+    },
+    {
+      "decision_id": "51c77ed8-77ca-4bdd-8936-bc746295aae4",
+      "timestamp": "2025-10-05T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Content curation from multiple AI outputs: combined three podcast audio streams using Audacity, selecting 'best analogies and liveliest discussions, removing errors or confusing descriptions.' Per-segment selection rationale not documented in publication.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_partially",
+      "verification_notes": "Curation outcome partially verifiable via SI yellow highlighting showing which segments were retained, but the rationale for each selection is not recorded — only aggregate rationale."
+    },
+    {
+      "decision_id": "fa97aaa2-629b-427c-884a-5a20159bfde1",
+      "timestamp": "2025-10-10T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Transcription tool selection: Panopto (with minor manual editing) chosen over NotebookLM's own transcription. Rationale: 'Google NotebookLM is not very good at creating a transcript from audio input (Panopto generates much more accurate transcripts).'",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "verified_independently",
+      "verification_notes": "Smith independently verified by comparing outputs; comparison data not published. Claim grounded in author's direct experience."
+    },
+    {
+      "decision_id": "6163cf84-acf5-467c-a340-ce2ea0fc38d7",
+      "timestamp": "2025-10-12T12:00:00Z",
+      "decision_type": "unclassified",
+      "description": "Supplementary visual addition: PowerPoint image of salbutamol synthesis (Figure 2 of the paper) created and attached to the audio file. Image is human-authored; no AI involvement. Decision is to address NotebookLM's audio-only limitation.",
+      "actor": {
+        "actor_type": "human",
+        "identifier": "David K. Smith (ORCID 0000-0002-9881-2714)",
+        "model_metadata": null
+      },
+      "evidence_ids": [
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41"
+      ],
+      "schema_gap": "novel_pattern",
+      "verification_status": "not_applicable",
+      "verification_notes": null
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "792f0c31-5f15-40e2-8695-ba8700e021fa",
+      "text": "Google NotebookLM can make engaging scientific podcasts with limited workload.",
+      "location": "Abstract; Conclusions",
+      "upstream_decision_ids": [
+        "1c4d4a89-b31b-40d7-86ae-c273e299dddf",
+        "7f8882cf-cb75-466f-bf65-1707638f3deb",
+        "f31fdd40-5fa2-49cb-b37c-ba260ad4abaf",
+        "306b2cf4-081b-4f3a-8772-b78b7d192856",
+        "51c77ed8-77ca-4bdd-8936-bc746295aae4"
+      ],
+      "evidence_confidence": "high"
+    },
+    {
+      "claim_id": "a54211da-d711-4820-9293-8b2018546c1e",
+      "text": "All three podcast outputs were combined with academic curation to create a final output with minimal errors.",
+      "location": "Abstract",
+      "upstream_decision_ids": [
+        "306b2cf4-081b-4f3a-8772-b78b7d192856",
+        "89671f5d-bafa-4dbb-8b09-7cbc443ab6d2",
+        "7294b068-b049-4d38-b547-5e34bb81ca61",
+        "70c5ee0a-9d3b-4c41-805c-e947867b4fda",
+        "51c77ed8-77ca-4bdd-8936-bc746295aae4"
+      ],
+      "evidence_confidence": "high"
+    },
+    {
+      "claim_id": "a5f13dd7-5d3a-49ca-9d8e-bd8624d5aabb",
+      "text": "Students who listened to the podcast reported it helped reinforce learning and was worth listening to.",
+      "location": "Abstract; Application of Podcast as Student Support",
+      "upstream_decision_ids": [
+        "51c77ed8-77ca-4bdd-8936-bc746295aae4"
+      ],
+      "evidence_confidence": "medium"
+    },
+    {
+      "claim_id": "822f3829-24c9-4ba2-b612-864b1706843d",
+      "text": "For about 3 h of academic work, a podcast was produced.",
+      "location": "Workload Implications",
+      "upstream_decision_ids": [
+        "3d4be2fd-334b-43a3-84ee-40063af82671",
+        "306b2cf4-081b-4f3a-8772-b78b7d192856",
+        "51c77ed8-77ca-4bdd-8936-bc746295aae4",
+        "fa97aaa2-629b-427c-884a-5a20159bfde1"
+      ],
+      "evidence_confidence": "medium"
+    },
+    {
+      "claim_id": "caf0ae4a-e95c-48bc-86c7-127a71e44eda",
+      "text": "The AI did very well with background and summary material, struggling more with technically or pedagogically challenging material.",
+      "location": "Conclusions",
+      "upstream_decision_ids": [
+        "89671f5d-bafa-4dbb-8b09-7cbc443ab6d2",
+        "7294b068-b049-4d38-b547-5e34bb81ca61",
+        "70c5ee0a-9d3b-4c41-805c-e947867b4fda",
+        "3d4be2fd-334b-43a3-84ee-40063af82671"
+      ],
+      "evidence_confidence": "high"
+    }
+  ],
+  "schema_deltas": [
+    {
+      "delta_id": "a9c2671b-023a-4f64-af25-799ec1345dba",
+      "proposed_term": "tool_selection_via_ai",
+      "proposed_kind": "decision_type",
+      "justification": "Decision to use a specific AI tool over alternatives, with rationale.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "0b4796b0-5893-4382-acd0-955321c59c7f",
+      "proposed_term": "source_material_selection",
+      "proposed_kind": "decision_type",
+      "justification": "Decision about which document(s) to provide as input to an AI tool.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "369819f6-aad0-4bd1-a556-2bd4147fb900",
+      "proposed_term": "source_material_revision",
+      "proposed_kind": "decision_type",
+      "justification": "Modification of input materials to an AI tool after reviewing initial outputs, intended to change subsequent AI behavior.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "e7f16c5f-1ff2-4518-a031-39e23a37e5e5",
+      "proposed_term": "prompt_engineering",
+      "proposed_kind": "decision_type",
+      "justification": "Formulation or reformulation of user prompts to an AI tool, including audience-targeted reframing and prompt-free runs.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "0e573fae-ef17-4ea9-8961-8b96cdefded4",
+      "proposed_term": "iterative_ai_generation",
+      "proposed_kind": "decision_type",
+      "justification": "Running the same or similar prompts multiple times to obtain variation in AI output for downstream selection.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "96002941-01d1-4395-bb5c-b014aa9e1deb",
+      "proposed_term": "ai_error_disposition",
+      "proposed_kind": "decision_type",
+      "justification": "Decision about how to handle a specific identified error in AI output: edit out, keep with correction, keep as-is. Sub-types anticipated: edit_out, keep_with_caption, keep_as_is.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "6cddd068-3c4b-4b95-86f3-bc7570be9a5f",
+      "proposed_term": "content_curation_from_multiple_ai_outputs",
+      "proposed_kind": "decision_type",
+      "justification": "Selection and combination of segments from multiple AI outputs into a single deliverable.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "cc4aeb1d-67f8-4f21-9c55-08f190fe49de",
+      "proposed_term": "ai_assisted_transcription",
+      "proposed_kind": "decision_type",
+      "justification": "Use of an AI or auto-captioning system for transcription, possibly distinct from the AI used for content generation.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    },
+    {
+      "delta_id": "9858fe6e-83b9-4bd0-b5c1-f30dd7842308",
+      "proposed_term": "human_authored_supplementary_visual",
+      "proposed_kind": "decision_type",
+      "justification": "Addition of human-authored visual or supporting material to compensate for AI-tool limitations.",
+      "source_audit_id": "a3367de8-7f13-448d-9cdf-5bcb122ff4c6",
+      "raw_evidence_ids": [
+        "55ea1345-3273-48d8-96c2-a2e50a82c3ab",
+        "cb115810-751e-4021-b583-b08381468958",
+        "36d6d1c1-568c-413a-ba5a-60cb652af188",
+        "88c59540-120d-4244-8302-7a00a14874b1",
+        "c53e4744-6ada-444e-b433-3a0a19393b5b",
+        "4b82a812-3621-4186-9e95-4a0334d3c92e",
+        "a8a0980d-ee25-438e-b2fb-363fc428bac8",
+        "f395c3e0-d3ab-4000-b6c1-105d478dee18",
+        "73a86120-19e6-42d2-ad89-2f5e8baacd41",
+        "99330ab8-1bf5-48ff-92b7-2148de74cdbf",
+        "36068df3-f723-44e6-97bb-4961ac4a9269",
+        "d35f6aac-140c-4d11-963a-cedd63703353",
+        "cf604e21-475d-4239-907e-1bc93c8ea9cd"
+      ],
+      "proposed_at": "2026-05-11T00:00:00Z",
+      "status": "proposed",
+      "merged_into": null
+    }
+  ],
+  "notes": "Manual retrospective audit. No adapter implementations yet — evidence extracted by hand from the paper body and SI. Capture tier reaches 3 because Smith's voluntary disclosure includes full prompts, full AI outputs, source-document provenance, workload measurements, and explicit error-disposition rationales. The v0.1 vocabulary is empty by design; every decision is `unclassified` with a `schema_gap='novel_pattern'` marker and a corresponding SchemaDelta."
+}

@@ -1,0 +1,8 @@
+"""AIVS open vocabulary."""
+
+from aivs.vocabulary import v0_1
+
+CURRENT_VOCABULARY = v0_1
+CURRENT_VOCABULARY_VERSION = v0_1.VOCABULARY_VERSION
+
+__all__ = ["CURRENT_VOCABULARY", "CURRENT_VOCABULARY_VERSION", "v0_1"]
