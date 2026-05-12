@@ -95,6 +95,7 @@ class ClaudeCodeAdapter(EvidenceAdapter):
         verbosity: Verbosity = "default",
         claude_home: Optional[Path] = None,
         redact: bool = True,
+        session_dir_override: Optional[Path] = None,
     ) -> None:
         self.verbosity = verbosity
         self.claude_home = (
@@ -110,6 +111,15 @@ class ClaudeCodeAdapter(EvidenceAdapter):
         # content lives in the artifact, or call to_published() to
         # strip it from non-verbatim decisions at publish time.
         self.redact = redact
+        # Escape hatch for renamed projects: when a project's filesystem
+        # path differs from the path under which Claude Code originally
+        # recorded its sessions (e.g., a directory rename, or a slash↔
+        # underscore↔hyphen normalisation that doesn't round-trip through
+        # the default path-hash rule), callers can point the adapter at
+        # the actual session directory directly. When set, ``detect``
+        # and ``extract`` use this path instead of computing one from
+        # ``project_path``.
+        self.session_dir_override = session_dir_override
 
     # -- Event construction helper -------------------------------------
 
@@ -133,7 +143,13 @@ class ClaudeCodeAdapter(EvidenceAdapter):
 
     def _project_dir(self, project_path: Path) -> Path:
         """Translate /storage/kiran-stuff/triplet-proof to
-        ~/.claude/projects/-storage-kiran-stuff-triplet-proof"""
+        ~/.claude/projects/-storage-kiran-stuff-triplet-proof.
+
+        When ``session_dir_override`` is set, returns that path
+        directly — used for renamed projects whose on-disk path no
+        longer matches the path Claude Code originally hashed."""
+        if self.session_dir_override is not None:
+            return self.session_dir_override
         absolute = project_path.resolve()
         hash_name = str(absolute).replace("/", "-")
         return self._projects_root() / hash_name

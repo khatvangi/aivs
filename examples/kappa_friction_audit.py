@@ -46,7 +46,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from aivs.meta_schema import (
@@ -65,6 +65,7 @@ from aivs.meta_schema import (
     SourceRef,
     VerificationStatus,
 )
+from aivs.adapters.claude_code import ClaudeCodeAdapter
 
 
 AUDIT_TS = datetime(2026, 5, 11, 0, 0, 0, tzinfo=timezone.utc)
@@ -77,6 +78,17 @@ KAPPA_PATH = Path("/storage/kiran-stuff/IDP_projects/kappa_friction")
 CLAUDE_PROJECTS_PATH = (
     ".claude/projects/-storage-kiran-stuff-IDP-projects-kappa-friction"
 )
+
+# The project was renamed (underscores) after Claude Code recorded the
+# sessions (hyphens). Use the adapter's session_dir_override to point at
+# the original session-hash directory directly.
+SESSION_DIR_OVERRIDE = Path(
+    "/home/kiran/.claude/projects/-storage-kiran-stuff-IDP-projects-kappa-friction"
+)
+
+# Half-width of each Decision's evidence window over the adapter event
+# stream. Same convention as the triplet-proof refresh.
+DECISION_WINDOW = timedelta(hours=12)
 
 
 # Documented timestamps drawn from file metadata + HISTORY.md blocks.
@@ -395,8 +407,39 @@ def documented_events() -> list[Event]:
     ]
 
 
+def extract_adapter_events() -> list[Event]:
+    """Adapter-extracted Events from the two Claude Code session JSONLs.
+
+    redact=True (the v0.2 default) so emitted Events carry only
+    content_hash, no content. Filter on AUDIT_BASELINE_TS so anything
+    post-2026-04-25 is excluded from this snapshot.
+    """
+    adapter = ClaudeCodeAdapter(
+        verbosity="default",
+        session_dir_override=SESSION_DIR_OVERRIDE,
+    )
+    return list(adapter.extract(KAPPA_PATH, until=AUDIT_BASELINE_TS))
+
+
+def _window_event_ids(
+    adapter_events: list[Event],
+    center: datetime,
+    half: timedelta = DECISION_WINDOW,
+) -> list[str]:
+    """Adapter event_ids within ±half of center, capped at baseline."""
+    lo = center - half
+    hi = min(center + half, AUDIT_BASELINE_TS)
+    return [e.event_id for e in adapter_events if lo <= e.timestamp <= hi]
+
+
 def build_events() -> list[Event]:
-    return documented_events() + bulk_session_events()
+    """Returns documented (10) + bulk-session (2) + adapter-extracted Events.
+
+    The legacy entry point. New code should call documented_events(),
+    bulk_session_events(), and extract_adapter_events() directly so the
+    adapter event subset is available for windowing.
+    """
+    return documented_events() + bulk_session_events() + extract_adapter_events()
 
 
 # ---------------------------------------------------------------------------
@@ -406,8 +449,19 @@ def build_events() -> list[Event]:
 # ---------------------------------------------------------------------------
 
 
-def build_evidence(events: list[Event]) -> list[Evidence]:
+def build_evidence(
+    events: list[Event],
+    adapter_events: list[Event] | None = None,
+) -> list[Evidence]:
+    """Per-Decision Evidence with both hand-curated and windowed adapter event_ids.
+
+    ``events`` is the full event list (documented + bulk-session + adapter).
+    ``adapter_events`` is the adapter subset (passed in so each Evidence can
+    window against it without re-filtering by adapter_name). If omitted,
+    only hand-curated event_ids are used (legacy behaviour).
+    """
     by_id = {e.event_id: e for e in events}
+    adapter_events = adapter_events or []
 
     def E(label_prefix: str) -> str:
         for e in events:
@@ -415,98 +469,111 @@ def build_evidence(events: list[Event]) -> list[Evidence]:
                 return e.event_id
         raise KeyError(label_prefix)
 
+    def W(anchor_ts: datetime) -> list[str]:
+        """Windowed adapter event_ids around an anchor timestamp."""
+        return _window_event_ids(adapter_events, anchor_ts)
+
     evidence: list[Evidence] = [
         Evidence(
-            event_ids=[E("E_bug_discovery"), E("E_v3_reanalysis")],
+            event_ids=[E("E_bug_discovery"), E("E_v3_reanalysis"), *W(T_V3_REANALYSIS)],
             description=(
                 "D1: observable replacement — scalar Ree ACF -> end-to-end "
                 "vector ACF. Documented in REANALYSIS_VERIFICATION.md "
-                "section 'Observable: scalar distance ACF -> vector ACF'."
+                "section 'Observable: scalar distance ACF -> vector ACF'. "
+                f"Augmented with adapter events in ±12h of {T_V3_REANALYSIS:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_bug_discovery"), E("E_v3_reanalysis")],
+            event_ids=[E("E_bug_discovery"), E("E_v3_reanalysis"), *W(T_V3_REANALYSIS)],
             description=(
                 "D2: fitting-method replacement — single-exponential with "
                 "bare init guess + bare except -> stretched-exponential "
                 "with bounds, adaptive window, R^2 diagnostics. Documented "
                 "in REANALYSIS_VERIFICATION.md section 'Fitting: single "
                 "exponential with p0=1000 -> stretched exponential with "
-                "bounds'."
+                "bounds'. "
+                f"Augmented with adapter events in ±12h of {T_V3_REANALYSIS:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_v3_reanalysis")],
+            event_ids=[E("E_v3_reanalysis"), *W(T_V3_REANALYSIS)],
             description=(
                 "D3: new primary observable — Ree_CV = std(Ree)/mean(Ree). "
                 "Documented in REANALYSIS_VERIFICATION.md section 'New "
                 "diagnostic: Ree_CV' and CLAUDE.md 'Ree_CV (Conformational "
-                "Arrest Metric)' block."
+                "Arrest Metric)' block. "
+                f"Augmented with adapter events in ±12h of {T_V3_REANALYSIS:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_bug_discovery"), E("E_manuscript_rewrite")],
+            event_ids=[E("E_bug_discovery"), E("E_manuscript_rewrite"), *W(T_MANUSCRIPT_REWRITE)],
             description=(
                 "D4: claim retraction — four v1 headline claims retracted "
                 "as fitting artifacts. Documented in MANUSCRIPT_STATUS.md "
                 "section 'What is NOT supported' and "
                 "REANALYSIS_VERIFICATION.md section 'Conclusions NOT "
-                "Supported'."
+                "Supported'. "
+                f"Augmented with adapter events in ±12h of {T_MANUSCRIPT_REWRITE:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_manuscript_rewrite")],
+            event_ids=[E("E_manuscript_rewrite"), *W(T_MANUSCRIPT_REWRITE)],
             description=(
                 "D5: manuscript reframing — primary claim shifted from "
                 "'timescale slowing' to 'conformational arrest'. Documented "
                 "in JPCB_DRAFT_v3.md abstract and JPCB_submission_v3.tex "
-                "abstract/conclusions."
+                "abstract/conclusions. "
+                f"Augmented with adapter events in ±12h of {T_MANUSCRIPT_REWRITE:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_cross_force_field"), E("E_v3_reanalysis")],
+            event_ids=[E("E_cross_force_field"), E("E_v3_reanalysis"), *W(T_V3_REANALYSIS)],
             description=(
                 "D6: cross-force-field validation — three coarse-grained "
                 "force fields (K/E, HPS-Urry, CALVADOS 2). Documented in "
                 "CLAUDE.md 'Cross-Model Robustness' table and "
-                "REANALYSIS_VERIFICATION.md cross-dataset summary table."
+                "REANALYSIS_VERIFICATION.md cross-dataset summary table. "
+                f"Augmented with adapter events in ±12h of {T_V3_REANALYSIS:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_number_verification")],
+            event_ids=[E("E_number_verification"), *W(T_FINAL_POLISH)],
             description=(
                 "D7: full manuscript-against-CSV verification during final "
-                "polish. Documented in HISTORY.md 2026-04-24 block."
+                "polish. Documented in HISTORY.md 2026-04-24 block. "
+                f"Augmented with adapter events in ±12h of {T_FINAL_POLISH:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_url_replacement")],
+            event_ids=[E("E_url_replacement"), *W(T_FINAL_POLISH)],
             description=(
                 "D8: anti-fabrication correction — refused to commit a "
                 "fabricated GitHub URL; replaced with 'available upon "
                 "request' because no real repo deposit exists yet. "
-                "Documented in HISTORY.md 2026-04-24 block."
+                "Documented in HISTORY.md 2026-04-24 block. "
+                f"Augmented with adapter events in ±12h of {T_FINAL_POLISH:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_funding_clarification")],
+            event_ids=[E("E_funding_clarification"), *W(T_FINAL_POLISH)],
             description=(
                 "D9: funding-disclosure — explicit internal-McNeese-only "
                 "statement. Documented in HISTORY.md 2026-04-24 block and "
-                "JPCB_submission_v3.tex Acknowledgments."
+                "JPCB_submission_v3.tex Acknowledgments. "
+                f"Augmented with adapter events in ±12h of {T_FINAL_POLISH:%Y-%m-%d %H:%M UTC}."
             ),
             confidence=EvidenceConfidence.HIGH,
         ),
         Evidence(
-            event_ids=[E("E_obsolete_tex_deletion"), E("E_session_wrap")],
+            event_ids=[E("E_obsolete_tex_deletion"), E("E_session_wrap"), *W(T_WRAP)],
             description=(
                 "D10: author-order — two-author paper with Hannah E. "
                 "Ribbeck first, Boggavarapu Kiran corresponding. "
@@ -1081,8 +1148,15 @@ def build_schema_deltas(
 
 
 def build_audit() -> AuditArtifact:
-    events = build_events()
-    evidence = build_evidence(events)
+    # Three event streams: hand-curated (10), bulk-session (2),
+    # adapter-extracted (~367). Per-Decision Evidence is windowed against
+    # the adapter stream and concatenated with its hand-curated event_ids.
+    documented = documented_events()
+    bulk = bulk_session_events()
+    adapter = extract_adapter_events()
+    all_events = documented + bulk + adapter
+
+    evidence = build_evidence(all_events, adapter_events=adapter)
     decisions = build_decisions(evidence)
     claims = build_claims(decisions)
 
@@ -1104,11 +1178,11 @@ def build_audit() -> AuditArtifact:
             ),
             AdapterUsage(
                 adapter_name="claude_code",
-                adapter_version="0.1.0",
-                capture_tier=CaptureTier.TIER_2,
+                adapter_version="0.2.0",
+                capture_tier=CaptureTier.TIER_3,
             ),
         ],
-        events=events,
+        events=all_events,
         evidence=evidence,
         decisions=decisions,
         claims=claims,
@@ -1125,15 +1199,28 @@ def build_audit() -> AuditArtifact:
             "ARREST rather than TIMESCALE SLOWING. The AI-augmented "
             "workflow caught its own error and recorded the retraction "
             "openly. This audit anchors claims to the corrected v3 "
-            "manuscript (JPCB_submission_v3.tex). The two Claude Code "
-            "session JSONLs (~4.5 MB combined) are bulk-referenced; the "
-            "claude_code_adapter exists but is intentionally not invoked "
-            "here (session_id, byte_size, mtime are the evidence). A "
-            "future adapter-driven re-audit can enumerate fine-grained "
-            "events.\n\n"
-            "Audit baseline: 2026-04-25 (after the final wrap-up "
-            "session). Outstanding pre-submission items recorded in "
-            "HISTORY.md 2026-04-25 but not blocking this audit's "
+            "manuscript (JPCB_submission_v3.tex).\n\n"
+            "Refreshed 2026-05-11 to use the claude_code adapter "
+            "(v0.2.0) with redact=True (privacy default). Each Decision's "
+            "Evidence now carries both the hand-curated documented event "
+            "ids AND the windowed adapter event ids (±12h around the "
+            "Decision's anchor timestamp). The two Claude Code session "
+            "JSONLs (~4.5 MB combined) are also retained as coarse "
+            "bulk-reference Events for the same-shape D14 / methodology "
+            "anchor pattern used in triplet-proof. Adapter sessions live "
+            "at ~/.claude/projects/-storage-kiran-stuff-IDP-projects-"
+            "kappa-friction/ (hyphenated). The on-disk project is at "
+            "/storage/kiran-stuff/IDP_projects/kappa_friction "
+            "(underscored). Resolved via session_dir_override.\n\n"
+            "All Decisions are publish_level='summary' (the v0.2 default). "
+            "to_published() strips Event.content from every Event in the "
+            "artifact; content_hash is preserved. Adapter events were "
+            "extracted with redact=True so they arrive content=None "
+            "already; the documented-event hand-curated content is what "
+            "actually gets stripped in the published variant.\n\n"
+            "Audit baseline: 2026-04-25 23:59 UTC (after the final "
+            "wrap-up session). Outstanding pre-submission items recorded "
+            "in HISTORY.md 2026-04-25 but not blocking this audit's "
             "integrity: references.bib [VERIFY] tags, no Author "
             "Contributions section, REVIEWER_COVER_NOTE.md author block "
             "not yet synced, no real GitHub/Zenodo deposit before "
@@ -1155,15 +1242,28 @@ def main() -> None:
             print(" -", e)
         raise SystemExit(1)
 
-    out_path_override = os.environ.get("AIVS_OUT_PATH")
-    if out_path_override:
-        out_path = Path(out_path_override)
-    else:
-        out_path = (
-            Path(__file__).resolve().parent / "kappa_friction_audit.json"
+    out_dir = Path(
+        os.environ.get(
+            "AIVS_OUT_DIR",
+            str(Path(__file__).resolve().parent / "out"),
         )
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(audit.model_dump_json(indent=2))
+    )
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    internal_path = out_dir / "kappa_friction_audit.json"
+    published_path = out_dir / "kappa_friction_audit_published.json"
+
+    internal_json = audit.model_dump_json(indent=2)
+    internal_path.write_text(internal_json)
+
+    # All Decisions are publish_level="summary" (v0.2 default), so
+    # to_published() strips Event.content from every Event. Adapter
+    # events were extracted redact=True and arrived content=None; the
+    # documented-event hand-curated content is what actually gets
+    # stripped in the published variant.
+    published = audit.to_published()
+    published_json = published.model_dump_json(indent=2)
+    published_path.write_text(published_json)
 
     counts = {
         "events": len(audit.events),
@@ -1172,6 +1272,7 @@ def main() -> None:
         "claims": len(audit.claims),
         "schema_deltas": len(audit.schema_deltas),
     }
+    verbatim_count = sum(1 for d in audit.decisions if d.publish_level == "verbatim")
     print("=== AIVS retrospective audit ===")
     print(f"  target              : {audit.audit_target}")
     print(f"  audit_id            : {audit.audit_id}")
@@ -1180,7 +1281,9 @@ def main() -> None:
     print(f"  capture_tier        : {audit.capture_tier_achieved.value}")
     print(f"  integrity           : OK")
     print(f"  counts              : {json.dumps(counts)}")
-    print(f"  output              : {out_path}")
+    print(f"  verbatim decisions  : {verbatim_count} / {len(audit.decisions)}")
+    print(f"  internal artifact   : {internal_path} ({len(internal_json):,} bytes)")
+    print(f"  published artifact  : {published_path} ({len(published_json):,} bytes)")
     print()
     print("Schema-delta proposals (candidate v0.2 vocabulary terms):")
     for sd in audit.schema_deltas:

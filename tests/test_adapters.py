@@ -235,6 +235,30 @@ def test_claude_code_redact_false(tmp_path):
     ).hexdigest()
 
 
+def test_claude_code_session_dir_override(tmp_path):
+    """session_dir_override lets the adapter point at a non-default
+    session directory — useful when a project has been renamed and the
+    on-disk path no longer matches the path Claude Code originally
+    hashed."""
+    # Build a normal fixture, then point an override-configured adapter
+    # at a path that bears no relation to the fixture's "project_path".
+    project, claude_home = _write_cc_fixture(tmp_path)
+    real_session_dir = (
+        claude_home / "projects" / str(project.resolve()).replace("/", "-")
+    )
+    fake_project = tmp_path / "renamed_after_sessions"
+    fake_project.mkdir()
+
+    adapter = ClaudeCodeAdapter(
+        claude_home=claude_home,
+        session_dir_override=real_session_dir,
+    )
+    assert adapter.detect(fake_project) is True
+    events = list(adapter.extract(fake_project))
+    actions = [e.action for e in events]
+    assert "prompt" in actions  # fixture has a prompt event
+
+
 def test_aider_redact_default_true(tmp_path):
     project = _write_aider_fixture(tmp_path)
     adapter = AiderAdapter()  # redact default

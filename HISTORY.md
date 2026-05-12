@@ -229,3 +229,103 @@ but different version can be told apart in `AdapterUsage` entries
 when re-running an old audit.
 
 Single commit, v0.2.0.
+
+---
+
+**Q:** Now run similar audit on ../IDR projects.
+
+**A:** Scoped to kappa_friction (the one IDP/IDR project that's
+closest to submission: full JPCB_DRAFT_v3.md, two-author block landed,
+v3 .tex submitted-ready, 4.5 MB of CC sessions, HISTORY.md exists).
+Deferred mechanism_classifier and ensemble_benchmark per the scope
+question.
+
+Discovered a pre-existing `examples/kappa_friction_audit.py` (1191
+lines, manual-log-style Smith-2026 pattern) that had been swept into
+commit `ea578a3` silently. It ran clean under v0.2 schema but used the
+old non-adapter, manual-output-path pattern. Refreshed in place to
+match the v0.2 + adapter pattern, same shape as the triplet-proof
+refresh.
+
+Findings during the run that needed solving:
+
+- **Project rename:** the on-disk project is at
+  `/storage/kiran-stuff/IDP_projects/kappa_friction` (underscores) but
+  the Claude Code session hash is
+  `-storage-kiran-stuff-IDP-projects-kappa-friction` (hyphens). The
+  project was renamed after the sessions were recorded; the default
+  path-hash rule (`str(path).replace("/", "-")`) misses them.
+- **Adapter affordance added:** `ClaudeCodeAdapter` gains
+  `session_dir_override: Optional[Path] = None`. When set, `detect`
+  and `extract` use it instead of computing from `project_path`.
+  Additive, backward-compatible; one new test
+  (`test_claude_code_session_dir_override`). 37/37 tests pass.
+
+Audit refresh:
+
+- Added `extract_adapter_events()` (redact=True default,
+  `until=AUDIT_BASELINE_TS`) plus `_window_event_ids()` helper.
+- `build_evidence(events, adapter_events=...)` now augments each
+  Decision's Evidence with adapter event_ids windowed ±12h around its
+  anchor timestamp, concatenated with the hand-curated event_ids.
+  Existing hand-curated narrative descriptions preserved; each gains
+  a trailing sentence noting the window.
+- `build_audit()` orchestrates: documented + bulk + adapter into
+  `all_events`; passes adapter subset to `build_evidence`.
+- `main()` rewritten to emit both `kappa_friction_audit.json`
+  (internal) and `kappa_friction_audit_published.json` (via
+  `to_published()`) to `examples/out/`. Legacy
+  `examples/kappa_friction_audit.json` removed from tracking.
+- `adapters_used` lists `claude_code` v0.2.0.
+
+Refreshed counts:
+- 379 events (10 documented + 2 bulk + 367 adapter)
+- 11 evidence (each carries hand-curated + windowed adapter event_ids)
+- 10 decisions (unchanged)
+- 7 claims (unchanged)
+- 4 schema deltas (unchanged)
+- 0/10 verbatim → published strips all Event.content
+- Internal 389,717 bytes; Published 385,711 bytes (delta 4,006 bytes —
+  larger than triplet-proof's 658 because this audit has 10
+  hand-curated documented Events whose author-written content gets
+  stripped at publish time).
+
+Per-Decision window populations (sanity):
+- D1/D2/D3/D6 (anchor T_V3_REANALYSIS, Mar 14 12:00 UTC): 1-2 events
+  each — the session JSONL starts at Mar 14 23:26 UTC so a ±12h
+  window catches little. These remain anchored on the hand-curated
+  events.
+- D4/D5 (T_MANUSCRIPT_REWRITE, Mar 14 19:31 UTC): 241/242 events.
+  The window catches the start of session 61108e47 (Mar 14 23:26
+  onward through Mar 15).
+- D7/D8/D9 (T_FINAL_POLISH, Apr 24 16:57 UTC): 78 events each.
+- D10 (T_WRAP, Apr 25 09:01 UTC): 96 events.
+
+Cross-audit observations now that three real audits exist:
+
+1. The `design_decision_documentation_via_qa_log` pattern (HISTORY.md
+   as Q/A decision log) appears in BOTH triplet-proof and
+   kappa_friction. Two-audit recurrence → promotion candidate for
+   v0.2 vocabulary.
+2. The `manuscript_internal_discrepancy_disposition` pattern from
+   triplet-proof is distinct from kappa_friction's
+   `v1_to_v3_retraction_rewrite_arc` — the latter is a methodology
+   error (fitting artefact in the analysis pipeline), not a stale
+   claim against intact data. v0.2 vocabulary work should keep the
+   two distinct.
+3. The `fabricated_url_disposition` pattern (kappa_friction D8 /
+   E_url_replacement) is structurally analogous to Smith 2026's
+   `ai_error_disposition` — AI-emitted error caught by the human at
+   review time, but the surface here is a hallucinated URL rather
+   than a substantive content error.
+
+Deferred (will close in follow-up sessions, not this one):
+- mechanism_classifier audit
+- ensemble_benchmark audit
+- Portfolio-level audit anchored to MANUSCRIPT_READINESS_REPORT.md
+- Promotion of `design_decision_documentation_via_qa_log` from
+  schema_delta_proposed → vocabulary_accepted (governance protocol
+  c.7 still pending)
+- kappa_friction submission TODOs: references.bib [VERIFY] tags,
+  Author Contributions section, REVIEWER_COVER_NOTE.md sync, real
+  Zenodo/GitHub deposit. These are manuscript work, not audit work.
