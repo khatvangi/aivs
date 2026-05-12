@@ -1,5 +1,5 @@
 {
-  "audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+  "audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
   "audit_target": "doi:10.1021/acs.jchemed.5c01652",
   "meta_schema_version": "0.2.0",
   "vocabulary_version": "0.1.0",
@@ -14,7 +14,7 @@
   ],
   "events": [
     {
-      "event_id": "64b7ed8d-6171-4209-81d5-085eb3752021",
+      "event_id": "abf4aa00-e013-45d8-b601-84c82db646d3",
       "timestamp": "2025-09-01T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -34,7 +34,7 @@
       "tier": 3
     },
     {
-      "event_id": "1c3e3156-4450-4f34-9f84-f100b1a97794",
+      "event_id": "fe6ebad9-24f1-4678-863a-fadd3c2818a0",
       "timestamp": "2025-09-01T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -54,7 +54,7 @@
       "tier": 3
     },
     {
-      "event_id": "0a679a5c-eb76-4364-841b-28a690806c7e",
+      "event_id": "0c2ee08c-7be5-4384-bbc5-841766bdc9d4",
       "timestamp": "2025-09-15T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -74,7 +74,7 @@
       "tier": 3
     },
     {
-      "event_id": "5d54abf2-1bcd-4f02-bdf0-00302e97c821",
+      "event_id": "ab08db96-1ab9-4be7-89bf-897d3c80a88f",
       "timestamp": "2025-09-15T12:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -99,7 +99,7 @@
       "tier": 3
     },
     {
-      "event_id": "2ca7fc81-fdbd-4ac2-8656-d5d2204bb0e8",
+      "event_id": "caa56682-583c-4dfa-ad62-f8195cce014d",
       "timestamp": "2025-09-25T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -119,7 +119,7 @@
       "tier": 3
     },
     {
-      "event_id": "33e5fd58-a1bf-4200-b5d4-050e621922a1",
+      "event_id": "83d59728-ffbb-4c34-af2f-97d6f6c55b5d",
       "timestamp": "2025-09-25T12:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -144,7 +144,7 @@
       "tier": 3
     },
     {
-      "event_id": "1e776dd8-8f04-4cf3-b2b5-4d249dc2815c",
+      "event_id": "ea83c557-77e7-4e7f-b70e-90f0387b93f7",
       "timestamp": "2025-09-25T14:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -164,7 +164,7 @@
       "tier": 3
     },
     {
-      "event_id": "c10a9030-a309-441e-9ade-55246c832d88",
+      "event_id": "f43d530c-a639-4b07-9159-bd229d3d16b3",
       "timestamp": "2025-09-25T14:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -189,7 +189,7 @@
       "tier": 3
     },
     {
-      "event_id": "753bb895-0872-46dd-a129-e8ea84f01fa8",
+      "event_id": "1c2a4060-1a23-4e2b-8d4d-76da38969f27",
       "timestamp": "2025-09-20T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -209,7 +209,7 @@
       "tier": 3
     },
     {
-      "event_id": "f5637591-583d-4479-8b36-2082e026b310",
+      "event_id": "e87630c1-1bff-4c18-ab5e-49e9b8e97d32",
       "timestamp": "2025-10-05T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -229,7 +229,7 @@
       "tier": 3
     },
     {
-      "event_id": "b3661105-09b2-425e-902a-5e2d503a5b5a",
+      "event_id": "7fb49a88-2d25-4f0e-8eef-8ef07fb0571c",
       "timestamp": "2025-10-10T12:00:00Z",
       "actor": {
         "actor_type": "system",
@@ -251,7 +251,7 @@
       "tier": 3
     },
     {
-      "event_id": "2d3e212d-bf1d-40d0-8af4-ae38523f69ce",
+      "event_id": "6f270425-804b-4cb9-ab69-4ba88f51ca35",
       "timestamp": "2025-10-12T12:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -273,108 +273,108 @@
   ],
   "evidence": [
     {
-      "evidence_id": "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
+      "evidence_id": "8078a6db-420a-4632-a027-a437828f899f",
       "event_ids": [
-        "753bb895-0872-46dd-a129-e8ea84f01fa8"
+        "1c2a4060-1a23-4e2b-8d4d-76da38969f27"
       ],
       "description": "Smith chose his own 2023 JCE paper on priority and selectivity rules as the source material for NotebookLM. Rationale stated in body text: open access, copyright-free, owned by the author.",
       "confidence": "high"
     },
     {
-      "evidence_id": "39e17ea3-41a7-4dbf-9409-348246dc54c0",
+      "evidence_id": "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
       "event_ids": [
-        "1c3e3156-4450-4f34-9f84-f100b1a97794"
+        "fe6ebad9-24f1-4678-863a-fadd3c2818a0"
       ],
       "description": "Initial prompt provided to NotebookLM (body text quotation). Differs from SI V1 prompt; relationship between this initial podcast and SI V1 is ambiguous in the publication.",
       "confidence": "medium"
     },
     {
-      "evidence_id": "6b22658e-8652-49c9-807d-c823d1bbed0c",
+      "evidence_id": "f26a1ca0-fba4-4887-8c29-8878577e2d98",
       "event_ids": [
-        "0a679a5c-eb76-4364-841b-28a690806c7e",
-        "5d54abf2-1bcd-4f02-bdf0-00302e97c821"
+        "0c2ee08c-7be5-4384-bbc5-841766bdc9d4",
+        "ab08db96-1ab9-4be7-89bf-897d3c80a88f"
       ],
       "description": "SI Podcast Version 1: user prompt + full AI-generated transcript.",
       "confidence": "high"
     },
     {
-      "evidence_id": "a085860a-969d-49f0-a2da-1c65399b940f",
+      "evidence_id": "29897abf-3fa8-4973-a239-89fb81a02e4f",
       "event_ids": [
-        "2ca7fc81-fdbd-4ac2-8656-d5d2204bb0e8",
-        "33e5fd58-a1bf-4200-b5d4-050e621922a1"
+        "caa56682-583c-4dfa-ad62-f8195cce014d",
+        "83d59728-ffbb-4c34-af2f-97d6f6c55b5d"
       ],
       "description": "SI Podcast Version 2: no user prompt (NotebookLM auto-generated from the revised source) + full AI-generated transcript.",
       "confidence": "high"
     },
     {
-      "evidence_id": "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
+      "evidence_id": "3ced3091-2f31-42f7-b627-b6ba645e1d87",
       "event_ids": [
-        "1e776dd8-8f04-4cf3-b2b5-4d249dc2815c",
-        "c10a9030-a309-441e-9ade-55246c832d88"
+        "ea83c557-77e7-4e7f-b70e-90f0387b93f7",
+        "f43d530c-a639-4b07-9159-bd229d3d16b3"
       ],
       "description": "SI Podcast Version 3: user prompt + full AI-generated transcript.",
       "confidence": "high"
     },
     {
-      "evidence_id": "44b03092-20fb-4ab2-85b7-693b7a867332",
+      "evidence_id": "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
       "event_ids": [
-        "753bb895-0872-46dd-a129-e8ea84f01fa8"
+        "1c2a4060-1a23-4e2b-8d4d-76da38969f27"
       ],
       "description": "Source document was revised between V1 and V2: lidocaine example removed in favor of salbutamol; classic-reaction-types section removed. Documented in body text.",
       "confidence": "high"
     },
     {
-      "evidence_id": "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
+      "evidence_id": "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
       "event_ids": [
-        "f5637591-583d-4479-8b36-2082e026b310"
+        "e87630c1-1bff-4c18-ab5e-49e9b8e97d32"
       ],
       "description": "Final curation in Audacity: best analogies, liveliest discussions, errors removed. Body text documents the rationale (3-version selection) without listing per-segment selections.",
       "confidence": "high"
     },
     {
-      "evidence_id": "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
+      "evidence_id": "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
       "event_ids": [
-        "b3661105-09b2-425e-902a-5e2d503a5b5a"
+        "7fb49a88-2d25-4f0e-8eef-8ef07fb0571c"
       ],
       "description": "Transcription performed via Panopto rather than NotebookLM, with reason given (greater accuracy).",
       "confidence": "high"
     },
     {
-      "evidence_id": "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
+      "evidence_id": "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
       "event_ids": [
-        "2d3e212d-bf1d-40d0-8af4-ae38523f69ce"
+        "6f270425-804b-4cb9-ab69-4ba88f51ca35"
       ],
       "description": "Human-authored PowerPoint visual attached; no AI involvement in the visual itself.",
       "confidence": "high"
     },
     {
-      "evidence_id": "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
+      "evidence_id": "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
       "event_ids": [
-        "5d54abf2-1bcd-4f02-bdf0-00302e97c821"
+        "ab08db96-1ab9-4be7-89bf-897d3c80a88f"
       ],
       "description": "Epoxide error: 'when describing the salbutamol mechanism, the AI wrongly suggested an epoxide was present. This was edited out of the final podcast.' Body text §Limitations / Generation.",
       "confidence": "high"
     },
     {
-      "evidence_id": "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
+      "evidence_id": "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
       "event_ids": [
-        "5d54abf2-1bcd-4f02-bdf0-00302e97c821"
+        "ab08db96-1ab9-4be7-89bf-897d3c80a88f"
       ],
       "description": "Chlorine vs chloride error: 'a chloride ion is the leaving group, but the AI referred to chlorine leaving. ... left in the final podcast; closed captioning was used to clear-up misunderstanding.'",
       "confidence": "high"
     },
     {
-      "evidence_id": "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
+      "evidence_id": "bf959f9d-951d-4b52-a978-5204879f2483",
       "event_ids": [
-        "5d54abf2-1bcd-4f02-bdf0-00302e97c821"
+        "ab08db96-1ab9-4be7-89bf-897d3c80a88f"
       ],
       "description": "HOMO/LUMO error: 'the AI said: the lowest unoccupied molecular orbital — the HOMO.' Kept in; captioned with corrected information.",
       "confidence": "high"
     },
     {
-      "evidence_id": "69cb477b-7a52-4836-a363-7b3c8051b4ae",
+      "evidence_id": "630e8f28-9601-4567-bf18-db981860af2a",
       "event_ids": [
-        "f5637591-583d-4479-8b36-2082e026b310"
+        "e87630c1-1bff-4c18-ab5e-49e9b8e97d32"
       ],
       "description": "Workload measurement: 'about 3 h of academic work' total; audio editing ~2 h; caption editing ~20-30 min; source adaptation ~60 min.",
       "confidence": "medium"
@@ -382,7 +382,7 @@
   ],
   "decisions": [
     {
-      "decision_id": "dc4acb10-f99c-4698-a7b1-f1c18ed18312",
+      "decision_id": "d26d4881-7897-48b3-82c7-594255c489d7",
       "timestamp": "2025-09-01T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Tool selection: chose Google NotebookLM over ChatGPT, Microsoft Copilot, Google Gemini and other chatbots. Rationale per paper: 'The use of defined sources reduces the risk of hallucinatory outputs, increasing reliability.'",
@@ -392,7 +392,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c"
+        "8078a6db-420a-4632-a027-a437828f899f"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "not_applicable",
@@ -400,7 +400,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "f0b4d192-cb59-4def-9c33-ca55f0e6a6c9",
+      "decision_id": "0b3dc7b9-47a5-44e5-9849-24aac5708c2a",
       "timestamp": "2025-09-01T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Source material selection: Smith's own 2023 JCE paper used as input to NotebookLM. Rationale: open access, copyright-free, owned by the author.",
@@ -410,7 +410,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c"
+        "8078a6db-420a-4632-a027-a437828f899f"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "not_applicable",
@@ -418,7 +418,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "2babab39-38d4-44a0-9e38-08fcb01e0c95",
+      "decision_id": "9ddb4a1f-784a-4b06-822e-91b2e67bf36e",
       "timestamp": "2025-09-15T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Prompt engineering: initial prompt focused on 'importance of organic reaction mechanisms' and 'priority and selectivity rules'; V1 reformulated to 'Explain why having rules is important... describe all of the rules... discuss how to apply them.'; V3 explicitly reframed for a student audience.",
@@ -428,8 +428,8 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374"
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "not_applicable",
@@ -437,7 +437,7 @@
       "publish_level": "verbatim"
     },
     {
-      "decision_id": "a31ed646-4c83-4034-8f71-86b40fe1186c",
+      "decision_id": "e729dab9-a2a5-43c9-a056-569009c5e6b8",
       "timestamp": "2025-09-20T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Source revision: lidocaine example removed from source document in favor of salbutamol synthesis after V1 review revealed that lidocaine required Level 2 selectivity rules before they had been introduced, causing pedagogic confusion in the AI output. This decision changed the inputs to V2 and V3.",
@@ -447,7 +447,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "44b03092-20fb-4ab2-85b7-693b7a867332"
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -455,7 +455,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "bd592fdf-e883-4acc-a601-3de2e208e5af",
+      "decision_id": "839b79a8-98e6-479e-b67b-e2942268e669",
       "timestamp": "2025-09-25T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Iterative generation: decision to produce three podcast versions from the revised source rather than accepting a single output. Justification: 'beyond using different podcast versions to correct errors, in each case the AI discussed different examples. Some of these were pedagogically clearer, and some were better explained. Having a choice of audio streams was beneficial.'",
@@ -465,9 +465,9 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374"
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "not_applicable",
@@ -475,7 +475,7 @@
       "publish_level": "verbatim"
     },
     {
-      "decision_id": "d5de5738-6bc7-49d6-ad3a-eea379778b02",
+      "decision_id": "4de8ffd9-7447-4aa4-afc9-e6ce413042ad",
       "timestamp": "2025-10-05T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Error disposition (epoxide): AI suggested an epoxide intermediate in the salbutamol mechanism. No epoxide present in the reaction shown (Figure 2). Decision: EDIT OUT of final podcast. Smith hypothesizes the AI either pulled the intermediate from training data on the standard salbutamol synthesis, or confused an unrelated mention in the source document.",
@@ -485,7 +485,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c"
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -493,7 +493,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "be73821a-5b54-49a0-8af5-d931fc53ef9c",
+      "decision_id": "31eac2d9-7742-4c65-8235-d83399484bee",
       "timestamp": "2025-10-05T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Error disposition (chlorine/chloride): AI referred to 'chlorine' as the leaving group when the correct species is the chloride ion. Decision: KEEP with closed captioning to correct the terminology. Rationale: error is a known AI pattern (citing one literature study showing Copilot makes the same mistake).",
@@ -503,7 +503,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990"
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -511,7 +511,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "1c7cb522-fa9a-4b43-a01e-8157eb5315e6",
+      "decision_id": "abd61989-c729-4bf6-8a86-4f4330263c2a",
       "timestamp": "2025-10-05T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Error disposition (HOMO/LUMO): AI said 'the lowest unoccupied molecular orbital — the HOMO'. HOMO is highest occupied; LUMO is lowest unoccupied. Decision: KEEP with captioned correction. Rationale: surrounding orbital description was excellent in that take; not editable without re-running.",
@@ -521,7 +521,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d"
+        "bf959f9d-951d-4b52-a978-5204879f2483"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -529,7 +529,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "001271c6-42ac-49b3-8620-04b70235e4b0",
+      "decision_id": "334fca72-5fb0-499f-b0af-bedf6e275c24",
       "timestamp": "2025-10-05T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Content curation from multiple AI outputs: combined three podcast audio streams using Audacity, selecting 'best analogies and liveliest discussions, removing errors or confusing descriptions.' Per-segment selection rationale not documented in publication.",
@@ -539,7 +539,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3"
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_partially",
@@ -547,7 +547,7 @@
       "publish_level": "verbatim"
     },
     {
-      "decision_id": "597f1bac-6dcb-40e8-ba83-5d5f73f2db0c",
+      "decision_id": "fbd5e6f4-7b99-45ed-82c7-161178b66a86",
       "timestamp": "2025-10-10T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Transcription tool selection: Panopto (with minor manual editing) chosen over NotebookLM's own transcription. Rationale: 'Google NotebookLM is not very good at creating a transcript from audio input (Panopto generates much more accurate transcripts).'",
@@ -557,7 +557,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82"
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -565,7 +565,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "8af1dd54-d66e-4138-bd4e-81be404e3c17",
+      "decision_id": "8adc6d11-c91a-4d26-9779-7a08ace58d3d",
       "timestamp": "2025-10-12T12:00:00Z",
       "decision_type": "unclassified",
       "description": "Supplementary visual addition: PowerPoint image of salbutamol synthesis (Figure 2 of the paper) created and attached to the audio file. Image is human-authored; no AI involvement. Decision is to address NotebookLM's audio-only limitation.",
@@ -575,7 +575,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6"
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "not_applicable",
@@ -585,286 +585,286 @@
   ],
   "claims": [
     {
-      "claim_id": "421a8639-4ded-420a-a87f-ad52341be062",
+      "claim_id": "d70f62bb-7809-43de-827c-160aecbec85a",
       "text": "Google NotebookLM can make engaging scientific podcasts with limited workload.",
       "location": "Abstract; Conclusions",
       "upstream_decision_ids": [
-        "dc4acb10-f99c-4698-a7b1-f1c18ed18312",
-        "f0b4d192-cb59-4def-9c33-ca55f0e6a6c9",
-        "2babab39-38d4-44a0-9e38-08fcb01e0c95",
-        "bd592fdf-e883-4acc-a601-3de2e208e5af",
-        "001271c6-42ac-49b3-8620-04b70235e4b0"
+        "d26d4881-7897-48b3-82c7-594255c489d7",
+        "0b3dc7b9-47a5-44e5-9849-24aac5708c2a",
+        "9ddb4a1f-784a-4b06-822e-91b2e67bf36e",
+        "839b79a8-98e6-479e-b67b-e2942268e669",
+        "334fca72-5fb0-499f-b0af-bedf6e275c24"
       ],
       "evidence_confidence": "high"
     },
     {
-      "claim_id": "17b8c7f1-23e6-4d1e-95f0-7e273409c027",
+      "claim_id": "16e8952b-73ba-40c6-8fd2-5069d54e02e1",
       "text": "All three podcast outputs were combined with academic curation to create a final output with minimal errors.",
       "location": "Abstract",
       "upstream_decision_ids": [
-        "bd592fdf-e883-4acc-a601-3de2e208e5af",
-        "d5de5738-6bc7-49d6-ad3a-eea379778b02",
-        "be73821a-5b54-49a0-8af5-d931fc53ef9c",
-        "1c7cb522-fa9a-4b43-a01e-8157eb5315e6",
-        "001271c6-42ac-49b3-8620-04b70235e4b0"
+        "839b79a8-98e6-479e-b67b-e2942268e669",
+        "4de8ffd9-7447-4aa4-afc9-e6ce413042ad",
+        "31eac2d9-7742-4c65-8235-d83399484bee",
+        "abd61989-c729-4bf6-8a86-4f4330263c2a",
+        "334fca72-5fb0-499f-b0af-bedf6e275c24"
       ],
       "evidence_confidence": "high"
     },
     {
-      "claim_id": "3a05dca5-17de-494f-b0aa-625cb459682e",
+      "claim_id": "acd9990c-2bd5-4e9e-b6f3-e61024ac7dc7",
       "text": "Students who listened to the podcast reported it helped reinforce learning and was worth listening to.",
       "location": "Abstract; Application of Podcast as Student Support",
       "upstream_decision_ids": [
-        "001271c6-42ac-49b3-8620-04b70235e4b0"
+        "334fca72-5fb0-499f-b0af-bedf6e275c24"
       ],
       "evidence_confidence": "medium"
     },
     {
-      "claim_id": "f3497099-b4b6-442c-a91f-9370e6198261",
+      "claim_id": "789edefd-18e9-47e5-8c34-4d9b5d9225b7",
       "text": "For about 3 h of academic work, a podcast was produced.",
       "location": "Workload Implications",
       "upstream_decision_ids": [
-        "a31ed646-4c83-4034-8f71-86b40fe1186c",
-        "bd592fdf-e883-4acc-a601-3de2e208e5af",
-        "001271c6-42ac-49b3-8620-04b70235e4b0",
-        "597f1bac-6dcb-40e8-ba83-5d5f73f2db0c"
+        "e729dab9-a2a5-43c9-a056-569009c5e6b8",
+        "839b79a8-98e6-479e-b67b-e2942268e669",
+        "334fca72-5fb0-499f-b0af-bedf6e275c24",
+        "fbd5e6f4-7b99-45ed-82c7-161178b66a86"
       ],
       "evidence_confidence": "medium"
     },
     {
-      "claim_id": "c138d3c8-923d-4c44-a3e0-c65f8777c565",
+      "claim_id": "9476c818-40f4-4e26-9334-0c72efa9244f",
       "text": "The AI did very well with background and summary material, struggling more with technically or pedagogically challenging material.",
       "location": "Conclusions",
       "upstream_decision_ids": [
-        "d5de5738-6bc7-49d6-ad3a-eea379778b02",
-        "be73821a-5b54-49a0-8af5-d931fc53ef9c",
-        "1c7cb522-fa9a-4b43-a01e-8157eb5315e6",
-        "a31ed646-4c83-4034-8f71-86b40fe1186c"
+        "4de8ffd9-7447-4aa4-afc9-e6ce413042ad",
+        "31eac2d9-7742-4c65-8235-d83399484bee",
+        "abd61989-c729-4bf6-8a86-4f4330263c2a",
+        "e729dab9-a2a5-43c9-a056-569009c5e6b8"
       ],
       "evidence_confidence": "high"
     }
   ],
   "schema_deltas": [
     {
-      "delta_id": "ce44c5c1-9663-4a27-8eff-a09a906c1ad3",
+      "delta_id": "ad42b3ad-387c-4e71-9eae-e25b7fc31872",
       "proposed_term": "tool_selection_via_ai",
       "proposed_kind": "decision_type",
       "justification": "Decision to use a specific AI tool over alternatives, with rationale.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "095ae5cc-7133-4de7-9e13-57c640ff15ae",
+      "delta_id": "ef932516-3962-480f-aa7b-0a6823bb6136",
       "proposed_term": "source_material_selection",
       "proposed_kind": "decision_type",
       "justification": "Decision about which document(s) to provide as input to an AI tool.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "8e86d380-a488-4a73-9666-325bee9cfc8a",
+      "delta_id": "622b18c6-2e76-49e4-8d0e-dbc390537826",
       "proposed_term": "source_material_revision",
       "proposed_kind": "decision_type",
       "justification": "Modification of input materials to an AI tool after reviewing initial outputs, intended to change subsequent AI behavior.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "f33b48ca-cd51-4fc0-978e-63b92ab71222",
+      "delta_id": "e04a0644-530a-4348-a4c3-9dcd1c1193b6",
       "proposed_term": "prompt_engineering",
       "proposed_kind": "decision_type",
       "justification": "Formulation or reformulation of user prompts to an AI tool, including audience-targeted reframing and prompt-free runs.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "b182d3d4-daac-46b2-a581-0124b477e36c",
+      "delta_id": "ca43d2ec-fdf3-418a-b936-0d570e879f39",
       "proposed_term": "iterative_ai_generation",
       "proposed_kind": "decision_type",
       "justification": "Running the same or similar prompts multiple times to obtain variation in AI output for downstream selection.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "0dc668af-16e0-4154-a076-5049f5005b22",
+      "delta_id": "196d535f-f23c-4573-97b5-594be2f88783",
       "proposed_term": "ai_error_disposition",
       "proposed_kind": "decision_type",
       "justification": "Decision about how to handle a specific identified error in AI output: edit out, keep with correction, keep as-is. Sub-types anticipated: edit_out, keep_with_caption, keep_as_is.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "10c57bee-67de-4646-9ebf-20adabf892d8",
+      "delta_id": "1b198d03-4116-4a0a-bd4d-45ef16854bf4",
       "proposed_term": "content_curation_from_multiple_ai_outputs",
       "proposed_kind": "decision_type",
       "justification": "Selection and combination of segments from multiple AI outputs into a single deliverable.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "5fc2d46d-3beb-496c-9fc8-3e4a62c91cfb",
+      "delta_id": "6650cbbc-64e1-4ae4-8b19-ec00a37412cc",
       "proposed_term": "ai_assisted_transcription",
       "proposed_kind": "decision_type",
       "justification": "Use of an AI or auto-captioning system for transcription, possibly distinct from the AI used for content generation.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "beea3e68-f2e7-4fe9-b98e-4318895f9614",
+      "delta_id": "58201cb2-4ef6-448e-bac3-31fc6075b85d",
       "proposed_term": "human_authored_supplementary_visual",
       "proposed_kind": "decision_type",
       "justification": "Addition of human-authored visual or supporting material to compensate for AI-tool limitations.",
-      "source_audit_id": "d7cf9e3e-842b-448a-ad5c-6f38754110b4",
+      "source_audit_id": "83a54b26-0057-42fb-9ccc-508dc765dcb1",
       "raw_evidence_ids": [
-        "f1b6f4a2-e709-4a6b-83d1-74ff949ba41c",
-        "39e17ea3-41a7-4dbf-9409-348246dc54c0",
-        "6b22658e-8652-49c9-807d-c823d1bbed0c",
-        "a085860a-969d-49f0-a2da-1c65399b940f",
-        "eb5ffbbe-70be-4ed7-9b00-5d5e3edcc374",
-        "44b03092-20fb-4ab2-85b7-693b7a867332",
-        "9bbdfb25-ee14-493d-a4d8-4b32dc3980b3",
-        "b3e56d2e-8c6b-47f3-9d49-fad3d4ccea82",
-        "06d0eff7-b45e-4d4a-86e8-98a68b72c0f6",
-        "5b4fcca5-a886-4aa9-8ac4-129efd1d4c0c",
-        "fdd32b58-f4e0-4e72-92ad-16aea11d5990",
-        "2d6ce11e-f7be-4be8-88e5-ed9ac4e1155d",
-        "69cb477b-7a52-4836-a363-7b3c8051b4ae"
+        "8078a6db-420a-4632-a027-a437828f899f",
+        "3b39843a-7c0f-497e-b9fd-033d647e7ab0",
+        "f26a1ca0-fba4-4887-8c29-8878577e2d98",
+        "29897abf-3fa8-4973-a239-89fb81a02e4f",
+        "3ced3091-2f31-42f7-b627-b6ba645e1d87",
+        "56eb0ebf-883b-42a9-b9df-57a58d444ab7",
+        "d63e32c4-f87d-43c4-ad42-c6a5bbd3c26c",
+        "6fdab139-e5cb-46a1-b365-ef08e13f9e7b",
+        "a7b95431-c86d-41c5-bd2d-e52a5c979e4f",
+        "42809b22-61f5-4f22-ac02-4bb11d0ed9a2",
+        "1e35a1c0-2b4b-42e4-bb21-c46c5d61bb1a",
+        "bf959f9d-951d-4b52-a978-5204879f2483",
+        "630e8f28-9601-4567-bf18-db981860af2a"
       ],
       "proposed_at": "2026-05-11T00:00:00Z",
       "status": "proposed",

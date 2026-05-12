@@ -405,3 +405,45 @@ story implicitly requires. Currently each re-run produces a
 different audit_id; that's fine for development but isn't what a
 journal would cite. File under NEXT.md (d.1 candidate after the
 RO-Crate / PROV-O export).
+
+---
+
+**Q:** Merge the two directories `aivs` and `aivs-test` into one.
+
+**A:** `aivs-test/` was the original staging area (the directory the
+v0.1.0 zips were dropped into and the design conversation MDs lived
+in). Its 8 files were 100% reference material — no working code,
+fully predates the v0.1.0 release that lives at `/storage/kiran-stuff/aivs/`.
+
+Merged contents into the existing `aivs/docs/` subtree, with renames
+to make the files navigable:
+
+- `Brainstorming session.md` → `docs/origins/brainstorming-session.md`
+- `Designing an AI verification system for scientific research.md`
+  → `docs/origins/design-conversation.md`
+- `aivs.zip` → `docs/origins/distribution-archives/aivs-0.1.0.zip`
+- `kiran-triplet.zip` → `docs/origins/distribution-archives/kiran-triplet-audit-0.1.0.zip`
+- `smith audit.zip` → `docs/origins/distribution-archives/smith-audit-0.1.0.zip`
+  (also fixes the space in the filename)
+- `creating-a-podcast-using-...pdf` → `docs/case_studies/smith_2026_jce_main.pdf`
+- `ed5c01652_si_001.pdf` → `docs/case_studies/smith_2026_jce_si.pdf`
+- `CLAUDE.md` (the staging-area draft) — discarded; superseded by
+  `aivs/CLAUDE.md` which has been the canonical project context since
+  the v0.1.0 kickoff.
+
+Added two README.md files explaining what's in each new subtree:
+- `docs/origins/README.md` — names each source MD and notes that
+  `design-conversation.md` is the primary verbatim source of the 7
+  adapter-code files (extracted in commit `a756104`)
+- `docs/case_studies/README.md` — names the PDFs and explains why they
+  are co-located with the audit code (the audit's SourceRef strings
+  point at filenames; co-location is the file-system analog of the
+  VAR reproducibility envelope)
+
+Updated `examples/smith_2026_audit.py` docstring to reference the new
+PDF path. No load-bearing path changes (audit scripts don't read PDFs;
+the references are metadata). All 37 tests pass; all 3 audits run
+clean with integrity OK and counts unchanged.
+
+`aivs-test/` is deleted. The directory listing under
+`/storage/kiran-stuff/` is now one cleaner.

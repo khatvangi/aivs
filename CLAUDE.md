@@ -102,11 +102,20 @@ aivs/
 ├── README.md                                with PROV-AGENT positioning paragraph
 ├── NEXT.md                                  v0.2 candidates, build order
 ├── pyproject.toml                           pydantic>=2.6, hatchling
-├── docs/positioning/prov-agent-alignment.md
+├── docs/
+│   ├── positioning/prov-agent-alignment.md  AIVS ↔ PROV-AGENT
+│   ├── origins/                             design history (primary sources)
+│   │   ├── brainstorming-session.md         early strategic framing
+│   │   ├── design-conversation.md           main design conversation; primary source of the 7 adapter files
+│   │   └── distribution-archives/           original v0.1.0 distribution zips (forensic)
+│   └── case_studies/                        source PDFs cited by audit examples
+│       ├── smith_2026_jce_main.pdf
+│       └── smith_2026_jce_si.pdf
 ├── examples/
 │   ├── minimal_audit.py                     synthetic demo
 │   ├── smith_2026_audit.py                  first real audit
 │   ├── kiran_triplet_proof_audit.py         second real audit
+│   ├── kappa_friction_audit.py              third real audit (v0.2-native)
 │   └── run_claude_code_adapter.py           adapter demo
 ├── schema/audit_artifact-0.1.0.json         JSON Schema export
 ├── src/aivs/

@@ -6,9 +6,11 @@ Support Student Learning of Organic Reaction Mechanisms."
 J. Chem. Educ. 2026, 103, 2077-2084. DOI: 10.1021/acs.jchemed.5c01652
 
 This is a manual audit, not a tool run — there are no adapters yet. Evidence
-is drawn from (a) the paper body text and (b) the Supporting Information
-(ed5c01652_si_001.pdf), both of which were available to the auditor at the
-time of audit. The audit treats the published paper + SI as a Tier-3 capture:
+is drawn from (a) the paper body text and (b) the Supporting Information,
+both of which are co-located with this script at
+``docs/case_studies/smith_2026_jce_main.pdf`` and
+``docs/case_studies/smith_2026_jce_si.pdf``. The audit treats the published
+paper + SI as a Tier-3 capture:
 Smith voluntarily provided full user prompts, full AI outputs, source-document
 provenance, workload measurements, and explicit error-disposition decisions.
 
