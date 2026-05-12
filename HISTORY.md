@@ -329,3 +329,79 @@ Deferred (will close in follow-up sessions, not this one):
 - kappa_friction submission TODOs: references.bib [VERIFY] tags,
   Author Contributions section, REVIEWER_COVER_NOTE.md sync, real
   Zenodo/GitHub deposit. These are manuscript work, not audit work.
+
+---
+
+**Q:** A VAR-framework manuscript was drafted (separate document
+proposing Verifiability + Accountability + Reproducibility as the
+operational standard for AI-integrated publication, with AVIS as the
+verification schema and the IDP project as case study). Make the IDP
+project (kappa_friction) VAR-compliant.
+
+**A:** Operated on `/storage/kiran-stuff/IDP_projects/kappa_friction/`
+(a different repo from `aivs/`; substantive changes to the project,
+not to the AIVS framework). Two project-side files added/modified
+plus one journal entry:
+
+1. **`kappa_friction/VAR_COMPLIANCE.md`** (new, ~430 lines). The
+   project's self-documented compliance record mapping current state
+   against each of the three VAR principles. Cross-references each of
+   the 10 AIVS audit Decisions (D1–D10) to its VAR principle, with the
+   AIVS audit artifact
+   (`examples/out/kappa_friction_audit.json`) as the canonical
+   machine-readable accountability log. Itemises 6 remaining gaps with
+   owner, effort estimate, and file path. Submission-readiness
+   criterion proposed: gaps 1–4 must close (effort ~2–3 hours total);
+   trajectory deposition (gap 5) can be staged post-acceptance.
+
+2. **`kappa_friction/manuscript/JPCB_submission_v3.tex`** modified.
+   Added `\subsection*{Author Contributions}` block under the existing
+   `\section*{Author Information}` section. Identifies B.K. as the
+   responsible author for AI-assisted contributions and points to
+   `VAR_COMPLIANCE.md` as the verification trail. This closes gap #2
+   from the compliance doc (Author Contributions was previously
+   missing — flagged in HISTORY.md 2026-04-25 and audit D9).
+
+3. **`kappa_friction/HISTORY.md`** appended with a 2026-05-11 Q/A
+   entry documenting the compliance pass.
+
+Cross-repo naming reconciliation: the manuscript uses AVIS (AI
+Verification Schema), the implementation uses AIVS (AI-Integrated
+Verification System). Same artifact under two names. Flagged in
+`VAR_COMPLIANCE.md` §5 as a pre-publication consolidation item; no
+code rename this session (would invalidate every committed audit
+artifact).
+
+Git state of IDP_projects (discovered during commit phase):
+- IDP_projects/.git tracks only 26 files: `.planning/*` (roadmap +
+  phase plans) and `integration/*` (the foundation phase). None of
+  the manuscript subprojects (kappa_friction, ensemble_benchmark,
+  mechanism_classifier, idrome_candidates) is tracked in this repo.
+  All four subproject directories show as `??` (untracked) at the
+  parent.
+- This means the VAR_COMPLIANCE.md and the JPCB_submission_v3.tex
+  modification land on disk in kappa_friction/ but are not committed
+  anywhere. They are accessible but not version-controlled.
+- Author's call: (a) initialize a fresh git repo inside
+  kappa_friction/ for the manuscript project; (b) add kappa_friction/
+  to the parent IDP_projects repo as tracked content; (c) leave as
+  is. None is auto-applicable. Recommend (a) since the manuscript
+  project's deposition story (gap #4) is going to want its own
+  git/Zenodo identity anyway.
+
+AIVS side: no framework code changed; the audit ran clean on the
+sanity-check re-run (379 events / 11 evidence / 10 decisions / 7
+claims / 4 deltas, integrity OK). The two `examples/out/*.json`
+files show as modified in `git status` only because the audit
+generates a fresh UUID4 audit_id on each run — the substantive
+structure is unchanged. Not committed; regeneratable from
+`python -m examples.kappa_friction_audit`.
+
+This is a v0.3 design candidate worth noting: audit_id determinism
+(e.g., derive from a hash of audit_target + audit_timestamp +
+meta_schema_version) would make audit artifacts citable at a stable
+hash, which is what the VAR/AVIS "deposited verification trail"
+story implicitly requires. Currently each re-run produces a
+different audit_id; that's fine for development but isn't what a
+journal would cite. File under NEXT.md (d.1 candidate after the
+RO-Crate / PROV-O export).
