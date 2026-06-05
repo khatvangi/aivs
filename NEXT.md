@@ -154,6 +154,37 @@ and the per-delta `raw_evidence_ids` cleanup are **secondary** to the
 privacy fix and remain pending for a later schema bump (v0.3 candidates).
 Both items are still correctly framed; only the prioritisation changed.
 
+## (c.9) Chat Handling Protocol v0.1 — schema candidates
+
+See `docs/chat_handling_protocol.md`. The protocol governs ingestion of AI
+chat history (claude.ai, ChatGPT, Gemini, ...) as Tier-3 hand-curated
+evidence. v0.1 uses `manual_log_adapter`; no new adapter code required.
+
+Three schema candidates surfaced; defer until empirical confirmation from
+real chat audits (first run: kappa_friction, executing externally as of
+2026-05-12 against `/storage/kiran-stuff/IDP_projects/chat-mds/`):
+
+1. New `source_type` value `chat_session` (alongside `claude_code_session`,
+   `git`, `latex_manuscript`, `data_artifact`).
+2. New `decision_type` value `chat_register_curation` — the act of deciding
+   what enters the register is itself an auditable Decision. Same self-
+   referential pattern as `design_decision_documentation_via_qa_log`
+   (HISTORY.md as audit evidence about audit-relevant decisions).
+3. `AuditArtifact.audit_scope` field — declares what is excluded by author
+   scoping, converting absences into positive disclosure. Inverse of the
+   (c.7) `Decision.evidence_fingerprint` candidate: fingerprint narrows
+   *in*, audit_scope declares *out*. Bundle the two in the same v0.2/v0.3
+   schema pass when they land.
+
+Discipline match: same as (c.6) — don't expand the meta-schema for a
+single corpus. Wait for a second project's chat audit (mechanism_classifier
+or VeRNET) before vocabulary promotion.
+
+A v0.3 candidate also drops out: optional `chat_export_adapter` for raw
+chat-export ingestion (JSON / Markdown / HTML) with `redact=True` default,
+mirroring `claude_code_adapter`'s bulk-reference-with-redaction pattern.
+The hand-curated register remains canonical even when an adapter is used.
+
 ## (d) AuditArtifact serialization to RO-Crate / PROV-O
 
 The internal Python representation is stable. Layer an exporter that writes

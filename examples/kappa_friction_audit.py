@@ -404,6 +404,32 @@ def documented_events() -> list[Event]:
             source_ref=_src_manual("HISTORY.md (2026-04-25 block)"),
             tier=CaptureTier.TIER_3,
         ),
+
+        # E11: chat-register curation (2026-05-12)
+        Event(
+            event_id="E_chat_register_curation",
+            timestamp=AUDIT_TS,
+            actor=KIRAN,
+            action="curate_chat_register",
+            target="chat_register.md",
+            content=(
+                "Per AIVS Chat Handling Protocol v0.1, the claude.ai chat "
+                "exports relevant to kappa_friction were curated into "
+                "chat_register.md + chat_register_summary.json under the "
+                "project root. 12 markdown chats inspected (~553 KB); 5 "
+                "material (CR001-CR005), 1 background (CR006), 6 out of "
+                "scope. Material entries cross-reference D5, D7, D8, D9, "
+                "D10. Two candidate missing decisions surfaced (CR001 "
+                "project_genesis_observable_choice, CR002 "
+                "target_journal_selection_for_jpcb) — scoping gaps in this "
+                "audit's coverage of project pre-history, not new "
+                "Decisions promoted here. Privacy discipline: <=80 word "
+                "paraphrased excerpts, no direct quote >15 words, footer "
+                "discloses scoping exclusions."
+            ),
+            source_ref=_src_manual("chat_register.md"),
+            tier=CaptureTier.TIER_3,
+        ),
     ]
 
 
@@ -595,6 +621,24 @@ def build_evidence(
             ),
             confidence=EvidenceConfidence.MEDIUM,
         ),
+        # Chat-register evidence (AIVS Chat Handling Protocol v0.1).
+        Evidence(
+            event_ids=[E("E_chat_register_curation")],
+            description=(
+                "CHAT: hand-curated chat_register.md per AIVS Chat Handling "
+                "Protocol v0.1. Five material entries (CR001-CR005) cross-"
+                "reference D5, D7, D8, D9, D10; CR001/CR002 surface "
+                "candidate missing decisions (project genesis, target "
+                "journal selection) that are scoping gaps in this audit. "
+                "Materiality classification per protocol; privacy "
+                "discipline: paraphrased excerpts <=80 words, no direct "
+                "quote >15 words, footer discloses scoping exclusions. "
+                "Audit-side ingestion is Tier-3 via the (implicit) "
+                "manual_log_adapter; the register itself is the canonical "
+                "Tier-3 substrate."
+            ),
+            confidence=EvidenceConfidence.HIGH,
+        ),
     ]
     return evidence
 
@@ -756,12 +800,14 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "Polyampholyte Models'."
             ),
             actor=KIRAN,
-            evidence_ids=[E("D5: ")],
+            evidence_ids=[E("D5: "), E("CHAT:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Reframing visible end-to-end in JPCB_submission_v3.tex "
                 "and JPCB_DRAFT_v3.md. v1 draft (JPCB_DRAFT.md) marked "
-                "OBSOLETE in CLAUDE.md."
+                "OBSOLETE in CLAUDE.md. Chat-register evidence CR003 / CR005 "
+                "(April 22-23, 2026) corroborates the Ree_CV reframe at "
+                "submission-readiness."
             ),
         )
     )
@@ -810,11 +856,13 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "marked as defensible."
             ),
             actor=KIRAN,
-            evidence_ids=[E("D7: ")],
+            evidence_ids=[E("D7: "), E("CHAT:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Documented in HISTORY.md 2026-04-24 block. This is the "
-                "submission-readiness gate."
+                "submission-readiness gate. Chat-register evidence "
+                "CR003 / CR004 / CR005 corroborates verification scope "
+                "from the April 2026 review chats."
             ),
         )
     )
@@ -839,13 +887,16 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "proposals."
             ),
             actor=KIRAN,
-            evidence_ids=[E("D8: ")],
+            evidence_ids=[E("D8: "), E("CHAT:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Verified in JPCB_submission_v3.tex Supporting Information "
                 "section: '... available from the corresponding author "
                 "upon reasonable request.' No fabricated URL present in "
-                "the .tex."
+                "the .tex. Chat-register evidence CR004 / CR005 records "
+                "the corresponding chat-side discussion of the repository "
+                "placeholder (real Zenodo/GitHub URL required, not a "
+                "find-and-replace)."
             ),
         )
     )
@@ -863,12 +914,14 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "provided by McNeese State University."
             ),
             actor=KIRAN,
-            evidence_ids=[E("D9: ")],
+            evidence_ids=[E("D9: "), E("CHAT:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Verified in JPCB_submission_v3.tex Acknowledgments: "
                 "'This work was supported by internal funds from McNeese "
-                "State University; no external funding was received.'"
+                "State University; no external funding was received.' "
+                "Chat-register evidence CR004 records the chat-side "
+                "discussion of acknowledgments / funding statement scope."
             ),
         )
     )
@@ -888,13 +941,17 @@ def build_decisions(evidence: list[Evidence]) -> list[Decision]:
                 "University, Department of Chemistry and Physics."
             ),
             actor=KIRAN,
-            evidence_ids=[E("D10:")],
+            evidence_ids=[E("D10:"), E("CHAT:")],
             verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
             verification_notes=(
                 "Verified in JPCB_submission_v3.tex lines 11-15. "
                 "Outstanding items per HISTORY.md 2026-04-25: no "
                 "Author Contributions section yet; "
-                "REVIEWER_COVER_NOTE.md author block not yet synced."
+                "REVIEWER_COVER_NOTE.md author block not yet synced. "
+                "Chat-register evidence CR004 / CR005 records the chat-side "
+                "discussion of the author-order change (Hannah first / "
+                "Kiran corresponding) and its propagation through title "
+                "page, cover letter, and Author Contributions."
             ),
         )
     )
@@ -1127,6 +1184,51 @@ def build_schema_deltas(
                 "structure does not yet have a relation primitive."
             ),
         ),
+        (
+            "chat_register_curation",
+            (
+                "The act of curating per-project chat-history evidence "
+                "into a chat_register.md per the AIVS Chat Handling "
+                "Protocol v0.1 (docs/chat_handling_protocol.md). Self-"
+                "referential: the decision about what enters the register "
+                "is itself an auditable Decision (same recursion pattern "
+                "as design_decision_documentation_via_qa_log surfaced in "
+                "the triplet-proof audit). Instantiated here as "
+                "E_chat_register_curation plus the CHAT Evidence "
+                "referenced by D5/D7/D8/D9/D10. Promotion-candidate to "
+                "v0.2 vocabulary once a second project's chat audit "
+                "confirms the pattern."
+            ),
+        ),
+        (
+            "project_genesis_observable_choice",
+            (
+                "Candidate missing decision flagged by chat register "
+                "CR001: the project's original observable (tau from "
+                "scalar end-to-end ACF) was chosen during the project-"
+                "genesis chat that designed the synthetic K/E "
+                "polyampholyte library for the JPCB IDP special issue. "
+                "That choice is upstream of D1 (observable replacement), "
+                "which retracted it. The audit does not surface the "
+                "genesis choice as a Decision because the audit was "
+                "scoped to the v1 -> v3 retraction-and-rewrite cycle "
+                "starting at the bug-discovery moment. A future audit "
+                "extension could backfill this as D0_a, or the gap "
+                "could be disclosed in AuditArtifact.audit_scope (v0.2 "
+                "candidate)."
+            ),
+        ),
+        (
+            "target_journal_selection_for_jpcb",
+            (
+                "Candidate missing decision flagged by chat register "
+                "CR002: the decision to target JPCB rather than another "
+                "venue was made during the parallel JPCB-invitation "
+                "chat, also upstream of D1. Same audit-scoping caveat "
+                "as project_genesis_observable_choice; see CR002 in "
+                "chat_register.md."
+            ),
+        ),
     ]
 
     return [
@@ -1225,7 +1327,25 @@ def build_audit() -> AuditArtifact:
             "Contributions section, REVIEWER_COVER_NOTE.md author block "
             "not yet synced, no real GitHub/Zenodo deposit before "
             "submission. These would surface as new Decisions in a "
-            "post-submission audit."
+            "post-submission audit.\n\n"
+            "Extended 2026-05-12 to ingest the AIVS Chat Handling "
+            "Protocol v0.1 (docs/chat_handling_protocol.md). The "
+            "kappa_friction chat-history corpus (12 chat-mds, ~553 KB "
+            "at /storage/kiran-stuff/IDP_projects/chat-mds/) was "
+            "hand-curated into the project's chat_register.md + "
+            "chat_register_summary.json (Tier-3 manual_log). 5 entries "
+            "judged material (CR001-CR005); CR003/CR004/CR005 link into "
+            "D5/D7/D8/D9/D10 via the new E_chat_register_curation Event "
+            "and CHAT Evidence. CR001 (project genesis) and CR002 "
+            "(target journal selection) are material but cannot be "
+            "linked to existing audit Decisions; they are flagged as "
+            "candidate missing decisions in chat_register.md and "
+            "surfaced as schema_delta proposals "
+            "(project_genesis_observable_choice, "
+            "target_journal_selection_for_jpcb). These reflect a "
+            "scoping choice (the audit covers the v1->v3 cycle and "
+            "submission mechanics; it does not cover project pre-"
+            "history) rather than a defect."
         ),
     )
 

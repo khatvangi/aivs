@@ -447,3 +447,108 @@ clean with integrity OK and counts unchanged.
 
 `aivs-test/` is deleted. The directory listing under
 `/storage/kiran-stuff/` is now one cleaner.
+
+---
+
+## 2026-05-12
+
+**Q:** Add the AIVS Chat Handling Protocol v0.1 (canonical spec drafted in
+this session) to the AIVS repo. Two external Claude Code tasks are running
+in parallel against `/storage/kiran-stuff/IDP_projects/chat-mds/`: session
+`9b49839b9160` (distillation → `distilled_prompts/`) and session
+`0c6755bd519c` (audit → `chat_register.md` + `chat_register_summary.json`).
+Both write outside the AIVS repo. This pass adds only the canonical
+protocol to AIVS itself.
+
+**A:** Placed protocol at `docs/chat_handling_protocol.md`. Faithful to the
+canonical text; converted the `**Section.**`-style paragraph leads to
+proper `##` section headings for repo-doc readability. Sections: Scope,
+Provider-agnostic, Materiality classification, Privacy defaults, Register
+format, Cross-reference discipline, Adapter layer, Schema entries (v0.2
+candidates), Recursion principle, Re-auditability, Disclosure as positive
+statement.
+
+Updated `NEXT.md` with section (c.9), slotted before (d). Records the
+three v0.2 schema candidates surfaced by the protocol:
+
+1. `source_type` value `chat_session`
+2. `decision_type` value `chat_register_curation` (self-referential — the
+   act of curating the register is itself an auditable Decision)
+3. `AuditArtifact.audit_scope` field — inverse of the (c.7)
+   `evidence_fingerprint` candidate (fingerprint narrows in; audit_scope
+   declares out)
+
+Plus the v0.3 candidate: optional `chat_export_adapter` for raw chat-export
+ingestion (JSON / Markdown / HTML) with `redact=True` default. Hand-curated
+register remains canonical even when an adapter is used.
+
+Discipline match recorded in NEXT.md: same as (c.6) — don't expand the
+meta-schema for a single corpus. Wait for a second project's chat audit
+(mechanism_classifier or VeRNET) before vocabulary promotion.
+
+No code changes; no test changes; meta-schema untouched. Tests not re-run
+(no code touched). Uncommitted; awaiting call on single-commit vs.
+wait-and-bundle with the kappa_friction chat audit's downstream audit-script
+refresh.
+
+---
+
+**Q:** Do the chat audit. Deliverable to the world is the proposed
+protocol for AI-tool-usage and the demonstration that VAR works.
+
+**A:** Done end-to-end in this session because the two externally-dispatched
+Claude Code tasks (distillation `9b49839b9160`, audit `0c6755bd519c`) had
+stalled — only the distillation's `distilled_prompts/README.md` was written;
+no actual `chat_register.md` existed. Audited the 12-chat corpus
+(`/storage/kiran-stuff/IDP_projects/chat-mds/`, ~553 KB) myself against
+the AIVS Chat Handling Protocol v0.1.
+
+**Classification:**
+- Material (5): CR001 chat1.md (project genesis), CR002 IDP special-issue
+  scoping, CR003 v3 submission-readiness review (Apr 23), CR004 author
+  order + deadline + repo placeholder (Apr 23-25), CR005 portfolio review
+  (Apr 22, κ slice only per protocol).
+- Background (1): CR006 Usefulness assessment.
+- Out of scope (6): two idrome_candidates chats, one ensemble_benchmark,
+  one mechanism_classifier, one peptide drug-delivery (different special
+  issue), one strongest-project ranking that didn't include κ.
+- Candidate missing decisions (2): CR001 project_genesis_observable_choice,
+  CR002 target_journal_selection_for_jpcb — both upstream of D1 (audit
+  was scoped to the v1→v3 retraction-rewrite cycle, not project pre-
+  history).
+
+**Artifacts landed in `IDP_projects/kappa_friction/`** (separate repo):
+- `chat_register.md` — per protocol template, CR001–CR006 plus out-of-scope
+  table and disclosure footer.
+- `chat_register_summary.json` — machine-readable summary with decision-
+  coverage map (D5/D7/D8/D9/D10 have chat evidence; D1-D4, D6 do not —
+  those happened in Claude Code sessions, already covered via adapter).
+
+**AIVS audit script (`examples/kappa_friction_audit.py`) extended:**
+- New `E_chat_register_curation` Event (timestamp=AUDIT_TS, Tier-3 manual).
+- New `CHAT` Evidence referencing that Event, with description noting the
+  protocol, materiality classification, and privacy discipline.
+- D5, D7, D8, D9, D10 `evidence_ids` now include `E("CHAT:")`.
+  Verification notes per Decision augmented with the corroborating CR
+  identifier(s).
+- Three new `SchemaDelta` proposals: `chat_register_curation` (the
+  curation act itself), `project_genesis_observable_choice` and
+  `target_journal_selection_for_jpcb` (the two candidate missing
+  decisions — surfaced as schema deltas rather than back-filled as
+  Decisions, since the audit scoping is intentional).
+- Audit notes appended with a paragraph recording the 2026-05-12
+  extension.
+
+**Verification (live numbers):**
+- Counts: 380 events (was 379) / 12 evidence (was 11) / 10 decisions
+  (unchanged) / 7 claims (unchanged) / 7 schema_deltas (was 4).
+- Integrity OK.
+- Internal artifact 398,268 bytes; published 393,591 bytes. Delta from
+  prior run reflects only the new Event/Evidence/SchemaDelta payloads.
+- 37/37 tests pass; Smith 2026 and triplet-proof audits re-run clean.
+
+Open: nothing committed yet across the two-Q/A span of this session
+(protocol doc + chat register + audit extension). Single-commit landing
+recommended now since the protocol doc + the kappa_friction demonstration
+form the world-facing deliverable that the user asked for ("show the
+protocol works"). Awaiting explicit "commit" before landing.
