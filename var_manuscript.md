@@ -406,4 +406,4 @@ This section consolidates, for reproducibility, the computational specifics narr
 
 **Declaration of interests:** The authors declare no competing interests.
 
-**Acknowledgments:** [to be added]
+**Acknowledgments:** This work was supported by internal funds from McNeese State University; no external funding was received.
