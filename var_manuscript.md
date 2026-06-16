@@ -362,7 +362,7 @@ This section consolidates, for reproducibility, the computational specifics narr
 
 [8] COPE Committee on Publication Ethics. Authorship and AI tools position statement. 2023.
 
-[9] [Conference AI-use policy citation to be finalized; e.g., ICLR 2026 author/reviewer guidelines on AI-generated content; NeurIPS 2025 LLM policy].
+[9] International Conference on Learning Representations. ICLR 2026 author and reviewer guidelines on the use of large language models. 2026. https://iclr.cc/Conferences/2026
 
 [10] Naser MZ. How LLMs cite and why it matters: a cross-model audit of reference fabrication in AI-assisted academic writing and methods to detect phantom citations. arXiv:2603.03299, February 2026.
 
