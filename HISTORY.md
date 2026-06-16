@@ -552,3 +552,53 @@ Open: nothing committed yet across the two-Q/A span of this session
 recommended now since the protocol doc + the kappa_friction demonstration
 form the world-facing deliverable that the user asked for ("show the
 protocol works"). Awaiting explicit "commit" before landing.
+
+---
+
+## 2026-06-04
+
+**Q:** Run the mechanism_classifier audit (hand-built AIVS audit, mirroring
+the smith / triplet-proof / kappa_friction pattern) for the AIVS-VAR
+manuscript case study, then commit and push to GitHub.
+
+**A:** Full sequence executed. `examples/mechanism_classifier_audit.py`
+landed: three workflow Decisions (dataset curation, six-predictor panel,
+canonical two-step model) plus the five failure dispositions F1-F5
+(truncation defaults, fold-skipping AUROC bias, oracle routing in the
+mechanism-aware ensemble, mixed-eval-set numerical conflation, impossible
+bootstrap probability from 1,000 resamples). Each Decision traces to the
+2026-02-20 code/science/logic audit document or the 2026-03-16 critical
+evaluation. SourceRef line numbers verified live against the Boron working
+copy: 06: 96-100 / 126-139 / 366-385; 04: 93 / 108-110 / 250; 10: 269-270;
+08: 265 / 271-274 / 312.
+
+Counts: 22 events / 8 evidence / 8 decisions / 4 claims / 7 schema_deltas,
+integrity OK. Privacy posture verified live: 0/22 events carry content in
+the published JSON, all 22 retain content_hash.
+
+Committed as `e74011e` together with the previously-staged chat protocol
++ kappa_friction chat-register ingestion in a single bundled commit
+("Chat protocol v0.1 + mechanism_classifier audit + kappa chat ingest").
+14 files changed (+12,636 / -9,793), four new files. The smith and
+triplet-proof JSON byte deltas are entirely audit_id UUID4 churn (the
+d.1 determinism candidate); their structural content is unchanged.
+
+Pushed to a new public GitHub repo: https://github.com/khatvangi/aivs
+(default branch `master`, AGPL-3.0). One-shot via
+`gh repo create khatvangi/aivs --public --source=. --remote=origin --push`.
+GitHub auto-detects license as "Other" because the in-repo LICENSE is the
+SPDX stub; replacing with the full GNU AGPL text would resolve the badge.
+
+Remaining for the Patterns submission (handed off to next session):
+LICENSE stub → full AGPL text; tag `v0.2.1-paper` for Zenodo; enable
+Zenodo→GitHub webhook for khatvangi/aivs; independent Zenodo cycle for
+`khatvangi/idp-mechanism-classifier`; wire both DOIs into Resource
+Availability; honest reframe (manuscript should say "AIVS records these
+five failure categories" not "AIVS automatically caught them" — the
+audit is manual-pattern matching smith / triplet-proof / kappa_friction,
+since v0.1.x is meta-schema only with no adapters yet); fill author
+block placeholders; cover letter; submit Patterns.
+
+Memory updated: `aivs-public-deposit` (reference) and
+`aivs-paper-deliverable-state` (project) capture the public URL and
+remaining task list for cross-session continuity.
