@@ -1,10 +1,10 @@
 # Verifiable, accountable, and reproducible AI-assisted research: the VAR framework and the AIVS verification schema, demonstrated on an end-to-end protein-variant workflow
 
-**Authors:** [to be added]
+**Authors:** Hannah Ribbeck and Boggavarapu Kiran*
 
-**Affiliations:** [to be added]
+**Affiliation:** Department of Chemistry and Physics, McNeese State University, Lake Charles, LA 70609, USA
 
-**Corresponding author:** [to be added]
+**Corresponding author:** *Boggavarapu Kiran (kiran@mcneese.edu)
 
 ---
 
@@ -306,7 +306,7 @@ The strongest version of the claim is this. As more publications emerge from end
 
 ### 5.2 Adoption pathways
 
-Adoption pathways are open. A new venue can implement the framework at launch, as the proposed Augmented Biological & Chemical Discovery (ABCD) platform intends to do. Existing venues can adopt subsets of the framework (citation verification alone, or accountability logging alone) and converge toward full VAR compliance over time. Editorial consortia and learned societies can incorporate VAR principles into shared submission standards. The framework is designed to be implementable incrementally rather than as a discontinuous reform; the AIVS schema is modular and the verification checks are independent. A venue that starts with citation verification and figure forensics, and adds accountability logging later, is implementing VAR at a level appropriate to its operational maturity.
+Adoption pathways are open. A new venue can implement the framework at launch, designing its submission portal and review workflow around AIVS from day one. Existing venues can adopt subsets of the framework (citation verification alone, or accountability logging alone) and converge toward full VAR compliance over time. Editorial consortia and learned societies can incorporate VAR principles into shared submission standards. The framework is designed to be implementable incrementally rather than as a discontinuous reform; the AIVS schema is modular and the verification checks are independent. A venue that starts with citation verification and figure forensics, and adds accountability logging later, is implementing VAR at a level appropriate to its operational maturity.
 
 ---
 
@@ -332,7 +332,7 @@ This section consolidates, for reproducibility, the computational specifics narr
 
 ## Resource availability
 
-**Lead contact.** Requests for further information should be directed to the lead contact, [name and email, to be added].
+**Lead contact.** Requests for further information should be directed to the lead contact, Boggavarapu Kiran (kiran@mcneese.edu).
 
 **Materials availability.** This study did not generate new physical materials.
 
@@ -404,6 +404,6 @@ This section consolidates, for reproducibility, the computational specifics narr
 
 **Author contributions:** [to be added]
 
-**Declaration of interests:** [to be added. The authors' development of the proposed Augmented Biological & Chemical Discovery (ABCD) platform (Section 5.2), which is intended to implement AIVS, is a competing interest and must be declared explicitly here.]
+**Declaration of interests:** The authors declare no competing interests.
 
 **Acknowledgments:** [to be added]
