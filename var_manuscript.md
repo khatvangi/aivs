@@ -350,7 +350,7 @@ This section consolidates, for reproducibility, the computational specifics narr
 
 [2] Li C, Xu W, Yang H, et al. Generative artificial intelligence-empowered virtual evolution of enzyme with the VERnet model. *ACS Catal* 2026;16:7669–7682.
 
-[3] [Author list to be completed from the published version]. Fusion of generative AI techniques and machine learning models to generate and investigate biosignals for glucose sensors. *ACS Omega* 2025;10:57107–57122. doi:10.1021/acsomega.5c05979
+[3] Sharma K, Pandey S, Tiwari PK. Fusion of generative AI techniques and machine learning models to generate and investigate biosignals for glucose sensors. *ACS Omega* 2025;10:57107–57122. doi:10.1021/acsomega.5c05979
 
 [4] Montesinos-Castellanos A, Flores-Tlacuahuac A, López Guajardo EA, Esquivel-Ortiz KM, Morales-Menendez R. Generative AI as an enabler for process intensification. *Ind Eng Chem Res* 2026;65:3389–3405.
 
