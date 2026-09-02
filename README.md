@@ -120,6 +120,13 @@ Regenerate any record with, e.g.:
 python -m examples.mechanism_classifier_audit
 ```
 
+Regeneration reproduces the record's *structure and content* exactly — same
+events, decisions, claims, evidence and schema deltas — but not its bytes:
+`audit_id` and every `event_id` / `evidence_id` / `decision_id` are fresh
+`uuid4()` values on each run. Compare regenerated records by content, not by
+checksum. Making identifiers deterministic (content-addressed rather than
+random) is an open item for a future schema version.
+
 ## Archived releases
 
 | DOI | Resolves to |
