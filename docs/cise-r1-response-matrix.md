@@ -38,11 +38,11 @@ Three gates blocked eleven rows. Blocked rows carried the gate name in the Statu
 
 ## Status
 
-Counts as of 2026-08-30, after gate resolution:
+Counts as of 2026-09-08, after gate resolution and the addition of row 3.10:
 
-- Total rows: 40 (Reviewer 1: 7; Reviewer 2: 5; Reviewer 3: 10; Reviewer 4: 6; Reviewer 5: 11; Associate Editor: 1).
+- Total rows: 41 (Reviewer 1: 7; Reviewer 2: 5; Reviewer 3: 11; Reviewer 4: 6; Reviewer 5: 11; Associate Editor: 1).
 - DRAFTED: 6.
-- OPEN: 33.
+- OPEN: 35.
 - Blocked: 0.
 
 ## Reviewer 1 (major revision)
@@ -80,6 +80,7 @@ Counts as of 2026-08-30, after gate resolution:
 | 3.7 | The manuscript's own AI disclosure names no tool, model or version for drafting, which is what Section 3.1 requires of others | Accept | Disclosure rewritten to name models, versions, dates, and its own capture tier; the AI-use disclosure must also record its own capture tier; manuscript line 105 must be rewritten as an honest-omission gap, because no such deposit exists | OPEN |
 | 3.8 | Self-identified during revision, not raised by a reviewer: manuscript line 105 asserts an access-controlled deposit of agent-session logs that does not exist, and the deposited audit artifact declares capture tier 2 while its supporting session logs are gone | Accept; both corrected. | Line 105 rewritten as an honest-omission gap; the deposited AuditArtifact downgraded to tier 1 with a dated note recording the loss | OPEN |
 | 3.9 | Self-identified during revision, not raised by a reviewer: Section 4.3 states that recomputation from the deposited inputs was verified on 2026-03-16 and reproduced every headline AUROC. That verification ran in the authors' environment, where a hardcoded absolute path into a separate, undeposited project resolved. From the deposit the first script in the chain raised ModuleNotFoundError, so the sentence asserted precisely the property the deposit lacked | Accept; corrected and disclosed. Same class of defect as 3.8. | Section 4.3 final paragraph rewritten to state the limitation and its repair; the feature-computation module vendored into the deposit with provenance and self-containment confirmed from a clean export. No reported number is affected, because that script's outputs were deposited | OPEN |
+| 3.10 | Additional defect identified during revision (not raised by a reviewer); self-identified | Accept, disclosed rather than silently repaired. Two defects were found by our own revision audit. The section 4.3 recomputation claim held only in the authors' environment; from the deposit the first script in the chain failed on a hardcoded path into an undeposited project, so re-execution was broken although no reported number was affected. Separately, the session-log adapter could not locate sessions for any project path containing an underscore, including this paper's own case study, and shipped because the test suite built its fixtures with the same wrong transformation, so a test that reproduced the defect could not fail. | E23 revised to state the re-execution defect and its remedy; new paragraph and Table 2 row added at E19 for the adapter defect | OPEN |
 | 3.C4 | Introduction could be improved | Accept; see row 2.C4 | No separate change | OPEN |
 
 ## Reviewer 4 (major revision)
