@@ -1,15 +1,15 @@
 {
-  "audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
-  "audit_target": "repo:github.com/khatvangi/idp-mechanism-classifier (mechanism_classifier; AIVS-VAR case study)",
+  "audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
+  "audit_target": "repo:github.com/khatvangi/idp-mechanism-classifier (mechanism_classifier; AIVS manuscript case study)",
   "meta_schema_version": "0.2.0",
   "vocabulary_version": "0.1.0",
-  "capture_tier_achieved": 2,
+  "capture_tier_achieved": 1,
   "audit_timestamp": "2026-06-04T00:00:00Z",
   "adapters_used": [
     {
       "adapter_name": "manual",
       "adapter_version": "0.0.0",
-      "capture_tier": 2
+      "capture_tier": 1
     },
     {
       "adapter_name": "git",
@@ -19,7 +19,7 @@
   ],
   "events": [
     {
-      "event_id": "4763019c-a145-4d49-897e-fab9f9d79cea",
+      "event_id": "2326ad5b-941e-4da0-9e59-6d0fb6e97e06",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -36,10 +36,10 @@
         "raw_location": "scripts/mutation/01_build_variant_table.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "740b2ca6-0d69-40be-a72c-a6e8a6d2b583",
+      "event_id": "37def688-955a-49f1-99ed-fef393a32a69",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_advisory",
@@ -56,10 +56,10 @@
         "raw_location": "scripts/mutation/01_build_variant_table.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "288df291-5f1d-4b25-93dc-15beee42dbcc",
+      "event_id": "17116683-27a1-4e94-8984-bd2458c335a1",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -76,10 +76,10 @@
         "raw_location": "data/variants/variants_with_regions_clean.csv",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "e7ca7964-2d91-4754-98f7-a3fb101e2798",
+      "event_id": "d8df5890-b394-4d7d-922c-fa1a77f64234",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -96,10 +96,10 @@
         "raw_location": "scripts/mutation/05_score_predictors.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "d52eb28d-0a4a-4ac3-af24-abc81522183c",
+      "event_id": "95b07b2a-ef68-4644-9c30-b869a55ae9ca",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -116,10 +116,10 @@
         "raw_location": "scripts/mutation/10_two_step_predictor.py",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "506ec7f7-7e65-417d-a885-eee288a9f44f",
+      "event_id": "91b880ff-eb0c-4182-a58d-fdf97360a9a9",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -136,10 +136,10 @@
         "raw_location": "scripts/mutation/06_approach_c_esm2.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "212dfb72-7b09-488f-94f3-bc44f6703c43",
+      "event_id": "aeef3d82-ffb4-4e34-b27d-46e3edd71c31",
       "timestamp": "2026-02-20T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -156,10 +156,10 @@
         "raw_location": "docs/2026-02-20-audit-code-science-logic.md",
         "extracted_at": "2026-02-20T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "c497e496-adb3-4d1f-8e81-231307d6532e",
+      "event_id": "7a167fe3-de41-42ea-9841-c171e744ca28",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -176,10 +176,10 @@
         "raw_location": "data/variants/variants_with_regions_clean.csv",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "9308afdb-5bcb-4dd6-8c5c-3e739c9afcd5",
+      "event_id": "f2dfc440-06ad-445b-a9fe-fbab39a2c32d",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -196,10 +196,10 @@
         "raw_location": "scripts/mutation/04_approach_a_xgboost.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "db9de47f-b0fd-4d45-a2d0-c70a686d851d",
+      "event_id": "c6d4aa27-840b-4aad-b085-1abf37d56b3f",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -216,10 +216,10 @@
         "raw_location": "scripts/mutation/10_two_step_predictor.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "097662d0-80ab-46da-b663-b4727a60f9e6",
+      "event_id": "052db5fe-ae55-4060-9ad6-94bc2bb938d0",
       "timestamp": "2026-02-20T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -236,10 +236,10 @@
         "raw_location": "docs/2026-02-20-audit-code-science-logic.md",
         "extracted_at": "2026-02-20T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "ec72fdfd-cf12-4bae-a942-1df8e2ef3b12",
+      "event_id": "dbe3b003-3858-4f7e-8b69-c6bed91402fb",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -256,10 +256,10 @@
         "raw_location": "data/variants/bootstrap_cis.csv",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "c9a8182c-9bfb-4aa5-a906-9048573b8ee0",
+      "event_id": "abae4773-42ed-4e36-a2d3-190c09967a5e",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -276,10 +276,10 @@
         "raw_location": "scripts/mutation/08_mechanism_aware_model.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "d4fe89ac-e781-4590-b183-90a8cfcc0bf3",
+      "event_id": "c8d8e2bf-c523-4afb-8161-76680b81e9b7",
       "timestamp": "2026-02-20T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -296,10 +296,10 @@
         "raw_location": "docs/2026-02-20-audit-code-science-logic.md",
         "extracted_at": "2026-02-20T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "dd536ab4-7538-4060-8ba9-c8f7b8b73e77",
+      "event_id": "7c7d4a88-6dd4-481d-920d-660526158473",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -316,10 +316,10 @@
         "raw_location": "scripts/mutation/10_two_step_predictor.py",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "47675614-da2a-4c64-a56e-ca23ecdc048f",
+      "event_id": "a304d37a-6c5c-480c-9e7a-2c1699020e40",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -336,10 +336,10 @@
         "raw_location": "docs/paper/results_section5_draft.md",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "60b4f10b-6ab6-48fd-9d95-4a2495c80543",
+      "event_id": "85ff8820-7d26-4199-8046-c95c62cb75bb",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "system",
@@ -356,10 +356,10 @@
         "raw_location": "data/variants/results_two_step.csv",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "bcebc02f-d965-4dd8-8b33-2321380c8a67",
+      "event_id": "bb022f24-d40e-4d15-aaca-857026113e8e",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -376,10 +376,10 @@
         "raw_location": "CRITICAL_EVALUATION.md",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "44f5e669-e30b-43b1-ade6-b3b185c8ec0a",
+      "event_id": "8acbcf3b-325c-40c1-8f44-97e6cf5abee4",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -396,10 +396,10 @@
         "raw_location": "docs/paper/results_section5_draft.md",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "d6a1750e-6d5a-40b5-af6c-051decb29b2f",
+      "event_id": "45519ef1-0608-42ab-9fbc-46c1fa628485",
       "timestamp": "2026-02-10T00:00:00Z",
       "actor": {
         "actor_type": "ai_generative",
@@ -416,10 +416,10 @@
         "raw_location": "scripts/mutation/11_bootstrap_cis.py",
         "extracted_at": "2026-02-10T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "7129e8b6-dba3-4346-b80f-dce7a0abf6f6",
+      "event_id": "3fa92a9e-29cb-49d8-a893-ca224bc97796",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -436,10 +436,10 @@
         "raw_location": "CRITICAL_EVALUATION.md",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     },
     {
-      "event_id": "85bf53ea-dc2e-4af4-9864-ff22551b0597",
+      "event_id": "7cd1c5f7-3a53-44c9-9913-f1d65f5f2896",
       "timestamp": "2026-03-16T00:00:00Z",
       "actor": {
         "actor_type": "human",
@@ -456,84 +456,84 @@
         "raw_location": "docs/paper/results_section5_draft.md",
         "extracted_at": "2026-03-16T00:00:00Z"
       },
-      "tier": 2
+      "tier": 1
     }
   ],
   "evidence": [
     {
-      "evidence_id": "9f99af7a-0192-48d3-9758-623e029a1d78",
+      "evidence_id": "3bd9beb5-0374-4238-be43-4e1157ff2dd3",
       "event_ids": [
-        "4763019c-a145-4d49-897e-fab9f9d79cea",
-        "740b2ca6-0d69-40be-a72c-a6e8a6d2b583",
-        "288df291-5f1d-4b25-93dc-15beee42dbcc"
+        "2326ad5b-941e-4da0-9e59-6d0fb6e97e06",
+        "37def688-955a-49f1-99ed-fef393a32a69",
+        "17116683-27a1-4e94-8984-bd2458c335a1"
       ],
       "description": "Variant-table construction: ClinVar Feb-2026 snapshot, >=1-star, UniProt-canonical cross-check, exclusion of conflicting interpretations and HTT. AI-advisory cross-check script; human committed exclusions.",
       "confidence": "high"
     },
     {
-      "evidence_id": "b3d3e009-6c8f-4da0-a9ae-ec6421d48f87",
+      "evidence_id": "34f6eb75-6500-4eb6-843d-fd29edb73bd5",
       "event_ids": [
-        "e7ca7964-2d91-4754-98f7-a3fb101e2798"
+        "d8df5890-b394-4d7d-922c-fa1a77f64234"
       ],
       "description": "Six-predictor panel (three generative-AI-derived: ESM2, AlphaMissense, EVE; three baselines: CADD, REVEL, PolyPhen-2) scored over the curated variants.",
       "confidence": "high"
     },
     {
-      "evidence_id": "c8f50029-2b94-4e28-b0c9-e51b49e94f0d",
+      "evidence_id": "478d30f3-0d48-4310-bb95-f85d53cd3688",
       "event_ids": [
-        "d52eb28d-0a4a-4ac3-af24-abc81522183c"
+        "95b07b2a-ef68-4644-9c30-b869a55ae9ca"
       ],
       "description": "Canonical model = parsimonious two-step (region membership + raw ESM2 LLR). Region membership is a curated functional annotation, not the held-out mechanism label (contrast F3).",
       "confidence": "high"
     },
     {
-      "evidence_id": "81ae14f4-4fe8-476f-bfee-74be3560a1f4",
+      "evidence_id": "1cbcbaa5-0c74-43f7-99af-abefdb2d52ab",
       "event_ids": [
-        "506ec7f7-7e65-417d-a885-eee288a9f44f",
-        "212dfb72-7b09-488f-94f3-bc44f6703c43",
-        "c497e496-adb3-4d1f-8e81-231307d6532e"
+        "91b880ff-eb0c-4182-a58d-fdf97360a9a9",
+        "aeef3d82-ffb4-4e34-b27d-46e3edd71c31",
+        "7a167fe3-de41-42ea-9841-c171e744ca28"
       ],
       "description": "F1 — Context-window truncation produced fabricated default feature values that silently entered the ESM2 baseline metrics. Caught by the 2026-02-20 audit (finding 3); resolved by excluding the truncation-affected locus.",
       "confidence": "high"
     },
     {
-      "evidence_id": "a74e559d-92d8-4885-a06f-2db14503eb70",
+      "evidence_id": "7cdc0f97-ff01-4c72-9bb1-b4b6028c2dc4",
       "event_ids": [
-        "9308afdb-5bcb-4dd6-8c5c-3e739c9afcd5",
-        "db9de47f-b0fd-4d45-a2d0-c70a686d851d",
-        "097662d0-80ab-46da-b663-b4727a60f9e6",
-        "ec72fdfd-cf12-4bae-a942-1df8e2ef3b12"
+        "f2dfc440-06ad-445b-a9fe-fbab39a2c32d",
+        "c6d4aa27-840b-4aad-b085-1abf37d56b3f",
+        "052db5fe-ae55-4060-9ad6-94bc2bb938d0",
+        "dbe3b003-3858-4f7e-8b69-c6bed91402fb"
       ],
       "description": "F2 — Cross-validation fold skipping combined with metrics computed over the full vector produced silently biased AUROCs on an undisclosed denominator. Caught 2026-02-20 (findings 5, 2); resolved by explicit evaluable-set accounting.",
       "confidence": "high"
     },
     {
-      "evidence_id": "d4781b68-d8dc-43b3-b45d-8dd7d4000d06",
+      "evidence_id": "6ff75b16-a51b-43c2-bdca-1fba922e70e6",
       "event_ids": [
-        "c9a8182c-9bfb-4aa5-a906-9048573b8ee0",
-        "d4fe89ac-e781-4590-b183-90a8cfcc0bf3",
-        "dd536ab4-7538-4060-8ba9-c8f7b8b73e77"
+        "abae4773-42ed-4e36-a2d3-190c09967a5e",
+        "c8d8e2bf-c523-4afb-8161-76680b81e9b7",
+        "7c7d4a88-6dd4-481d-920d-660526158473"
       ],
       "description": "F3 — Oracle (held-out-label) routing plus incomparable score scales in the mechanism-aware ensemble. Caught 2026-02-20 (finding 4); resolved by replacing it with the leakage-free two-step model.",
       "confidence": "high"
     },
     {
-      "evidence_id": "995ac726-a241-4d42-a35e-898cf8924b7e",
+      "evidence_id": "00db5377-1593-4bb8-8582-3093c99f7fda",
       "event_ids": [
-        "47675614-da2a-4c64-a56e-ca23ecdc048f",
-        "60b4f10b-6ab6-48fd-9d95-4a2495c80543",
-        "bcebc02f-d965-4dd8-8b33-2321380c8a67",
-        "44f5e669-e30b-43b1-ade6-b3b185c8ec0a"
+        "a304d37a-6c5c-480c-9e7a-2c1699020e40",
+        "85ff8820-7d26-4199-8046-c95c62cb75bb",
+        "bb022f24-d40e-4d15-aaca-857026113e8e",
+        "8acbcf3b-325c-40c1-8f44-97e6cf5abee4"
       ],
       "description": "F4 — A headline numerical claim conflated two eval sets and two models (0.784 from a 5-feature VUS-included model vs 0.676 ESM2). Caught by the 2026-03-16 numerical audit (section 2.2) by tracing each number to its source CSV; corrected to matched comparisons.",
       "confidence": "high"
     },
     {
-      "evidence_id": "44518e94-2c03-4472-8fd9-0f30c2082345",
+      "evidence_id": "8439d26a-b1ee-4a01-8204-fe79985bbb61",
       "event_ids": [
-        "d6a1750e-6d5a-40b5-af6c-051decb29b2f",
-        "7129e8b6-dba3-4346-b80f-dce7a0abf6f6",
-        "85bf53ea-dc2e-4af4-9864-ff22551b0597"
+        "45519ef1-0608-42ab-9fbc-46c1fa628485",
+        "3fa92a9e-29cb-49d8-a893-ca224bc97796",
+        "7cd1c5f7-3a53-44c9-9913-f1d65f5f2896"
       ],
       "description": "F5 — A bootstrap probability reported as exactly 1.000, below the estimator's resolution floor. Caught by the 2026-03-16 statistical audit (section 3.3); corrected to P < 0.001.",
       "confidence": "high"
@@ -541,7 +541,7 @@
   ],
   "decisions": [
     {
-      "decision_id": "acbfd7fb-8f92-41db-84f8-ac8e8e2dc1cd",
+      "decision_id": "32761434-9380-4bad-b700-965185e34def",
       "timestamp": "2026-02-10T00:00:00Z",
       "decision_type": "unclassified",
       "description": "Curated the evaluation dataset: ClinVar Feb-2026 (>=1-star), UniProt-canonical position validation, and documented exclusions (conflicting interpretations; HTT, see F1). Clean-label primary set = 778 variants (653 in evaluable genes); VUS-included sensitivity set = 3,102.",
@@ -551,7 +551,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "9f99af7a-0192-48d3-9758-623e029a1d78"
+        "3bd9beb5-0374-4238-be43-4e1157ff2dd3"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -559,7 +559,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "bfa51be5-c230-420e-9cdb-64ac8cb6bb0d",
+      "decision_id": "4f149e89-c364-4347-a4f1-5e48ad00f2b4",
       "timestamp": "2026-02-10T00:00:00Z",
       "decision_type": "unclassified",
       "description": "Selected and scored six independent variant-effect predictors to test convergence on the IDP gain-of-toxic-function blind spot.",
@@ -569,7 +569,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "b3d3e009-6c8f-4da0-a9ae-ec6421d48f87"
+        "34f6eb75-6500-4eb6-843d-fd29edb73bd5"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_partially",
@@ -577,7 +577,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "22f2140c-422f-43cd-bfdf-ed41ec06ab8f",
+      "decision_id": "aa938d29-952c-4b4c-92d9-8c7849704aca",
       "timestamp": "2026-03-16T00:00:00Z",
       "decision_type": "unclassified",
       "description": "Chose the two-feature two-step model as canonical to avoid the oracle-routing and scale-mixing problems found in the mechanism-aware ensemble (F3).",
@@ -587,7 +587,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "c8f50029-2b94-4e28-b0c9-e51b49e94f0d"
+        "478d30f3-0d48-4310-bb95-f85d53cd3688"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -595,43 +595,43 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "0809fe27-91ab-4602-b207-c2a043040a46",
+      "decision_id": "72b9c626-aa32-41d5-a781-dc1af96652f4",
       "timestamp": "2026-02-20T00:00:00Z",
       "decision_type": "unclassified",
-      "description": "F1: Fabricated default features for out-of-window positions. The AI-generated ESM2 script filled truncated positions with zero/default features and scored them as real, inflating the baseline. Disposition: locus excluded; metrics recomputed.",
+      "description": "F1: Fabricated default features for out-of-window positions. The AI-generated ESM2 script filled truncated positions with zero/default features and scored them as real, inflating the baseline. Disposition: locus excluded; metrics recomputed. 06_approach_c_esm2.py is superseded IN PART only: its LOGO-CV block (lines 189-226, 366-385) is superseded by 10_two_step_predictor.py, but its feature-generation block (lines 56-139, 310-319) is NOT superseded — it is the sole producer of data/variants/esm2_features.csv, which is canonical input to seventeen downstream files including every headline output and all thirteen figures. That file is canonical conditional on the HTT exclusion above, because 170 of its rows carry the fabricated defaults.",
       "actor": {
         "actor_type": "human",
         "identifier": "author-1",
         "model_metadata": null
       },
       "evidence_ids": [
-        "81ae14f4-4fe8-476f-bfee-74be3560a1f4"
+        "1cbcbaa5-0c74-43f7-99af-abefdb2d52ab"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
-      "verification_notes": "Re-run after exclusion; HTT no longer in results_two_step.csv (verified 2026-03-16).",
+      "verification_notes": "Re-run after exclusion; HTT no longer in results_two_step.csv (verified 2026-03-16). Partial-supersession scope re-verified 2026-09-01: 06_approach_c_esm2.py:317-319 is the only writer of esm2_features.csv, and seventeen files read it.",
       "publish_level": "summary"
     },
     {
-      "decision_id": "7dd800af-814d-416c-a550-192047878891",
+      "decision_id": "c838df95-4fda-483d-99a9-53ff0085bcff",
       "timestamp": "2026-02-20T00:00:00Z",
       "decision_type": "unclassified",
-      "description": "F2: Silently biased AUROCs from skipped CV folds. Disposition: evaluable set defined and disclosed; denominators reported; per-gene estimates with <5 minority-class variants flagged as illustrative.",
+      "description": "F2: Silently biased AUROCs from skipped CV folds. Disposition: evaluable set defined and disclosed; denominators reported; per-gene estimates with <5 minority-class variants flagged as illustrative. 04_approach_a_xgboost.py is superseded IN FULL and withdrawn from the paper-facing path: no script reads any of its outputs (results_approach_a.csv, predictions_approach_a.csv, feature_importance_a.csv have zero consumers), so nothing downstream depends on it. This is a stronger disposition than F1's: 04 is withdrawn entirely, whereas 06 is superseded only in its cross-validation block and remains canonical as a feature generator. The canonical paper-facing predictor is 10_two_step_predictor.py.",
       "actor": {
         "actor_type": "human",
         "identifier": "author-1",
         "model_metadata": null
       },
       "evidence_ids": [
-        "a74e559d-92d8-4885-a06f-2db14503eb70"
+        "7cdc0f97-ff01-4c72-9bb1-b4b6028c2dc4"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
-      "verification_notes": "Evaluable counts (653/14 clean; 3,102 VUS) verified against bootstrap_cis.csv 2026-03-16.",
+      "verification_notes": "Evaluable counts (653/14 clean; 3,102 VUS) verified against bootstrap_cis.csv 2026-03-16. Full withdrawal of 04 re-verified 2026-09-01 by grep: its three output CSVs have no consumer in scripts/.",
       "publish_level": "summary"
     },
     {
-      "decision_id": "4a4691a7-8e9a-413b-8d53-a23a5c77dbc5",
+      "decision_id": "42bc90a3-0914-4823-a8d9-4d43421e71cc",
       "timestamp": "2026-02-20T00:00:00Z",
       "decision_type": "unclassified",
       "description": "F3: Oracle leakage in the mechanism-aware ensemble. Disposition: ensemble demoted to exploratory; canonical model uses no held-out label.",
@@ -641,7 +641,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "d4781b68-d8dc-43b3-b45d-8dd7d4000d06"
+        "6ff75b16-a51b-43c2-bdca-1fba922e70e6"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -649,7 +649,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "d8dfef81-b213-400d-83a6-85d2b78f12c3",
+      "decision_id": "5e59169c-911b-4846-8bfd-5ce3c2b138b7",
       "timestamp": "2026-03-16T00:00:00Z",
       "decision_type": "unclassified",
       "description": "F4: Mixed-eval-set numerical claim drawn from the wrong CSV/model. Disposition: every headline number re-traced to a specific cell in a canonical output file; matched (same set, same model) comparisons substituted.",
@@ -659,7 +659,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "995ac726-a241-4d42-a35e-898cf8924b7e"
+        "00db5377-1593-4bb8-8582-3093c99f7fda"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -667,7 +667,7 @@
       "publish_level": "summary"
     },
     {
-      "decision_id": "ad12ce3b-be4e-4902-abb7-905896a3ab18",
+      "decision_id": "e8974931-83af-41f1-98e2-12e9e97583fc",
       "timestamp": "2026-03-16T00:00:00Z",
       "decision_type": "unclassified",
       "description": "F5: Impossible bootstrap probability. Disposition: claim restated at the estimator's resolution floor (P < 0.001).",
@@ -677,7 +677,7 @@
         "model_metadata": null
       },
       "evidence_ids": [
-        "44518e94-2c03-4472-8fd9-0f30c2082345"
+        "8439d26a-b1ee-4a01-8204-fe79985bbb61"
       ],
       "schema_gap": "novel_pattern",
       "verification_status": "verified_independently",
@@ -687,145 +687,145 @@
   ],
   "claims": [
     {
-      "claim_id": "8b30b71b-db7e-412a-8e83-2ba1faf8de26",
-      "text": "A manuscript-anchored AIVS audit caught five categories of failure during prospective preparation that disclosure-only review would have missed.",
+      "claim_id": "406d3200-afc9-4c2f-9ac6-aea5d3e10ae7",
+      "text": "A manuscript-anchored AIVS audit caught five categories of failure during retrospective audit that disclosure-only review would have missed.",
       "location": "Results, section 4.2",
       "upstream_decision_ids": [
-        "0809fe27-91ab-4602-b207-c2a043040a46",
-        "7dd800af-814d-416c-a550-192047878891",
-        "4a4691a7-8e9a-413b-8d53-a23a5c77dbc5",
-        "d8dfef81-b213-400d-83a6-85d2b78f12c3",
-        "ad12ce3b-be4e-4902-abb7-905896a3ab18"
+        "72b9c626-aa32-41d5-a781-dc1af96652f4",
+        "c838df95-4fda-483d-99a9-53ff0085bcff",
+        "42bc90a3-0914-4823-a8d9-4d43421e71cc",
+        "5e59169c-911b-4846-8bfd-5ce3c2b138b7",
+        "e8974931-83af-41f1-98e2-12e9e97583fc"
       ],
       "evidence_confidence": "high"
     },
     {
-      "claim_id": "7ed7b7e1-1ec8-48b2-ac50-bf4a8780c1a4",
+      "claim_id": "a7ebe1d0-4655-4fc5-8de6-74805b846029",
       "text": "The clean-label two-step model reaches overall AUROC 0.873 vs 0.748 for ESM2 alone (delta +0.125).",
       "location": "Results, section 4.4",
       "upstream_decision_ids": [
-        "acbfd7fb-8f92-41db-84f8-ac8e8e2dc1cd",
-        "22f2140c-422f-43cd-bfdf-ed41ec06ab8f",
-        "0809fe27-91ab-4602-b207-c2a043040a46",
-        "7dd800af-814d-416c-a550-192047878891",
-        "d8dfef81-b213-400d-83a6-85d2b78f12c3"
+        "32761434-9380-4bad-b700-965185e34def",
+        "aa938d29-952c-4b4c-92d9-8c7849704aca",
+        "72b9c626-aa32-41d5-a781-dc1af96652f4",
+        "c838df95-4fda-483d-99a9-53ff0085bcff",
+        "5e59169c-911b-4846-8bfd-5ce3c2b138b7"
       ],
       "evidence_confidence": "high"
     },
     {
-      "claim_id": "1703879e-3912-4781-894c-fa06b7db9147",
+      "claim_id": "f9f747cc-88cc-4ee0-922e-8273bb714327",
       "text": "ESM2 fails on the gain-of-function non-amyloid subset (AUROC 0.493); curated region context rescues it to 0.822 (delta +0.329).",
       "location": "Results, section 4.4",
       "upstream_decision_ids": [
-        "bfa51be5-c230-420e-9cdb-64ac8cb6bb0d",
-        "22f2140c-422f-43cd-bfdf-ed41ec06ab8f",
-        "4a4691a7-8e9a-413b-8d53-a23a5c77dbc5"
+        "4f149e89-c364-4347-a4f1-5e48ad00f2b4",
+        "aa938d29-952c-4b4c-92d9-8c7849704aca",
+        "42bc90a3-0914-4823-a8d9-4d43421e71cc"
       ],
       "evidence_confidence": "high"
     },
     {
-      "claim_id": "77d07976-6536-4f56-b1ac-961c6f1aef80",
+      "claim_id": "3e991495-2f10-49ee-94f1-082ab0daac55",
       "text": "The two-step gain over ESM2 is significant at P < 0.001.",
       "location": "Results, section 4.4",
       "upstream_decision_ids": [
-        "22f2140c-422f-43cd-bfdf-ed41ec06ab8f",
-        "ad12ce3b-be4e-4902-abb7-905896a3ab18"
+        "aa938d29-952c-4b4c-92d9-8c7849704aca",
+        "e8974931-83af-41f1-98e2-12e9e97583fc"
       ],
       "evidence_confidence": "high"
     }
   ],
   "schema_deltas": [
     {
-      "delta_id": "7e3b7731-d9a9-4dde-bd69-89a18f191b30",
+      "delta_id": "2ce2833a-644c-4004-a190-08f716e19956",
       "proposed_term": "context_window_truncation_handling",
       "proposed_kind": "decision_type",
       "justification": "How out-of-window positions are scored when a model's context is shorter than the sequence; recurring source of fabricated default features (F1).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "81ae14f4-4fe8-476f-bfee-74be3560a1f4"
+        "1cbcbaa5-0c74-43f7-99af-abefdb2d52ab"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "f71ab4a9-dabb-4a20-b663-6fdf35876339",
+      "delta_id": "bdec0ead-38f4-47dc-b2e8-51fcd07162ea",
       "proposed_term": "cv_fold_exclusion_accounting",
       "proposed_kind": "decision_type",
       "justification": "Disclosure of which folds/genes were skipped and on what denominator a cross-validated metric is computed (F2).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "a74e559d-92d8-4885-a06f-2db14503eb70"
+        "7cdc0f97-ff01-4c72-9bb1-b4b6028c2dc4"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "667650c0-e1fd-422d-9c77-e25a10e5b711",
+      "delta_id": "c907c802-96e9-42e1-96b1-3cfda619afe2",
       "proposed_term": "oracle_routing_in_ensemble",
       "proposed_kind": "decision_type",
       "justification": "Use of a held-out target label to route inputs within an ensemble — a leakage pattern distinct from feature leakage (F3).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "d4781b68-d8dc-43b3-b45d-8dd7d4000d06"
+        "6ff75b16-a51b-43c2-bdca-1fba922e70e6"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "05fc03c4-25b5-45a0-85af-2a5f87ac295c",
+      "delta_id": "6e0d7779-b9a1-49af-9bcc-67f92135ead8",
       "proposed_term": "eval_set_provenance_for_numerical_claims",
       "proposed_kind": "decision_type",
       "justification": "Binding each reported number to a specific eval set, model, and output file, so mixed-set comparisons are detectable (F4).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "995ac726-a241-4d42-a35e-898cf8924b7e"
+        "00db5377-1593-4bb8-8582-3093c99f7fda"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "4a570a63-6759-4b8a-8179-d0ebd9bf8bff",
+      "delta_id": "b6aabf1a-b3da-4236-bca4-bcaebe47e1b7",
       "proposed_term": "bootstrap_resolution_floor",
       "proposed_kind": "decision_type",
       "justification": "Reporting resampled probabilities no finer than 1/n_resamples (F5).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "44518e94-2c03-4472-8fd9-0f30c2082345"
+        "8439d26a-b1ee-4a01-8204-fe79985bbb61"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "b7205768-f819-4029-9797-fcfe13ffa1f4",
+      "delta_id": "e6c575ec-aca9-4675-80e7-722ef8de7d8e",
       "proposed_term": "dataset_exclusion_rationale",
       "proposed_kind": "decision_type",
       "justification": "Curated, documented exclusion of loci/variants with stated grounds (W1).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "9f99af7a-0192-48d3-9758-623e029a1d78"
+        "3bd9beb5-0374-4238-be43-4e1157ff2dd3"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     },
     {
-      "delta_id": "f9779e2d-291b-47d9-9905-5f2780afd739",
+      "delta_id": "170ec5f6-9964-4e02-ba2f-13f387fe7c5c",
       "proposed_term": "canonical_model_selection",
       "proposed_kind": "decision_type",
       "justification": "Designation of one paper-facing model among exploratory alternatives, with the leakage/parsimony rationale (W3).",
-      "source_audit_id": "df8ec271-f26b-44f2-acfd-6bf87a8d7ed8",
+      "source_audit_id": "6c5695a0-a0ee-48aa-a6ff-6155e3b3e5ef",
       "raw_evidence_ids": [
-        "c8f50029-2b94-4e28-b0c9-e51b49e94f0d"
+        "478d30f3-0d48-4310-bb95-f85d53cd3688"
       ],
       "proposed_at": "2026-06-04T00:00:00Z",
       "status": "proposed",
       "merged_into": null
     }
   ],
-  "notes": "Manual retrospective AIVS audit of the mechanism_classifier workflow, faithful to two project audit documents (docs/2026-02-20-audit-code-science-logic.md; CRITICAL_EVALUATION.md, 2026-03-16) and the implementing code and canonical outputs. No adapters exist yet, so evidence was extracted by hand; capture tier 2 reflects VCS history plus the audit records (Claude Code session logs exist but are not yet adapter-ingested, so tier 3 is not claimed). The v0.1 vocabulary is empty by design; every decision is unclassified with a novel-pattern schema gap and a corresponding SchemaDelta."
+  "notes": "Manual retrospective AIVS audit of the mechanism_classifier workflow, faithful to two project audit documents (docs/2026-02-20-audit-code-science-logic.md; CRITICAL_EVALUATION.md, 2026-03-16) and the implementing code and canonical outputs. Evidence was extracted by hand and the capture tier is 1 — VCS history plus the author-written audit records — not 2. Tier 2 would require the AI session logs. Those logs existed when this audit was constructed on 2026-06-04 and were never adapter-ingested; on 2026-08-27 they were verified absent, having been expired by Claude Code default session retention with no cleanupPeriodDays configured. The primary evidence for an audit about AI provenance was destroyed by the default retention policy of the tool that produced it. This is reported as an honest-omission gap, not worked around. The v0.1 vocabulary is empty by design; every decision is unclassified with a novel-pattern schema gap and a corresponding SchemaDelta."
 }

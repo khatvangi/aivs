@@ -2,13 +2,15 @@
 Retrospective AIVS audit of the mechanism_classifier workflow:
 
     IDP disease-mechanism prediction (six AI-derived variant predictors over
-    ClinVar variants in IDP-associated genes), the case study in the AIVS-VAR
+    ClinVar variants in IDP-associated genes), the case study in the AIVS
     manuscript.
 
-This is a MANUAL audit, not an autonomous tool run — AIVS v0.1.x ships the
-meta-schema only and has no adapters yet, so (exactly as in the smith_2026,
-kiran_triplet_proof, and kappa_friction examples) evidence is extracted by
-hand and encoded against the schema. The audit is faithful to the documented
+This is a MANUAL audit, not an autonomous tool run. AIVS ships three evidence
+adapters (claude_code, aider, codex) under src/aivs/adapters/, but none was
+used here: the Claude Code session logs this workflow produced were expired by
+default retention before they could be ingested (see the artifact notes below).
+So, exactly as in the smith_2026, kiran_triplet_proof and kappa_friction
+examples, evidence is extracted by hand and encoded against the schema. The audit is faithful to the documented
 workflow and does not extrapolate beyond it. Every Decision, Evidence, and
 Claim traces to a real artifact in the project repository:
 
@@ -106,7 +108,7 @@ def ev(
     adapter: str,
     location: str,
     when: datetime,
-    tier: CaptureTier = CaptureTier.TIER_2,
+    tier: CaptureTier = CaptureTier.TIER_1,
 ) -> Event:
     return Event(
         timestamp=when,
@@ -264,12 +266,23 @@ def build_audit() -> AuditArtifact:
             "F1: Fabricated default features for out-of-window positions. The "
             "AI-generated ESM2 script filled truncated positions with "
             "zero/default features and scored them as real, inflating the "
-            "baseline. Disposition: locus excluded; metrics recomputed."),
+            "baseline. Disposition: locus excluded; metrics recomputed. "
+            "06_approach_c_esm2.py is superseded IN PART only: its LOGO-CV "
+            "block (lines 189-226, 366-385) is superseded by "
+            "10_two_step_predictor.py, but its feature-generation block "
+            "(lines 56-139, 310-319) is NOT superseded — it is the sole "
+            "producer of data/variants/esm2_features.csv, which is canonical "
+            "input to seventeen downstream files including every headline "
+            "output and all thirteen figures. That file is canonical "
+            "conditional on the HTT exclusion above, because 170 of its rows "
+            "carry the fabricated defaults."),
         actor=HUMAN, evidence_ids=[f1_evid.evidence_id],
         verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
         verification_notes=(
             "Re-run after exclusion; HTT no longer in results_two_step.csv "
-            "(verified 2026-03-16).")))
+            "(verified 2026-03-16). Partial-supersession scope re-verified "
+            "2026-09-01: 06_approach_c_esm2.py:317-319 is the only writer of "
+            "esm2_features.csv, and seventeen files read it.")))
 
     # --- F2: skipped-fold bias / undisclosed denominator ---------------------
     f2_gen = add_ev(ev(
@@ -311,12 +324,22 @@ def build_audit() -> AuditArtifact:
             "F2: Silently biased AUROCs from skipped CV folds. Disposition: "
             "evaluable set defined and disclosed; denominators reported; "
             "per-gene estimates with <5 minority-class variants flagged as "
-            "illustrative."),
+            "illustrative. 04_approach_a_xgboost.py is superseded IN FULL and "
+            "withdrawn from the paper-facing path: no script reads any of its "
+            "outputs (results_approach_a.csv, predictions_approach_a.csv, "
+            "feature_importance_a.csv have zero consumers), so nothing "
+            "downstream depends on it. This is a stronger disposition than "
+            "F1's: 04 is withdrawn entirely, whereas 06 is superseded only in "
+            "its cross-validation block and remains canonical as a feature "
+            "generator. The canonical paper-facing predictor is "
+            "10_two_step_predictor.py."),
         actor=HUMAN, evidence_ids=[f2_evid.evidence_id],
         verification_status=VerificationStatus.VERIFIED_INDEPENDENTLY,
         verification_notes=(
             "Evaluable counts (653/14 clean; 3,102 VUS) verified against "
-            "bootstrap_cis.csv 2026-03-16.")))
+            "bootstrap_cis.csv 2026-03-16. Full withdrawal of 04 re-verified "
+            "2026-09-01 by grep: its three output CSVs have no consumer in "
+            "scripts/.")))
 
     # --- F3: oracle routing in mechanism-aware ensemble ----------------------
     f3_gen = add_ev(ev(
@@ -439,7 +462,7 @@ def build_audit() -> AuditArtifact:
     claims.append(Claim(
         text=(
             "A manuscript-anchored AIVS audit caught five categories of failure "
-            "during prospective preparation that disclosure-only review would "
+            "during retrospective audit that disclosure-only review would "
             "have missed."),
         location="Results, section 4.2",
         upstream_decision_ids=[f1.decision_id, f2.decision_id, f3.decision_id,
@@ -468,13 +491,13 @@ def build_audit() -> AuditArtifact:
         evidence_confidence=EvidenceConfidence.HIGH))
 
     audit = AuditArtifact(
-        audit_target=f"repo:{REPO} (mechanism_classifier; AIVS-VAR case study)",
+        audit_target=f"repo:{REPO} (mechanism_classifier; AIVS manuscript case study)",
         vocabulary_version="0.1.0",
-        capture_tier_achieved=CaptureTier.TIER_2,
+        capture_tier_achieved=CaptureTier.TIER_1,
         audit_timestamp=AUDIT_TS,
         adapters_used=[
             AdapterUsage(adapter_name="manual", adapter_version="0.0.0",
-                         capture_tier=CaptureTier.TIER_2),
+                         capture_tier=CaptureTier.TIER_1),
             AdapterUsage(adapter_name="git", adapter_version="0.0.0",
                          capture_tier=CaptureTier.TIER_1),
         ],
@@ -487,10 +510,16 @@ def build_audit() -> AuditArtifact:
             "workflow, faithful to two project audit documents "
             "(docs/2026-02-20-audit-code-science-logic.md; "
             "CRITICAL_EVALUATION.md, 2026-03-16) and the implementing code and "
-            "canonical outputs. No adapters exist yet, so evidence was "
-            "extracted by hand; capture tier 2 reflects VCS history plus the "
-            "audit records (Claude Code session logs exist but are not yet "
-            "adapter-ingested, so tier 3 is not claimed). The v0.1 vocabulary "
+            "canonical outputs. Evidence was extracted by hand and the "
+            "capture tier is 1 — VCS history plus the author-written audit "
+            "records — not 2. Tier 2 would require the AI session logs. Those "
+            "logs existed when this audit was constructed on 2026-06-04 and "
+            "were never adapter-ingested; on 2026-08-27 they were verified "
+            "absent, having been expired by Claude Code default session "
+            "retention with no cleanupPeriodDays configured. The primary "
+            "evidence for an audit about AI provenance was destroyed by the "
+            "default retention policy of the tool that produced it. This is "
+            "reported as an honest-omission gap, not worked around. The v0.1 vocabulary "
             "is empty by design; every decision is unclassified with a "
             "novel-pattern schema gap and a corresponding SchemaDelta."),
     )
