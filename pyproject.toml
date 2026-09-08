@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "aivs"
-version = "0.1.0"
+version = "0.2.2"
 description = "AI-Integrated Verification System: descriptive audit of AI-mediated research workflows"
 readme = "README.md"
 license = "AGPL-3.0-or-later"
