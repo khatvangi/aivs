@@ -42,6 +42,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterator, Literal, Optional
@@ -63,6 +64,21 @@ def _hash_content(s: str) -> str:
     so redact-mode adapters can pre-compute hashes before constructing
     Events with ``content=None``."""
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
+
+
+# Claude Code maps each of "/", "_" and "." to "-" when deriving the session
+# directory name from a project path. Replacing only "/" (as this adapter did
+# before 2026-09-08) silently fails for any project path containing an
+# underscore or a dot, returning a directory that does not exist.
+_SESSION_DIR_SEPARATORS = re.compile(r"[/_.]")
+
+
+def _session_dir_name(absolute_path) -> str:
+    """Derive the Claude Code session directory name for an absolute path.
+
+    Module-level so the mapping is regression-testable without constructing
+    an adapter or touching the filesystem."""
+    return _SESSION_DIR_SEPARATORS.sub("-", str(absolute_path))
 
 
 # Event types we know about and intentionally drop before type-dispatch.
@@ -145,13 +161,21 @@ class ClaudeCodeAdapter(EvidenceAdapter):
         """Translate /storage/kiran-stuff/triplet-proof to
         ~/.claude/projects/-storage-kiran-stuff-triplet-proof.
 
+        "_" and "." collapse to "-" as well; see _session_dir_name. Before
+        2026-09-08 this replaced only "/", so the adapter could never locate
+        sessions for any project whose path contained an underscore or a dot,
+        including mechanism_classifier — this package's own case study —
+        whose path /storage/kiran-stuff/IDP_projects/mechanism_classifier
+        maps to -storage-kiran-stuff-IDP-projects-mechanism-classifier, not
+        to -storage-kiran-stuff-IDP_projects-mechanism_classifier.
+
         When ``session_dir_override`` is set, returns that path
         directly — used for renamed projects whose on-disk path no
         longer matches the path Claude Code originally hashed."""
         if self.session_dir_override is not None:
             return self.session_dir_override
         absolute = project_path.resolve()
-        hash_name = str(absolute).replace("/", "-")
+        hash_name = _session_dir_name(absolute)
         return self._projects_root() / hash_name
 
     def detect(self, project_path: Path) -> bool:

@@ -15,7 +15,7 @@ from aivs.adapters import (
     discover_adapters,
     registered_adapters,
 )
-from aivs.adapters.claude_code import ClaudeCodeAdapter
+from aivs.adapters.claude_code import ClaudeCodeAdapter, _session_dir_name
 from aivs.adapters.aider import AiderAdapter
 from aivs.adapters.codex import CodexAdapter
 from aivs.meta_schema import ActorType
@@ -37,7 +37,12 @@ def _write_cc_fixture(tmp_path: Path) -> tuple[Path, Path]:
     project = tmp_path / "myproject"
     project.mkdir()
     claude_home = tmp_path / "fake_claude_home"
-    sessions = claude_home / "projects" / str(project.resolve()).replace("/", "-")
+    # must use the same collapsing rule Claude Code uses ("/", "_" and "."
+    # all map to "-"). This fixture previously hardcoded a bare "/"
+    # replacement, which mirrored the adapter bug fixed on 2026-09-08 and
+    # is why the suite could not detect it: pytest tmp_path names contain
+    # underscores, so fixture and adapter agreed only while both were wrong.
+    sessions = claude_home / "projects" / _session_dir_name(project.resolve())
     sessions.mkdir(parents=True)
 
     session_id = "abc12345-1234-1234-1234-123456789abc"
@@ -244,7 +249,7 @@ def test_claude_code_session_dir_override(tmp_path):
     # at a path that bears no relation to the fixture's "project_path".
     project, claude_home = _write_cc_fixture(tmp_path)
     real_session_dir = (
-        claude_home / "projects" / str(project.resolve()).replace("/", "-")
+        claude_home / "projects" / _session_dir_name(project.resolve())
     )
     fake_project = tmp_path / "renamed_after_sessions"
     fake_project.mkdir()
@@ -288,3 +293,65 @@ def test_discover_adapters_finds_claude_code(tmp_path):
     discovered = discover_adapters(project)
     # No assertions about content; just confirm it returns a list.
     assert isinstance(discovered, list)
+
+
+# --- Session-directory name derivation (regression) ---------------------
+#
+# Claude Code collapses "/", "_" and "." alike to "-". The adapter replaced
+# only "/" until 2026-09-08, so it could never locate sessions for a project
+# whose path contained an underscore or a dot. The case that exposed it was
+# this package's own case study, mechanism_classifier.
+
+
+@pytest.mark.parametrize(
+    "project_path,expected",
+    [
+        # the original, underscore-free case that always worked
+        ("/storage/kiran-stuff/triplet-proof",
+         "-storage-kiran-stuff-triplet-proof"),
+        # the regression: underscores in BOTH path segments
+        ("/storage/kiran-stuff/IDP_projects/mechanism_classifier",
+         "-storage-kiran-stuff-IDP-projects-mechanism-classifier"),
+        # a dot in a leading hidden directory, yielding a double dash
+        ("/home/kiran/.claude/double-shot-latte",
+         "-home-kiran--claude-double-shot-latte"),
+        # a dot inside a version-numbered directory name
+        ("/storage/kiran-stuff/USPEX-v10.5",
+         "-storage-kiran-stuff-USPEX-v10-5"),
+        # underscore and dot together
+        ("/a/b_c/d.e_f",
+         "-a-b-c-d-e-f"),
+    ],
+)
+def test_session_dir_name_collapses_slash_underscore_and_dot(project_path, expected):
+    assert _session_dir_name(project_path) == expected
+
+
+def test_session_dir_name_leaves_no_underscore_or_dot():
+    """No derived name may retain a separator Claude Code would have collapsed."""
+    name = _session_dir_name("/storage/kiran-stuff/IDP_projects/mechanism_classifier")
+    assert "_" not in name
+    assert "." not in name
+
+
+def test_project_dir_uses_collapsed_name(tmp_path):
+    """The adapter's _project_dir must go through the collapsing rule, not
+    a bare "/" replacement."""
+    adapter = ClaudeCodeAdapter(claude_home=tmp_path)
+    pdir = adapter._project_dir(Path("/storage/kiran-stuff/IDP_projects/mechanism_classifier"))
+    assert pdir.name == "-storage-kiran-stuff-IDP-projects-mechanism-classifier"
+    assert pdir.parent == tmp_path / "projects"
+
+
+def test_claude_code_detect_finds_underscored_project(tmp_path):
+    """End-to-end: a session directory for an underscored project path must be
+    discoverable. This failed before the fix."""
+    projects = tmp_path / "projects"
+    sess = projects / "-storage-kiran-stuff-IDP-projects-mechanism-classifier"
+    sess.mkdir(parents=True)
+    (sess / "s.jsonl").write_text(json.dumps({
+        "type": "user", "uuid": "u1", "timestamp": "2026-02-10T00:00:00Z",
+        "message": {"role": "user", "content": "hello"},
+    }) + "\n")
+    adapter = ClaudeCodeAdapter(claude_home=tmp_path)
+    assert adapter.detect(Path("/storage/kiran-stuff/IDP_projects/mechanism_classifier")) is True
