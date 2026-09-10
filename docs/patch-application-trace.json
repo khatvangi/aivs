@@ -1,0 +1,290 @@
+[
+  {
+    "edit": "E1",
+    "anchor": "15",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "Generative AI now drafts text, writes analysis code, and generates figures acros",
+    "now": "AI-use disclosure statements tell a reader that generative AI was involved. They"
+  },
+  {
+    "edit": "E10",
+    "anchor": "81",
+    "lines_replaced": 1,
+    "lines_written": 9,
+    "was": "The biological question is whether conservation-based pathogenicity predictors h",
+    "now": "Predictors like ESM2 [4], AlphaMissense [5], and EVE [6] score a mutation by how"
+  },
+  {
+    "edit": "E11",
+    "anchor": "83",
+    "lines_replaced": 1,
+    "lines_written": 11,
+    "was": "The workflow maps onto the AIVS loop directly. Source records anchor the content",
+    "now": "**Table 1. Workflow stages.**"
+  },
+  {
+    "edit": "E12",
+    "anchor": "85",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "### 4.2 What AIVS-VAR caught during workflow preparation",
+    "now": "### 4.2 What the audit found"
+  },
+  {
+    "edit": "E13",
+    "anchor": "87",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "The case study is informative principally because AIVS was applied as a retrospe",
+    "now": "The audit worked from the decision list. Enumerating the workflow's consequentia"
+  },
+  {
+    "edit": "E14",
+    "anchor": "89",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "**Fabricated default features from a context-window violation.** The HTT locus e",
+    "now": "**A truncated model silently returned zeros.** (S2) The HTT protein is 3,142 res"
+  },
+  {
+    "edit": "E15",
+    "anchor": "91",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "**Silently biased AUROC from skipped LOGO-CV folds.** Scripts 04 and 06, early i",
+    "now": "**Skipped cross-validation folds were scored as predictions of zero.** (S4) The "
+  },
+  {
+    "edit": "E16",
+    "anchor": "93",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Oracle leakage in the mechanism-aware ensemble.** Script 08 implemented a mech",
+    "now": "**The ensemble was reading the answer.** (S3) An exploratory ensemble routed eac"
+  },
+  {
+    "edit": "E17",
+    "anchor": "95",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Numerical claims that did not match the canonical outputs.** The Methods and R",
+    "now": "**Numbers in the draft did not match the files they came from.** (S5) Tracing ea"
+  },
+  {
+    "edit": "E18",
+    "anchor": "97",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Statistical claims that could not be made.** An early draft reported \"P(two-st",
+    "now": "**A probability was reported that the method could not produce.** (S5) A draft g"
+  },
+  {
+    "edit": "E19",
+    "anchor": "99",
+    "lines_replaced": 1,
+    "lines_written": 18,
+    "was": "Beyond these five, the same manual audit chain caught minor methods-section drif",
+    "now": "The same pass caught three lesser problems, each now disclosed with its conseque"
+  },
+  {
+    "edit": "E2",
+    "anchor": "23",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "Generative AI is now embedded in computational science. Protein language models ",
+    "now": "Consider three failures. A protein language model, handed a sequence longer than"
+  },
+  {
+    "edit": "E20",
+    "anchor": "101",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "### 4.3 The AIVS-VAR record for the case study",
+    "now": "### 4.3 The record itself"
+  },
+  {
+    "edit": "E21",
+    "anchor": "103",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "*Verifiability.* Every quantitative claim traces to a specific cell in a canonic",
+    "now": "*Verifiability.* Every quantitative claim traces to a specific cell in a canonic"
+  },
+  {
+    "edit": "E22",
+    "anchor": "105",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "*Accountability.* Authorship is disclosed at the granularity of section and task",
+    "now": "*Accountability.* Authorship is disclosed at the granularity of section and task"
+  },
+  {
+    "edit": "E23",
+    "anchor": "107",
+    "lines_replaced": 1,
+    "lines_written": 5,
+    "was": "*Reproducibility.* The full pipeline is deposited at https://github.com/khatvang",
+    "now": "*Reproducibility.* The pipeline is deposited (§ Resource availability). The Clin"
+  },
+  {
+    "edit": "E24",
+    "anchor": "111",
+    "lines_replaced": 1,
+    "lines_written": 9,
+    "was": "The verified scientific findings are these. Clean-label overall AUROC: ESM2 = 0.",
+    "now": "The prediction in §4.1 holds, and the separation is clean (Fig 2)."
+  },
+  {
+    "edit": "E25",
+    "anchor": "113",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "### 4.5 What the case demonstrates",
+    "now": "### 4.5 Cost, and what the record cannot certify"
+  },
+  {
+    "edit": "E26",
+    "anchor": "115",
+    "lines_replaced": 1,
+    "lines_written": 5,
+    "was": "The case study supports three claims about AIVS-VAR. First, the framework is con",
+    "now": "Building the pipeline took approximately 520 person-hours, six months at roughly"
+  },
+  {
+    "edit": "E27",
+    "anchor": "117",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "The case also exposes what AIVS-VAR cannot certify. The framework records that t",
+    "now": "The record also cannot certify substance. It shows that the FUS PY-NLS is annota"
+  },
+  {
+    "edit": "E28",
+    "anchor": "123",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Figure 1. AIVS record graph.** Directed graph rooted at Source records (workfl",
+    "now": "**Figure 1. The AIVS record graph.** Events carry an Actor, an action, and an op"
+  },
+  {
+    "edit": "E29",
+    "anchor": "127",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Figure 2. Conservation-based pathogenicity prediction is mechanism-dependent.*",
+    "now": "**Figure 2. Conservation-based prediction is mechanism-dependent.** (A) Per-gene"
+  },
+  {
+    "edit": "E3",
+    "anchor": "25",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "The gap between AI use and AI verification is now quantitatively documented. A f",
+    "now": "The gap between AI use and AI verification is now documented quantitatively. A f"
+  },
+  {
+    "edit": "E30",
+    "anchor": "133",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "The contribution is a documentation layer between disclosure and full workflow c",
+    "now": "The contribution is a documentation layer between disclosure and full workflow c"
+  },
+  {
+    "edit": "E31",
+    "anchor": "135",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "The argument matters most for the agentic-platform case. Co-Scientist orchestrat",
+    "now": "The case for it grows with agentic platforms, which compose many generative invo"
+  },
+  {
+    "edit": "E32",
+    "anchor": "143",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "The pertinent question is not whether AI use should be permitted but how AI-assi",
+    "now": "The question is not whether AI use should be permitted but how AI-assisted work "
+  },
+  {
+    "edit": "E33",
+    "anchor": "149",
+    "lines_replaced": 1,
+    "lines_written": 9,
+    "was": "The case-study workflow is summarized here for reproducibility; per-step provena",
+    "now": "**Dataset.** 3,409 missense variants across 22 IDP-associated genes from the con"
+  },
+  {
+    "edit": "E34",
+    "anchor": "157",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Data and code availability.** The AIVS meta-schema (AGPL-3.0-or-later) is at h",
+    "now": "**Data and code availability.** The AIVS schema (AGPL-3.0-or-later) is at https:"
+  },
+  {
+    "edit": "E35",
+    "anchor": "163-185",
+    "lines_replaced": 23,
+    "lines_written": 23,
+    "was": "[1] National Institutes of Health. Supporting fairness and originality in NIH re",
+    "now": "[1] National Institutes of Health. Supporting fairness and originality in NIH re"
+  },
+  {
+    "edit": "E36",
+    "anchor": "195",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Generative AI use:** Consistent with the framework introduced in this article,",
+    "now": "**Generative AI use:** AI assistance was used for literature synthesis, methods "
+  },
+  {
+    "edit": "E4",
+    "anchor": "27",
+    "lines_replaced": 1,
+    "lines_written": 5,
+    "was": "Funder policy has responded with blanket restrictions [1] and publisher screenin",
+    "now": "Funder policy has responded with blanket restrictions [1], and publishers with s"
+  },
+  {
+    "edit": "E5",
+    "anchor": "35",
+    "lines_replaced": 1,
+    "lines_written": 3,
+    "was": "**Verifiability** is checkable. Citations can be resolved against CrossRef, PubM",
+    "now": "### 2.1 Verifiability"
+  },
+  {
+    "edit": "E6",
+    "anchor": "37",
+    "lines_replaced": 1,
+    "lines_written": 13,
+    "was": "**Accountability** in VAR is author-side and record-based: it documents which hu",
+    "now": "### 2.2 Accountability"
+  },
+  {
+    "edit": "E7",
+    "anchor": "39",
+    "lines_replaced": 1,
+    "lines_written": 13,
+    "was": "**Reproducibility** requires that the workflow can be re-executed from deposited",
+    "now": "### 2.3 Reproducibility"
+  },
+  {
+    "edit": "E8",
+    "anchor": "45-71",
+    "lines_replaced": 27,
+    "lines_written": 59,
+    "was": "## 3. AIVS: A Verification Schema for AI-Assisted Research",
+    "now": "## 3. AIVS: A Schema for Recording an AI-Assisted Workflow"
+  },
+  {
+    "edit": "E9",
+    "anchor": "77",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "We demonstrate AIVS-VAR on a workflow we conducted ourselves: prediction of dise",
+    "now": "We demonstrate AIVS on a workflow we conducted ourselves: prediction of disease "
+  }
+]
