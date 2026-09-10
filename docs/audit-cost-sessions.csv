@@ -1,0 +1,2 @@
+session_uuid,project,project_path,first_event_utc,last_event_utc,raw_span_min,active_min_gap15,active_min_gap30,total_events,events_without_timestamp,models,phase
+5636c93c-cccb-4d4c-a28b-5394cb9c1d2e,B,/storage/kiran-stuff/aivs,2026-08-25T14:39:00.711000+00:00,2026-08-25T14:42:11.131000+00:00,3.17,3.17,3.17,92,10,claude-opus-5,

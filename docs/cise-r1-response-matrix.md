@@ -118,7 +118,7 @@ Counts as of 2026-09-08, after gate resolution and the addition of row 3.10:
 
 ## Declines
 
-Three of 39 rows are declined or partly declined:
+Three of 41 rows are declined or partly declined:
 
 - **4.3** (DECLINE): a retrospective audit needs superseded scripts, intermediate outputs and internal notes that published third-party work does not deposit.
 - **4.5** (PARTIAL DECLINE): the contribution is the record and the discipline of constructing it, not the JSON serialization.
