@@ -71,6 +71,27 @@ edits["E34"]["repl"] = ref_block(281, 281)
 edits["E35"]["repl"] = ref_block(289, 311)
 edits["E36"]["repl"] = ref_block(321, 321)
 
+# The E35 range above is load-bearing: assert what it stops on, so a drifted
+# reference file fails loudly instead of quietly re-importing the back matter.
+assert ref_lines[310].startswith("[12] Brazma"), "E35 range no longer ends on [12]"
+assert ref_lines[312].strip() == "---", "E35 range: line 313 is not the rule"
+
+# Part 2 of the E35 repair (docs/patch-application-report.md, Addendum 1 §5).
+# Correcting the range left the *source* copy of the declarations block as the
+# survivor, and that is the copy carrying the two non-numeric en dashes
+# ("Writing - original draft") and the ampersand. Replace source 189 and 191
+# with reference 315 and 317 so the de-dashed copy is the one that survives.
+# Source 191 and reference 317 are byte-identical, so that half writes no new
+# text; it is kept because the documented fix specifies both lines, and it
+# keeps the two declarations marked as a pair.
+assert src_lines[188].startswith("**Author contributions:**"), "E35a anchor drifted"
+assert src_lines[190].startswith("**Declaration of interests:**"), "E35b anchor drifted"
+assert ref_lines[314].startswith("**Author contributions:**"), "E35a block source drifted"
+assert ref_lines[316].startswith("**Declaration of interests:**"), "E35b block source drifted"
+assert "\u2013" not in ref_lines[314], "E35a replacement still carries an en dash"
+edits["E35a"] = {"start": 189, "end": 189, "repl": ref_block(315, 315), "body": ""}
+edits["E35b"] = {"start": 191, "end": 191, "repl": ref_block(317, 317), "body": ""}
+
 # E5 and E9 are instruction-style, expressed against the source line itself.
 l35 = src_lines[34]
 assert l35.startswith("**Verifiability** is checkable."), "E5 anchor drifted"

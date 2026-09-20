@@ -232,6 +232,22 @@
     "now": "[1] National Institutes of Health. Supporting fairness and originality in NIH re"
   },
   {
+    "edit": "E35a",
+    "anchor": "189",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Author contributions:** Conceptualization, B.K.; Methodology, B.K. and H.R.; S",
+    "now": "**Author contributions:** Conceptualization, B.K.; Methodology, B.K. and H.R.; S"
+  },
+  {
+    "edit": "E35b",
+    "anchor": "191",
+    "lines_replaced": 1,
+    "lines_written": 1,
+    "was": "**Declaration of interests:** The authors declare no competing interests.",
+    "now": "**Declaration of interests:** The authors declare no competing interests."
+  },
+  {
     "edit": "E36",
     "anchor": "195",
     "lines_replaced": 1,

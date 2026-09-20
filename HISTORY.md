@@ -868,3 +868,141 @@ four edits in the web UI.
 
 Open: figure-caption counting convention (the two conventions straddle the
 limit), and the 34-vs-38 comment count.
+
+## 2026-09-19
+
+**Q:** Apply the two-part E35 fix documented in `docs/patch-application-report.md`
+for the duplicated declarations block, re-render DOCX and PDF with change
+marking and table colouring intact, and report the counts.
+
+**A:** Part 1 (E35 range 289..317 → 289..311) was already applied — Addenda 2
+and 3 had landed it, so the brief's starting state (6,261 words, block
+duplicated) no longer existed. Added two assertions instead so the range is
+self-checking. Part 2 applied as written: new edits `E35a` (source 189 ←
+reference 315, de-dashes the CRediT labels) and `E35b` (source 191 ← reference
+317, byte-identical, marks the pair together). Both went into the applier, not
+the generated root. Pipeline re-run clean: 38 edits, preflight 12 identifiers,
+tables 2 of 2 / 75 cell runs, 19-page PDF.
+
+Verified in the rendered PDF: declarations block once, AI-use disclosure once
+and all 17 of its lines red, 12 of 12 references, zero em dashes, 7 en dashes
+all numeric ranges. Marked paragraphs 103 → 105 of 210, exactly the two new
+edits. Source md5 `34ef424c` unchanged; nothing committed or pushed.
+
+Found: `wordcount_r1.py` strips ASCII hyphens along with markdown markup, so
+176 hyphenated compounds each count twice. Counted from the rendered DOCX the
+manuscript is **6,223 including figure captions (under by 27)** and 6,060
+excluding them — under on *both* conventions, so the long-standing
+"conventions straddle the limit" item is a counter artefact. One-character fix
+recommended, not applied, since it changes a reported count.
+
+**Q:** Should `E35b` stay, given it marks an unchanged paragraph red?
+
+**A:** Open. It writes no new text; dropping it removes the red Declaration of
+interests and changes nothing else. Also open: headings never render red
+(pandoc's Heading style overrides `ChangedPara`), so the added §2.2 and §2.3
+headings are not visibly change-marked.
+
+## 2026-09-19
+
+**Q:** The Zenodo GitHub-integration settings page now shows 10.5281/zenodo.22698585
+and 22698586 as the concept DOIs for `aivs` and `idp-mechanism-classifier`, but the
+manuscript cites 20723558 and 20723560. Are the 2269858x records a separate,
+unrelated lineage, leaving the manuscript pointing at an orphaned one? READ-ONLY
+query of Zenodo and GitHub; report contents, origin, and which DOIs to cite.
+
+**A:** No orphan, nothing broken, no action required. `22698585` and `22698586` are
+the **second versions inside the existing concepts** `20723558` and `20723560` —
+confirmed four ways: `conceptrecid`/`conceptdoi` on the version records, `/versions`
+returning `total: 2` per concept, `GET /records/20723558` being byte-identical to
+`GET /records/22698585` (the concept endpoint 302-redirects to latest), and
+`doi.org/10.5281/zenodo.20723558` resolving to `zenodo.org/records/22698585`. The
+settings page was showing version DOIs, correctly parented.
+
+Two premises that drove the alarm were wrong. The earlier reading of
+`tagging-and-mint-report.md` stopped at its 2026-09-08 "nothing minted" section and
+missed the **Addendum — minting completed** (2026-09-10); the API confirms the
+addendum in every particular. And the 302 is Zenodo's normal behaviour, not an
+outage — the same 302 that silently disabled the 2026-09-08 recovery poller, which
+treated only 200 as "up".
+
+Both archives downloaded and verified against actual file listings, not titles:
+md5s match record metadata; aivs has the `1e6f79d0`/`82585f43` audit records,
+`capture_tier` 1, zero `.pyc`, `legacy/` with the six Patterns-era files; idp has
+263 files, `table_s1_regions.csv` with 0 HTT rows, the vendored `src/`,
+`scripts/mutation/01..21` and `scripts/figures/` ×10.
+
+One near-miss worth recording. The zipball roots are `8fa3ff4` and `d832e32`, not
+the expected `183dfb5` and `196d59f`. These are the **annotated tag object SHAs** —
+GitHub names a zipball after the SHA the ref points at, which for an annotated tag
+is the tag object, not the commit. Dereferenced, `8fa3ff4 → 183dfb5` and
+`d832e32 → 196d59f`. A string comparison of root against commit SHA would have
+reported a fabricated mismatch. Same family of error as the `jq` rounding of
+webhook delivery ids: the check appears to work and the artifact it produces is
+wrong.
+
+GitHub's delivery log for both hooks is now **empty** (`HTTP 200`, `[]`) — the
+2026-09-08/09-10 deliveries aged out of retention, so success cannot be confirmed
+from the log itself. It is established independently: `publication_date` 2026-09-08
+against `created` 2026-09-10 is the signature of a *replayed* release event (a fresh
+deposit would date itself 2026-09-10), the two records were created 1.69 s apart,
+and the deposits carry all three GitHub-integration fingerprints. The six original
+automatic deliveries failed; the manual redelivery of 2026-09-10 ~22:31 UTC is what
+minted.
+
+`20723558`/`20723560` are concept records and contain no files of their own; their
+v1s (`20723559`/`20723561`, tag `v0.2.1-paper`, 2026-06-16) are the superseded
+Patterns-era deposits, created by the same GitHub integration. Those must **not** be
+cited as version DOIs — they predate the repair work.
+
+Cite: `20723558` + `22698585` for aivs, `20723560` + `22698586` for idp. The
+manuscript already does, in the committed md, working-tree md, docx and pdf alike;
+`20723559`/`20723561` appear in none of them. **No new release or deposit** — it
+would add a redundant third version and move each concept DOI off the archive its
+version DOI names. Still open: all four records carry `license: apgl-v3`, a typo for
+`agpl-3.0`; cosmetic, and a write, so not touched. Full report in
+`docs/zenodo-doi-reconciliation.md`.
+
+## 2026-09-19
+
+**Q:** Finish the Zenodo licence fix, contain the reviewer-material exposure,
+and produce the revision cover letter and response to reviewers.
+
+**A:** Licence corrected on all four Zenodo records to `agpl-3.0-or-later`
+(22698585, 22698586, 20723559, 20723561), verified publicly. Note `agpl-3.0`
+as instructed does not exist in Zenodo's vocabulary; the valid ids are
+`agpl-3.0-only` and `agpl-3.0-or-later`, and the latter matches LICENSE and
+pyproject. Only the `license` field was changed on each record.
+
+**Reviewer-material containment.** Five files carrying anonymous reviewer
+comments were untracked at HEAD and pushed (`e45526b`), later joined by the
+cover letter, which carried 17 reviewer mentions and more paraphrased comment
+substance than the summary of changes already removed — my containment had
+been inconsistent. Deliberately NOT done: no history rewrite and no
+force-push, because the v0.2.2-paper tag is what the minted Zenodo archive
+points at and rewriting it would break the DOI-to-commit correspondence this
+paper argues for; and repos stay public so the availability-statement URLs
+keep resolving. `docs/cise-r1-response-matrix.md` remains inside the archived
+zipball under 10.5281/zenodo.22698585; Zenodo can restrict a single file on
+request without withdrawing the record. Pending the editor's answer on whether
+IEEE CS permits posting reviewer comments.
+
+**Cover letter and response to reviewers** written and rendered. Four
+corrections applied after cross-checking against the manuscript:
+§3.7 claimed the disclosure names model identifiers recoverable from
+configuration, which contradicts the manuscript's recollection-at-tier-0
+wording; §3.8 reported one self-identified defect where the matrix and
+manuscript carry three, so it now covers all three with the adapter defect
+prominent and tied to R3.2 as the one case where the chain produced a
+detection rather than a record of one; counts reconciled across all three
+documents to 37 reviewer comments, 34 addressed, 3 declined, with
+self-identified defects reported separately rather than added in; and §2.C7 no
+longer asserts a word total, since the figure-caption convention is unresolved
+and asserting a possibly-false number to the reviewer who raised length is the
+wrong risk.
+
+Open: Pokhriyal on the figure-caption counting rule and on posting reviewer
+comments (chase Monday). Cell Press declaration of interests still in the
+package. June-dated supplementary information still needs the new DOIs.
+Token in `/home/kiran/.zenodo_token` is live in a transcript; rotate after any
+final re-render. Do not toggle the Zenodo webhook until after submission.

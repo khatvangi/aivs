@@ -577,3 +577,164 @@ placeholders were longer than the DOIs replacing them.
 2. **Comment count 34 vs 38** — flagged in Addendum 1 §3, unresolved.
 3. **Zenodo license metadata** `apgl-v3` → `agpl-3.0` on four records — needs a
    token or the web UI. See `docs/tagging-and-mint-report.md`.
+
+
+---
+
+# Addendum 4 — Job 7: E35 part 2 applied, counts re-verified from the PDF
+
+2026-09-19, host `boron`. CiSE-2026-06-0105.
+
+## Outcome: part 2 applied. Nothing cut. Under the limit on the rendered document.
+
+`var_manuscript_cise.md` md5 `34ef424c8f9ecefd95a1ced65fd1f414`, verified
+unchanged before and after. Nothing committed, nothing pushed, Zenodo untouched.
+
+## 1. Part 1 was already applied — correcting the record
+
+The brief for this job described the pre-Addendum-2 state: 6,261 words, the
+declarations block duplicated at `var_manuscript_cise_r1.md:318-320` and
+`:324-326`. That state no longer existed on disk. `apply_revision_patch.py:71`
+already read `ref_block(289, 311)`, the block already appeared once, and the
+committed artifacts measured 6,218 on `wordcount_r1.py`'s excluding-captions
+figure. Addenda 2 and 3 had already landed part 1.
+
+Nothing was changed for part 1. Two assertions were added instead, so the range
+is self-checking rather than merely correct:
+
+```python
+assert ref_lines[310].startswith("[12] Brazma"), "E35 range no longer ends on [12]"
+assert ref_lines[312].strip() == "---",          "E35 range: line 313 is not the rule"
+```
+
+A drifted reference file now fails the build rather than quietly re-importing
+the back matter — which is the failure mode that produced the duplication.
+
+## 2. Part 2 applied as written
+
+Two new edits in `apply_revision_patch.py`, under anchor and content assertions:
+
+| Edit | Source anchor | Replacement | Effect |
+|---|---|---|---|
+| `E35a` | `var_manuscript_cise.md:189` | `docs/var_manuscript_cise_r1.md:315` | `Writing – original draft` → `Writing, original draft`; `Writing – review & editing` → `Writing, review and editing` |
+| `E35b` | `var_manuscript_cise.md:191` | `docs/var_manuscript_cise_r1.md:317` | none — the two lines are byte-identical |
+
+Both went into the applier, not the generated root file. The root is an output;
+an edit written there is reverted by the next run, and the marked copy that
+feeds the DOCX would keep the old text, so the change would render *unmarked*.
+
+`E35b` writes no new text. It is kept because the documented fix names both
+lines and it keeps the two declarations marked as a pair. **The consequence is
+worth stating plainly: Declaration of interests now renders red although its
+text is unchanged.** Confirmed in the PDF. If that is unwanted, dropping
+`E35b` removes it and changes nothing else.
+
+Also carried forward from Addendum 2 §6, which this job overrides: the two en
+dashes were the official CRediT role labels, and they are now gone. That was an
+author decision, taken with the finding on the table.
+
+Trace: 38 entries in `docs/patch-application-trace.json`, was 36.
+
+## 3. Re-render
+
+```
+apply        : 38 edits, source 202 lines -> output 335 lines, 219 changed lines
+postprocess  : 12 reference identifiers inserted into each of the two outputs
+preflight    : 12 reference identifiers present, no placeholders
+docx         : var_manuscript_cise_r1.docx (621,737 B)
+tables       : 2 of 2 coloured, 75 cell runs
+pdf          : var_manuscript_cise_r1.pdf (352,162 B, 19 pages)
+```
+
+Table cell colouring from the previous run is preserved: 2 of 2, 75 cell runs,
+the same figures as Addendum 2 §5.
+
+## 4. Verified in the rendered PDF, not in the markdown
+
+Extraction by `pdftotext`; colour by PyMuPDF span colour, which reads the
+rendered page rather than the markup.
+
+| Check | Result |
+|---|---|
+| `**Author contributions:**` | **1 occurrence** |
+| `**Declaration of interests:**` | **1 occurrence** |
+| `**Acknowledgments:**` | 1 occurrence |
+| `**Generative AI use:**` | **1 occurrence**, and all 17 of its rendered lines are `#C00000` |
+| Reference identifiers in the render input | **12**, enforced by `render_r1.py` preflight before the render was spent |
+| Reference entries `[1]`–`[12]` in the PDF | all 12 present; 12 identifier URLs |
+| Em dashes U+2014 | **0** |
+| En dashes U+2013 | **7, every one a numeric range** — `502–526`, `274–414`, `185–372`, `1123–1130`, `91–95`, `97–138`, `365–371` |
+
+Marked versus unmarked, non-blank paragraphs in the rendered DOCX:
+
+| | baseline (HEAD) | this run |
+|---|---:|---:|
+| marked, `ChangedPara` | 103 | **105** |
+| unmarked | 107 | **105** |
+| total non-blank | 210 | 210 |
+
+Exactly +2, which is `E35a` and `E35b` and nothing else. The diff of
+`docs/var_manuscript_cise_r1_marked.md` against its committed version is those
+two paragraphs alone. `ChangedPara` divs 36 → 38.
+
+In the PDF itself: 785 rendered text lines, 714 `#C00000`, 42 black, 29 in
+pandoc's heading colour.
+
+### One pre-existing gap, not fixed
+
+Headings never render red — pandoc's Heading styles override `ChangedPara` the
+same way table styles override it on cells. So `### 2.2 Accountability` and
+`### 2.3 Reproducibility`, both added by the applier, are not visibly
+change-marked. Out of scope here and the same class of defect as the table-cell
+problem fixed in Addendum 2 §2; recording it rather than fixing it silently.
+
+## 5. Word count — and a defect in the counter
+
+**From the rendered DOCX text, which is what Word and ScholarOne see:**
+
+| Component | Words |
+|---|---:|
+| Body, including back matter and biographies | 6,067 |
+| Tables, cell text, 65 cells | 156 |
+| **Body + tables, including figure captions** | **6,223 — UNDER by 27** |
+| of which figure captions | 163 |
+| Body + tables, excluding figure captions | 6,060 — under by 190 |
+| References, 12 entries, not counted | 252 |
+
+Method as in Addendum 1 §5: paragraphs partitioned into table and non-table,
+reference entries identified by a leading `[n]`, tokens counted if they contain
+an alphanumeric.
+
+**`wordcount_r1.py` disagrees, and it is the one that is wrong.** It reports
+body 6,240, tables 160, 6,400 including captions and 6,216 excluding them.
+Line 34 is `re.sub(r"[#*_>|\-]+", " ", t)`, which strips the ASCII hyphen along
+with the markdown markup. The manuscript contains **176 hyphenated compounds**
+in the body — `AI-assisted`, `machine-readable`, `open-source`, `person-hours`
+— and each is counted twice. Removing `\-` from that character class takes the
+markdown body from 6,240 to 6,034, which agrees with the DOCX-derived 6,067 to
+within ordinary markup noise.
+
+Two consequences:
+
+1. The manuscript is **under 6,250 on both caption conventions**, by 27 and by
+   190. The "the two conventions straddle the limit" item carried since
+   Addendum 1 is an artefact of the hyphen splitting, not a property of the
+   manuscript.
+2. `wordcount_r1.py` was **not changed**. It gates the build on the
+   excluding-captions figure and currently passes, and altering a reported
+   count is the class of decision reserved to the author. The one-character
+   fix is recommended, not applied.
+
+Nothing was cut, condensed or reworded. The 2-word reduction from 6,218 to
+6,216 on the old counter is the two en dashes and the ampersand leaving, offset
+by `and` arriving.
+
+## Still outstanding
+
+1. **`wordcount_r1.py` hyphen splitting** — one-character fix, author's call.
+   Until it is made, prefer the DOCX-derived figure.
+2. **Comment count 34 vs 38** — Addendum 1 §3, unresolved.
+3. **Zenodo license metadata** `apgl-v3` → `agpl-3.0` on four records — needs a
+   token or the web UI. See `docs/tagging-and-mint-report.md`.
+4. **`E35b` marks an unchanged paragraph** — drop the edit if that is unwanted.
+5. **Headings are not visibly change-marked** — §4 above.

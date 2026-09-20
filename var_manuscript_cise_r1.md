@@ -319,7 +319,7 @@ The question is not whether AI use should be permitted but how AI-assisted work 
 
 ---
 
-**Author contributions:** Conceptualization, B.K.; Methodology, B.K. and H.R.; Software, B.K.; Investigation, H.R.; Data curation, H.R.; Formal analysis, H.R.; Writing – original draft, B.K.; Writing – review & editing, B.K. and H.R.
+**Author contributions:** Conceptualization, B.K.; Methodology, B.K. and H.R.; Software, B.K.; Investigation, H.R.; Data curation, H.R.; Formal analysis, H.R.; Writing, original draft, B.K.; Writing, review and editing, B.K. and H.R.
 
 **Declaration of interests:** The authors declare no competing interests.
 
