@@ -17,3 +17,9 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# peer-review material — kept locally for submission, not published pending
+# confirmation of IEEE CS policy on posting reviewer comments (see HISTORY)
+docs/response-to-reviewers.*
+docs/summary-of-changes.*
+docs/cise-r1-response-matrix.md
