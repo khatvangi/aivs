@@ -1006,3 +1006,52 @@ comments (chase Monday). Cell Press declaration of interests still in the
 package. June-dated supplementary information still needs the new DOIs.
 Token in `/home/kiran/.zenodo_token` is live in a transcript; rotate after any
 final re-render. Do not toggle the Zenodo webhook until after submission.
+
+## 2026-09-21
+
+**Q:** Finish the revision letters, get the remaining reviewer-bearing
+documents off public HEAD, and assemble the submission bundle.
+
+**A:** Most of the letter work was already in place from 2026-09-19; the
+outstanding items were the summary of changes and the containment, which had
+been incomplete.
+
+**Letters.** §3.7 of the response now carries the approved sentence verbatim
+(an em dash had survived where a comma was specified). The summary of changes
+was the document that actually disagreed: it still said one self-identified
+defect where the manuscript and matrix carry three, still described the AI-use
+disclosure as naming model identifiers recoverable from configuration, and
+still carried a `[WORD COUNT]` placeholder inside an assertion of compliance
+with the 6,250-word limit. It now opens on 37/34/3 with the three defects
+excluded from the reviewer total, carries a dedicated "Defects found during
+revision" section covering all three, and reports the measured counts — 6,400
+words with figure captions, 6,216 without — rather than asserting a total that
+depends on an unresolved counting convention. The cover letter needed no
+count changes; it was copied to `cover-letter-revision.md` as the canonical
+revision letter and the byte-identical `cover_letter.md` dropped.
+
+**Containment.** Five further tracked documents quoted or condensed reviewer
+comments and were still at HEAD: the revision patch list, the 2026-08-27
+deposit verification (verbatim quotes from two reviewers), the pending-edits
+note, the phase-1 repair report and the figure-regeneration note. Removed with
+an ordinary commit (`57a244b`) and moved to `../aivs-private/`. Two residual
+attributions in files that are not peer-review material — a comment in
+`figures/make_aivs_schema.py` and one line of `audit-record-corrections.md` —
+were redacted rather than removing the files (`6c23858`). No history rewrite,
+no force-push, no tag touched: `v0.2.2-paper` still resolves 8fa3ff4a →
+183dfb55 locally and on origin.
+
+**Bundle** at `/storage/kiran-stuff/aivs-private/submission/`: manuscript
+marked and clean, response letter, cover letter, summary of changes, each as
+DOCX and PDF. Two findings worth keeping. The revised manuscript contains no
+reference to supplemental information at all — the submitted version's "this
+paper's own AIVS verification trail is provided in the supplemental
+information" was replaced by a pointer into the AIVS repository — so no SI
+file should be uploaded, and the June-dated `supplementary_information.*` at
+the repo root is moot rather than merely stale. And nothing in the bundle
+references the Cell Press declaration of interests form; the manuscript
+carries its own one-line declaration, IEEE handles conflicts through
+ScholarOne, and the form is not in the bundle.
+
+Open: Pokhriyal on the figure-caption counting rule and on posting reviewer
+comments. `var_manuscript_cise.md` unchanged throughout (md5 34ef424c).
