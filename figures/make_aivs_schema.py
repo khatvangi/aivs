@@ -18,9 +18,9 @@ version:
      field on a real model.
 
   2. all routing is orthogonal and every edge label is drawn on an opaque
-     patch. reviewer 5 reported overlapping text in the previous version,
-     where a curved self-loop crossed the interior of a node and its label
-     landed on top of an unrelated box.
+     patch. the previous version had overlapping text, where a curved
+     self-loop crossed the interior of a node and its label landed on top
+     of an unrelated box.
 
 note on plotting library: this is a node-link diagram, not a statistical
 plot, so it is drawn with matplotlib patches. seaborn and plotly are the

@@ -162,9 +162,10 @@ reviewer who `pip install`ed from the archive saw 0.1.0.
 
 **Response matrix row 3.9** — added for the §4.3 recomputation claim, alongside
 3.8 and self-identified in the same style. The matrix is now tracked (it was
-untracked). Stated totals updated: line 43 `39 → 40` total and Reviewer 3
-`9 → 10`; line 120's separate "three of 38 rows", which excludes the `AE.0`
-placeholder, becomes 39. Both figures shift by exactly the one added row.
+untracked). Stated totals updated: line 43 `39 → 40` total, and the
+per-reviewer subtotal for that block by one; line 120's separate "three of 38
+rows", which excludes the `AE.0` placeholder, becomes 39. Both figures shift by
+exactly the one added row.
 
 The revised §4.3 paragraph text itself belongs to the Job 5 patch list and was
 **not** applied — `var_manuscript_cise.md` remains unmodified.
