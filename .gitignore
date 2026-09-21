@@ -19,9 +19,18 @@ dist/
 Thumbs.db
 
 # peer-review material — kept locally for submission, not published pending
-# confirmation of IEEE CS policy on posting reviewer comments (see HISTORY)
+# confirmation of IEEE CS policy on posting reviewer comments (see HISTORY).
+# These files now live outside the repository, in ../aivs-private/.
 docs/response-to-reviewers.*
 docs/summary-of-changes.*
 docs/cise-r1-response-matrix.md
+docs/cover-letter-revision.*
 cover_letter.md
 cover_letter.docx
+# revision working documents that quote or condense reviewer comments
+docs/revision-patch-list.md
+docs/deposit-verification-2026-08-27.md
+docs/cise-r1-pending-manuscript-edits.md
+docs/deposit-repair-phase1-report.md
+docs/figure-regeneration.md
+aivs-private/
