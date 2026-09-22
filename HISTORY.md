@@ -1055,3 +1055,48 @@ ScholarOne, and the form is not in the bundle.
 
 Open: Pokhriyal on the figure-caption counting rule and on posting reviewer
 comments. `var_manuscript_cise.md` unchanged throughout (md5 34ef424c).
+
+## 2026-09-22
+
+**Q:** Submitted. Three cleanups: revoke every Zenodo personal token created
+during this (including `~/.zenodo_token`); toggle both repositories off and on
+in Zenodo's GitHub settings to retire the webhook token that surfaced in a
+Boron transcript; the reviewer-comment question stays open against the
+response matrix archived inside 10.5281/zenodo.22698585.
+
+**A.** Did the local half of (1), established that (1) and (2) cannot be
+finished from here, and found one unrelated stale file while checking.
+
+**Token.** `~/.zenodo_token` held the token pasted into the chat on 2026-09-19
+(`JUQZ…YN1A`, sha256 `3d42be74…`). Shredded. It was the only credential
+stored on disk: no token value appears in `~/.bash_history`, in any tracked
+file, or anywhere in the working tree, and `origin` carries no embedded
+credential. The other two tokens that passed through the chat were never
+written to disk, so they exist only in Zenodo's account settings.
+
+**Why the rest needs a browser.** Zenodo exposes no token-management or
+GitHub-integration API — `/api/user/tokens`, `/api/tokens` and
+`/api/user/github/repositories` all answer 404 unauthenticated, which
+distinguishes "absent" from "present but unauthorized" (401). Revocation and
+the repository toggle are both UI-only, at
+`zenodo.org/account/settings/applications/` and
+`zenodo.org/account/settings/github/`. Neither touches the minted DOIs.
+
+**Adjacent observation, not acted on.** The `gh` CLI login for `khatvangi`
+still carries `admin:repo_hook` among its scopes. That is the scope the
+webhook redelivery work needed. It is an OAuth token in the system keyring,
+pre-existing rather than minted here, so it was left alone; dropping the scope
+with `gh auth refresh` is a judgement call, not cleanup.
+
+**Stale file found.** `cover_letter.pdf` was still tracked at the repo root.
+Checked before assuming: it is the *Patterns* submission letter of 16 June,
+addressed to that journal's editor, with zero occurrences of "Reviewer N". Not
+a containment failure — a wrong-venue leftover that a reader would take for the
+current cover letter. `git mv`-ed to `legacy/cover_letter_patterns.pdf`
+alongside the existing `cover_letter_patterns.md.bak`, with the legacy README
+extended to say what the pair is and that it predates review. `git mv` rather
+than `mv` deliberately: the same move done with `mv` on 2026-09-08 left the
+superseded manuscript tracked at both paths.
+
+Open: still only Pokhriyal, on the figure-caption counting rule and on posting
+reviewer comments. Second-round reviews expected in six to ten weeks.
